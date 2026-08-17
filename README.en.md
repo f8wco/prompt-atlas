@@ -28,9 +28,10 @@ Write "a girl in a city, cinematic" ten times and you get ten different results 
 
 Other prompt libraries are collections. This project is a **methodology + dictionary + tool**:
 
-- **Every term carries a determinism score** (0–100): the probability a mainstream model renders it as intended
-- **Prompt Checker**: paste any prompt → 9-slot coverage report + determinism score, showing which words are dead weight and which slots are missing
-- **Recipe Card builder**: pick terms slot by slot → one-click copy of Chinese & English prompts
+- **9-slot structured linting**: paste a prompt → see what you specified, what you left to the model, what conflicts, and which words are vague
+- **Determinism scores (honest estimates)**: every term carries 0–100; all current scores are `heuristic` editorial estimates — never presented as measured probabilities. Measured scores ship through the benchmark pipeline only
+- **Reproducible rule engine**: Matcher/Optimizer are pure functions (`web/core-lib.js`) covered by 84 regression fixtures
+- **Recipe Card builder**: pick terms slot by slot → one-click copy of EN/中文 prompts
 
 ## ✨ Features / 三大能力
 
@@ -87,22 +88,27 @@ prompt-atlas/
 
 Lighting · Camera Movement · Shot Size · Composition · Color Grading · Style · Mood · Time · Lens & Technique
 
-A complete prompt = Subject/Action/Scene (free text) + 9 slots (dictionary terms). **Blank slots are where the model improvises.**
+A complete prompt = Subject/Action/Scene (free text) + 9 slots (dictionary terms). **Unspecified slots are not mistakes — they are creative freedom handed to the model. The tool helps you manage control vs freedom.**
 
 ## 📊 Determinism Score / 确定性分数
 
+**Honest disclosure: all 60 terms are currently `heuristic` (editorial estimates), not measured probabilities.** Scores are relative ordering from editorial judgment; probability-style claims apply only to `benchmarked` terms published through the pipeline in `docs/BENCHMARK.md`.
+
 | Score | Meaning | Examples |
 |---|---|---|
-| ≥ 80 high | Physical facts any mainstream model renders reliably | golden hour (92), close-up (90), time-lapse (88) |
+| ≥ 80 high | Physically strong controls per editorial judgment | golden hour (92), close-up (90), time-lapse (88) |
 | 60–79 mid | Common styles/techniques; varies between models | film grain (75), handheld (65) |
-| < 60 low | Abstract, compound, drift-prone concepts — often dead weight | cinematic (55), rule of thirds (55) |
+| < 60 low | Abstract, compound, drift-prone concepts | cinematic (55, now a Macro), rule of thirds (55) |
 
 ## 🗺️ Roadmap / 路线图
 
-- [x] v0.1 Core dictionary (60 terms, 9 slots) + Checker + Recipe Card + Library (this repo)
-- [ ] Grow to 200 terms (4 pipelines: batch self-generation / CC0 matching / bounty claims / weekly challenge — see `docs/LAUNCH.md`)
-- [ ] Image API integration (auto-illustrate terms; keep API keys server-side)
-- [ ] Points system & bounty board (needs a backend; interfaces defined in `docs/ECONOMY.md`)
+- [x] v0.1 Core dictionary (60 terms) + Checker + Recipe Card + Library
+- [x] v0.2 Checker upgrade: conflict detection + likely-described hints + optimized version (≤1 term/slot + NO_SUGGESTION)
+- [x] v0.3a Schema v2: Atom/Macro + relations + score.status + JSON Schema + 84 regression fixtures + full CI
+- [ ] v0.3b Benchmark MVP: 8-image 192-sample A/B + 4-video smoke (protocol ready, awaiting API resources — see `docs/BENCHMARK.md`)
+- [ ] Control Profile 4-dimension report (Reliability/Coverage/Consistency/Freedom)
+- [ ] Grow to 200 terms (4 pipelines — see `docs/LAUNCH.md`)
+- [ ] Points system & bounty board (needs a backend; interfaces in `docs/ECONOMY.md`)
 
 ## 📄 License / 许可证
 
