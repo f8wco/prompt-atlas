@@ -1,8 +1,9 @@
 /* ============================================================
-   Visual Prompt Atlas — core-lib.js
+   Visual Prompt Atlas — core-lib.js (engine v3)
    Pure, deterministic prompt logic shared by browser and tests.
    UMD-lite: browser -> window.PromptAtlasLib, node -> module.exports
-   Matcher 2.0 · Applicability · Optimizer 2.0 · Conflict hints
+   v3: modalities consumed · Control Profile (no single fake score)
+       · relations drive the analyzer (hardConflict/softTension/redundant/implies)
    ============================================================ */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) { module.exports = factory(); }
@@ -11,8 +12,10 @@
   'use strict';
 
   var SUGGESTION_MIN_SCORE = 60;
+  var HARD_PENALTY = 30;
+  var TENSION_PENALTY = 10;
 
-  /* ---------------- free-text conflict hints (v1 heuristic; superseded by relations graph in v2) ---------------- */
+  /* free-text conflict hints (v1 heuristic; moved into core.json in batch B) */
   var CONFLICTS = {
     'golden-hour': ['夜晚', '深夜', '午夜', 'midnight', '黑金', '漆黑', 'dark room', 'blue hour', '蓝调时刻'],
     'overcast': ['阳光', '烈日', 'sunny', 'bright sunlight', 'golden hour', '黄金时刻'],
@@ -65,23 +68,41 @@
     'time-lapse': ['慢动作', 'slow motion'],
     'slow-motion': ['延时', 'time-lapse', '快进'],
     'long-take': ['分镜', 'storyboard', '剪辑', 'cuts', '蒙太奇', '多镜头', '转场'],
-    'fisheye': ['电影感', 'cinematic', '写实'],
+    'fisheye': ['写实'],
     'vhs': ['8k', '超清', 'ultra hd', '高清', '4k']
   };
 
   var SLOT_HINTS = {
     lighting: ['光影', '灯光', '打光', '柔光', '逆光', '侧光', '光照', 'light', 'lighting', 'shadow', '光线'],
-    camera: ['运镜', '镜头运动', '推近', '拉远', '环绕', '旋转镜头', '视角', '机位', 'camera', 'zoom', 'pan', 'rotate', '漩涡'],
+    camera: ['运镜', '镜头运动', '推近', '拉远', '环绕', '旋转镜头', '漩涡镜头', '视角', '机位', 'camera', 'zoom', 'pan', 'rotate'],
     shot: ['特写', '全景', '中景', '远景', '全身', '面部', '半身', 'framing', 'close-up', 'wide shot', 'medium shot'],
     composition: ['构图', '居中', '中央', '对称', '三分', '留白', '前景', 'background', 'composition', 'centered'],
     color: ['配色', '色调', '色彩', '黑金', '冷暖', '饱和度', '影调', '滤镜', 'color', 'palette', 'tone', 'grading'],
     style: ['风格', '质感', '画风', '电影感', '国漫', '日系', '写实', '二次元', '水墨', '院线', 'style', 'look', 'realistic', 'render'],
     mood: ['氛围', '情绪', '史诗', '温馨', '紧张', '神秘', '压抑', '张力', 'mood', 'atmosphere', 'epic', 'tense'],
-    time: ['夜晚', '白天', '清晨', '黄昏', '时代', '古代', '未来', '隧道', '虚空', '抽象', '星云', '太空', '宇宙', '黑洞', 'night', 'day', 'morning', 'evening', 'space', 'nebula', 'void', 'tunnel'],
+    time: ['夜晚', '白天', '清晨', '黄昏', '时代', '古代', '未来', 'night', 'day', 'morning', 'evening'],
     technique: ['特效', '粒子', '景深', '慢镜头', '延时', '一镜到底', '渲染', 'depth of field', 'effect', 'particle', 'render', 'vfx']
   };
 
+  /* contexts where a time-of-day dimension is meaningless (abstract spaces) */
+  var TIME_IRRELEVANT_HINTS = ['隧道', '虚空', '抽象空间', '星云', '太空', '宇宙', '黑洞', 'space', 'nebula', 'void', 'tunnel', 'outer space'];
+
   function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function readScore(a) {
+    return (a.score && typeof a.score === 'object') ? a.score.value : a.score;
+  }
+  function atomById(data, id) {
+    var list = data.atoms || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+
+  /* ---------------- modality ---------------- */
+  function atomAppliesToMode(atom, mode) {
+    if (!atom.modalities || !atom.modalities.length) return true;
+    return atom.modalities.indexOf(mode) !== -1;
+  }
 
   /* ---------------- Matcher 2.0 ---------------- */
   function termLists(atom) {
@@ -96,7 +117,6 @@
     var lower = text.toLowerCase();
     var hits = [];
 
-    // English: boundary-aware regex per term (word-ish boundaries)
     ATOMS.forEach(function (a) {
       termLists(a).en.forEach(function (term) {
         if (!term) return;
@@ -110,7 +130,6 @@
       });
     });
 
-    // Chinese: longest-match-first alternation (no word boundaries)
     var zhEntries = [];
     ATOMS.forEach(function (a) {
       termLists(a).zh.forEach(function (term) {
@@ -134,15 +153,13 @@
       }
     }
 
-    // Span suppression: sort by start asc, length desc; a shorter term inside an
-    // already-accepted span is not counted again.
     hits.sort(function (a, b) { return a.start - b.start || b.length - a.length; });
     var accepted = [];
     var seenIds = {};
     var lastEnd = -1;
     hits.forEach(function (h) {
-      if (h.start < lastEnd) return;   // overlaps an accepted span
-      if (seenIds[h.id]) return;       // same canonical atom already counted
+      if (h.start < lastEnd) return;
+      if (seenIds[h.id]) return;
       accepted.push(h.atom);
       seenIds[h.id] = true;
       lastEnd = h.end;
@@ -150,7 +167,7 @@
     return accepted;
   }
 
-  /* ---------------- Applicability ---------------- */
+  /* ---------------- applicability ---------------- */
   function applicableSlots(data, mode) {
     var slots = data.slots || [];
     if (mode === 'image') return slots.filter(function (s) { return s.id !== 'camera'; });
@@ -162,20 +179,14 @@
     return [];
   }
 
-  /* ---------------- score & relations helpers (v2) ---------------- */
-  function readScore(a) {
-    return (a.score && typeof a.score === 'object') ? a.score.value : a.score;
-  }
-  function atomById(data, id) {
-    var list = data.atoms || [];
-    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
-    return null;
-  }
-  function relationHardConflict(a, b) {
-    var ra = (a.relations && a.relations.hardConflict) || [];
-    var rb = (b.relations && b.relations.hardConflict) || [];
+  /* ---------------- relations ---------------- */
+  function relationPair(a, b, key) {
+    var ra = (a.relations && a.relations[key]) || [];
+    var rb = (b.relations && b.relations[key]) || [];
     return ra.indexOf(b.id) !== -1 || rb.indexOf(a.id) !== -1;
   }
+  function relationHardConflict(a, b) { return relationPair(a, b, 'hardConflict'); }
+
   function hasFreeTextConflict(atom, lowerText) {
     var words = CONFLICTS[atom.id] || [];
     for (var i = 0; i < words.length; i++) {
@@ -193,17 +204,39 @@
     return false;
   }
 
-  /* ---------------- Analyzer ---------------- */
+  function findPairs(found, key) {
+    var pairs = [];
+    for (var i = 0; i < found.length; i++) {
+      for (var j = i + 1; j < found.length; j++) {
+        var a = found[i], b = found[j];
+        if (relationPair(a, b, key)) pairs.push({ a: a, b: b });
+        else if (key === 'redundant' && ((a.relations && (a.relations.implies || []).indexOf(b.id) !== -1) || (b.relations && (b.relations.implies || []).indexOf(a.id) !== -1))) {
+          pairs.push({ a: a, b: b, implied: true });
+        }
+      }
+    }
+    return pairs;
+  }
+
+  /* ---------------- Analyzer (Control Profile) ---------------- */
   function analyze(data, text, mode) {
     var slots = data.slots || [];
     var bySlot = data.bySlot || {};
     var lower = text.toLowerCase();
-    var found = matchAtoms(data, text);
+    var allFound = matchAtoms(data, text);
+
+    // split by modality: video-only atoms matched in an image prompt are mismatches
+    var found = [];
+    var modalityMismatches = [];
+    allFound.forEach(function (a) {
+      if (atomAppliesToMode(a, mode)) found.push(a);
+      else modalityMismatches.push(a);
+    });
+
     var foundIds = {};
     found.forEach(function (a) { foundIds[a.id] = true; });
 
-    // implied coverage: e.g. rainy-night -> night counts for its slot, but
-    // reliability is only computed over canonical matches (counted once).
+    // implied coverage
     var impliedBySlot = {};
     slots.forEach(function (s) { impliedBySlot[s.id] = []; });
     found.forEach(function (a) {
@@ -220,6 +253,20 @@
     var applicable = applicableSlots(data, mode);
     var notApplicable = notApplicableSlots(data, mode);
 
+    // time slot becomes irrelevant in abstract-space contexts
+    var timeIrrelevant = false;
+    for (var ti = 0; ti < TIME_IRRELEVANT_HINTS.length; ti++) {
+      if (lower.indexOf(TIME_IRRELEVANT_HINTS[ti].toLowerCase()) !== -1) { timeIrrelevant = true; break; }
+    }
+    var extraNotApplicable = [];
+    if (timeIrrelevant) {
+      for (var s = 0; s < slots.length; s++) if (slots[s].id === 'time') extraNotApplicable.push(slots[s]);
+    }
+    var applicable = applicable.filter(function (s) {
+      return extraNotApplicable.map(function (x) { return x.id; }).indexOf(s.id) === -1;
+    });
+    notApplicable = notApplicable.concat(extraNotApplicable);
+
     var perSlot = {};
     slots.forEach(function (s) { perSlot[s.id] = found.filter(function (a) { return a.slot === s.id; }); });
 
@@ -227,15 +274,33 @@
     var missing = applicable.filter(function (s) { return perSlot[s.id].length === 0 && impliedBySlot[s.id].length === 0; });
     var coverage = applicable.length ? covered.length / applicable.length : 0;
 
-    var avg = 0;
-    if (found.length) {
+    // Reliability over canonical ATOMS only (macros excluded, modality-applicable)
+    var canonAtoms = found.filter(function (a) { return a.type !== 'macro'; });
+    var reliability = null;
+    if (canonAtoms.length) {
       var sum = 0;
-      found.forEach(function (a) { sum += readScore(a); });
-      avg = sum / found.length;
+      canonAtoms.forEach(function (a) { sum += readScore(a); });
+      reliability = Math.round(sum / canonAtoms.length);
     }
-    var score = found.length ? Math.round(coverage * (40 + 0.6 * avg)) : 0;
-    var grade = score >= 80 ? 1 : (score >= 60 ? 2 : (score >= 40 ? 3 : 4));
-    var uncertain = found.filter(function (a) { return readScore(a) < 60; });
+
+    // relations among found atoms
+    var hardConflicts = findPairs(found, 'hardConflict');
+    var tensions = findPairs(found, 'softTension');
+    var redundants = findPairs(found, 'redundant');
+
+    var consistency = 100 - hardConflicts.length * HARD_PENALTY - tensions.length * TENSION_PENALTY;
+    if (consistency < 0) consistency = 0;
+
+    var freedom = missing.length;
+    var macroCount = found.filter(function (a) { return a.type === 'macro'; }).length;
+
+    var controlLevel;
+    if (hardConflicts.length > 0) controlLevel = 'conflict';
+    else if (reliability !== null && reliability >= 80 && coverage >= 0.75) controlLevel = 'high';
+    else if (reliability !== null && reliability >= 60 && coverage >= 0.5) controlLevel = 'medium';
+    else controlLevel = 'low';
+
+    var uncertain = found.filter(function (a) { return a.type !== 'macro' && readScore(a) < 60; });
 
     var maybeCount = 0;
     var missingDetail = missing.map(function (s) {
@@ -245,7 +310,9 @@
         if (lower.indexOf(hints[h].toLowerCase()) !== -1) { maybe = true; break; }
       }
       if (maybe) maybeCount++;
-      var suggs = (bySlot[s.id] || []).slice().sort(function (x, y) { return readScore(y) - readScore(x); }).slice(0, 3)
+      var suggs = (bySlot[s.id] || [])
+        .filter(function (x) { return x.type !== 'macro' && atomAppliesToMode(x, mode); })
+        .slice().sort(function (x, y) { return readScore(y) - readScore(x); }).slice(0, 3)
         .map(function (x) {
           var conflict = hasFreeTextConflict(x, lower);
           if (!conflict) {
@@ -260,11 +327,18 @@
 
     return {
       text: text, mode: mode,
-      found: found, perSlot: perSlot, impliedBySlot: impliedBySlot,
+      found: found, allFound: allFound,
+      modalityMismatches: modalityMismatches,
+      perSlot: perSlot, impliedBySlot: impliedBySlot,
       applicable: applicable, notApplicable: notApplicable,
+      timeIrrelevant: timeIrrelevant,
       covered: covered, missing: missing, missingDetail: missingDetail,
       maybeCount: maybeCount,
-      coverage: coverage, avg: avg, score: score, grade: grade, uncertain: uncertain
+      macroCount: macroCount,
+      hardConflicts: hardConflicts, tensions: tensions, redundants: redundants,
+      reliability: reliability, coverage: coverage, consistency: consistency,
+      freedom: freedom, controlLevel: controlLevel,
+      uncertain: uncertain
     };
   }
 
@@ -275,6 +349,13 @@
     var skipped = [];
     var noSuggestion = [];
     var maybeSlots = [];
+    var expansions = [];
+    r.found.forEach(function (a) {
+      var rels = a.relations || {};
+      if (a.type === 'macro' && rels.expandsTo && rels.expandsTo.length) {
+        expansions.push({ macro: a, targets: rels.expandsTo.map(function (id) { return atomById(data, id); }).filter(Boolean) });
+      }
+    });
     r.missingDetail.forEach(function (d) {
       if (d.maybe) { maybeSlots.push(d.slot.id); return; }
       var chosen = null;
@@ -309,6 +390,7 @@
     return {
       en: en, added: added, skipped: skipped,
       noSuggestion: noSuggestion, maybeSlots: maybeSlots,
+      expansions: expansions,
       maybeCount: r.maybeCount,
       longPrefix: !!(added.length && isLong)
     };
@@ -316,11 +398,15 @@
 
   return {
     SUGGESTION_MIN_SCORE: SUGGESTION_MIN_SCORE,
+    HARD_PENALTY: HARD_PENALTY,
+    TENSION_PENALTY: TENSION_PENALTY,
     CONFLICTS: CONFLICTS,
     SLOT_HINTS: SLOT_HINTS,
+    TIME_IRRELEVANT_HINTS: TIME_IRRELEVANT_HINTS,
     matchAtoms: matchAtoms,
     applicableSlots: applicableSlots,
     notApplicableSlots: notApplicableSlots,
+    atomAppliesToMode: atomAppliesToMode,
     analyze: analyze,
     buildOptimized: buildOptimized,
     hasFreeTextConflict: hasFreeTextConflict,
