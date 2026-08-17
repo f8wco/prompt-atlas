@@ -5,8 +5,10 @@ const fs = require('fs');
 const path = require('path');
 
 const base = __dirname;
-const manifest = JSON.parse(fs.readFileSync(path.join(base, 'manifests', 'image-baseline-001.json'), 'utf8'));
-const runId = manifest.runId;
+const args = process.argv.slice(2);
+function argVal(name, fallback) { const i = args.indexOf(name); return i !== -1 && args[i + 1] ? args[i + 1] : fallback; }
+const runId = argVal('--run', 'image-baseline-001');
+const manifest = JSON.parse(fs.readFileSync(path.join(base, 'manifests', runId + '.json'), 'utf8'));
 const file = path.join(base, 'results', 'evaluations-' + runId + '.jsonl');
 
 const lines = fs.readFileSync(file, 'utf8').trim().split('\n').filter(Boolean);
