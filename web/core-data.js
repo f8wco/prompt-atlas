@@ -33,7 +33,12 @@ window.PROMPT_ATLAS = {
                                                                      "doubao-seedream-4-5-251128"
                                                                  ],
                                                       "updatedAt":  "2026-08",
-                                                      "heuristicValue":  92
+                                                      "heuristicValue":  92,
+                                                      "measured":  {
+                                                                       "adherence":  100,
+                                                                       "baseline":  70,
+                                                                       "lift":  31
+                                                                   }
                                                   },
                                         "relations":  {
                                                           "hardConflict":  [
@@ -221,7 +226,12 @@ window.PROMPT_ATLAS = {
                                                                      "doubao-seedream-4-5-251128"
                                                                  ],
                                                       "updatedAt":  "2026-08",
-                                                      "heuristicValue":  72
+                                                      "heuristicValue":  72,
+                                                      "measured":  {
+                                                                       "adherence":  97,
+                                                                       "baseline":  36,
+                                                                       "lift":  62
+                                                                   }
                                                   },
                                         "relations":  {
                                                           "hardConflict":  [
@@ -638,7 +648,12 @@ window.PROMPT_ATLAS = {
                                                                   "doubao-seedream-4-5-251128"
                                                               ],
                                                    "updatedAt":  "2026-08",
-                                                   "heuristicValue":  82
+                                                   "heuristicValue":  82,
+                                                   "measured":  {
+                                                                    "adherence":  100,
+                                                                    "baseline":  0,
+                                                                    "lift":  100
+                                                                }
                                                },
                                      "relations":  {
                                                        "hardConflict":  [
@@ -1252,7 +1267,12 @@ window.PROMPT_ATLAS = {
                                                                   "doubao-seedream-4-5-251128"
                                                               ],
                                                    "updatedAt":  "2026-08",
-                                                   "heuristicValue":  88
+                                                   "heuristicValue":  88,
+                                                   "measured":  {
+                                                                    "adherence":  100,
+                                                                    "baseline":  0,
+                                                                    "lift":  100
+                                                                }
                                                },
                                      "relations":  {
                                                        "hardConflict":  [
@@ -1746,7 +1766,12 @@ window.PROMPT_ATLAS = {
                                                                         "doubao-seedream-4-5-251128"
                                                                     ],
                                                          "updatedAt":  "2026-08",
-                                                         "heuristicValue":  55
+                                                         "heuristicValue":  55,
+                                                         "measured":  {
+                                                                          "adherence":  94,
+                                                                          "baseline":  97,
+                                                                          "lift":  0
+                                                                      }
                                                      },
                                            "relations":  {
                                                              "hardConflict":  [
@@ -1807,7 +1832,12 @@ window.PROMPT_ATLAS = {
                                                                         "doubao-seedream-4-5-251128"
                                                                     ],
                                                          "updatedAt":  "2026-08",
-                                                         "heuristicValue":  80
+                                                         "heuristicValue":  80,
+                                                         "measured":  {
+                                                                          "adherence":  81,
+                                                                          "baseline":  6,
+                                                                          "lift":  75
+                                                                      }
                                                      },
                                            "relations":  {
                                                              "hardConflict":  [
@@ -2812,7 +2842,12 @@ window.PROMPT_ATLAS = {
                                                                  "doubao-seedream-4-5-251128"
                                                              ],
                                                   "updatedAt":  "2026-08",
-                                                  "heuristicValue":  90
+                                                  "heuristicValue":  90,
+                                                  "measured":  {
+                                                                   "adherence":  78,
+                                                                   "baseline":  28,
+                                                                   "lift":  50
+                                                               }
                                               },
                                     "relations":  {
                                                       "hardConflict":  [
@@ -3172,7 +3207,12 @@ window.PROMPT_ATLAS = {
                                                                       "doubao-seedream-4-5-251128"
                                                                   ],
                                                        "updatedAt":  "2026-08",
-                                                       "heuristicValue":  82
+                                                       "heuristicValue":  82,
+                                                       "measured":  {
+                                                                        "adherence":  95,
+                                                                        "baseline":  75,
+                                                                        "lift":  20
+                                                                    }
                                                    },
                                          "relations":  {
                                                            "hardConflict":  [
@@ -3643,7 +3683,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  92
+                                    "heuristicValue":  92,
+                                    "measured":  {
+                                                     "adherence":  100,
+                                                     "baseline":  70,
+                                                     "lift":  31
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -3831,7 +3876,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  72
+                                    "heuristicValue":  72,
+                                    "measured":  {
+                                                     "adherence":  97,
+                                                     "baseline":  36,
+                                                     "lift":  62
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -4531,7 +4581,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  90
+                                    "heuristicValue":  90,
+                                    "measured":  {
+                                                     "adherence":  78,
+                                                     "baseline":  28,
+                                                     "lift":  50
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -4888,7 +4943,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  55
+                                    "heuristicValue":  55,
+                                    "measured":  {
+                                                     "adherence":  94,
+                                                     "baseline":  97,
+                                                     "lift":  0
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -4949,7 +5009,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  80
+                                    "heuristicValue":  80,
+                                    "measured":  {
+                                                     "adherence":  81,
+                                                     "baseline":  6,
+                                                     "lift":  75
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -5488,7 +5553,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  88
+                                    "heuristicValue":  88,
+                                    "measured":  {
+                                                     "adherence":  100,
+                                                     "baseline":  0,
+                                                     "lift":  100
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -5803,7 +5873,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  82
+                                    "heuristicValue":  82,
+                                    "measured":  {
+                                                     "adherence":  100,
+                                                     "baseline":  0,
+                                                     "lift":  100
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -6766,7 +6841,12 @@ window.PROMPT_ATLAS = {
                                                    "doubao-seedream-4-5-251128"
                                                ],
                                     "updatedAt":  "2026-08",
-                                    "heuristicValue":  82
+                                    "heuristicValue":  82,
+                                    "measured":  {
+                                                     "adherence":  95,
+                                                     "baseline":  75,
+                                                     "lift":  20
+                                                 }
                                 },
                       "relations":  {
                                         "hardConflict":  [
