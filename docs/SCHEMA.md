@@ -35,7 +35,8 @@
     "benchmarkVersion": null,    // 实测方法版本，保证历史分数可追溯
     "sampleSize": 0,
     "models": [],
-    "updatedAt": "2026-08"
+    "updatedAt": "2026-08",
+    "measured": { "adherence": 91, "baseline": 43, "lift": 48 }  // 仅 benchmarked：跨模型均值（依从率/基线率/指令增益）
   },
   "relations": {
     "hardConflict": [],          // 同一 scope 下互斥，禁止自动同时选择
