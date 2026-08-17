@@ -1,0 +1,17 @@
+{
+  "name": "prompt-atlas",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Visual Prompt Atlas — a linter + benchmark for visual prompts (9-slot atom dictionary)",
+  "scripts": {
+    "build": "pwsh -File build.ps1",
+    "test": "node tests/run-tests.js",
+    "validate:schema": "node scripts/validate-schema.js",
+    "validate:core": "node scripts/validate-core.js",
+    "validate": "npm run validate:schema && npm run validate:core",
+    "check": "node scripts/check.js"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}
