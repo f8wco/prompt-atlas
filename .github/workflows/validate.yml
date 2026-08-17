@@ -8,6 +8,8 @@ on:
       - 'web/core-data.js'
       - 'web/core-lib.js'
       - 'tests/**'
+      - 'scripts/**'
+      - 'schema/**'
       - '.github/workflows/validate.yml'
   pull_request:
     paths:
@@ -16,6 +18,8 @@ on:
       - 'web/core-data.js'
       - 'web/core-lib.js'
       - 'tests/**'
+      - 'scripts/**'
+      - 'schema/**'
       - '.github/workflows/validate.yml'
   workflow_dispatch:
 
@@ -29,6 +33,9 @@ jobs:
       - name: Rebuild core-data.js from core.json
         shell: pwsh
         run: ./build.ps1
+
+      - name: Validate core schema & references
+        run: node scripts/validate-core.js
 
       - name: Run matcher & optimizer regression tests
         run: node tests/run-tests.js
