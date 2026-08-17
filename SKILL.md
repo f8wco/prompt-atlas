@@ -30,25 +30,27 @@ description: >-
 | 时间 | Time | 什么时刻、什么天气 |
 | 镜头技术 | Lens & Technique | 什么光学质感 |
 
-**确定性分数（Determinism Score，0–100）** —— 每个词条被主流模型**稳定还原**的概率：
-- ≥ 80 高确定性（high）：写了基本就有
-- 60–79 中确定性（mid）：大概率有，偶尔漂移
-- < 60 低确定性（low）：经常「说了白说」，模型随机脑补
+**确定性分数（Determinism Score，0–100）** —— 词条控制力的量化估计：
+- **status = heuristic（当前全部词条）**：编辑经验估计，**不是实测概率**，不得表述为「稳定还原概率 X%」或「跨模型已验证」
+- **status = benchmarked**：经 `docs/BENCHMARK.md` 管道实测，附样本量、模型、置信度（A/B/C）、方法版本
+- 分级：≥ 80 高 · 60–79 中 · < 60 低；低分 = 常「说了白说」，建议替换/补强
 
-核心洞察：**没写的槽位 = 随机脑补的槽位。** The blank slots are where the model improvises.
+核心理念：**未指定的槽位不是错误，是留给模型的自由。** Unspecified slots are creative freedom handed to the model, not mistakes.
 
 ## 2. 数据文件 / Data Files
 
-词库在 `core.json`，字段说明（Fields）：
+词库在 `core.json`（v2 schema，规范见 `docs/SCHEMA.md`），字段说明（Fields）：
 
 | 字段 | 说明 |
 |---|---|
 | `slots[].id / zh / en / desc / descEn` | 9 个槽位定义，中英双语 |
-| `atoms[].id / slot / zh / en / score` | 词条 ID、所属槽位、中英文词、确定性分数 |
-| `atoms[].desc / descEn` | 效果说明（双语） |
-| `atoms[].example` | 英文示例写法 |
+| `atoms[].id / type / slot / modalities` | 词条 ID、类型（atom 原子 / macro 复合词）、主槽位、适用模态（image/video） |
+| `atoms[].zh / en / aliases` | 中英文词 + 别名（只参与匹配，不参与关系图） |
+| `atoms[].score` | 对象：`value` + `status`（heuristic/bemarked）+ confidence/sampleSize/models/benchmarkVersion |
+| `atoms[].relations` | 关系图：hardConflict / softTension / redundant / requires / implies / expandsTo |
+| `atoms[].desc / descEn / example` | 效果说明（双语）+ 英文示例 |
 
-**使用规则**：只使用词库中真实存在的词条。如果需要表达词库没有的概念，明确标注「⚠️ 未收录（自拟）」，并建议按扩充规范提交。
+**使用规则**：只使用词库中真实存在的词条。词库没有的概念标注「⚠️ 未收录（自拟）」，并按 Workflow C 规范提交。
 
 ## 3. 工作流 A：拼装配方卡 / Workflow A — Assemble a Recipe
 
@@ -85,29 +87,38 @@ EN: a young woman walking in the rain in a cyberpunk city street, neon glow,
 **触发**：用户贴出一条已有提示词，想知道它哪里缺、靠不靠谱、怎么改。
 
 **步骤 / Steps**：
-1. 逐槽扫描：把提示词与 `core.json` 词条匹配（中英文均可识别）
-2. 输出「9 槽位缺漏报告」：
-   - ✅ 已覆盖槽位：列出识别到的词条 + 各自确定性分数
-   - ❌ 缺失槽位：每槽给出 2–3 个高确定性建议词，**先做冲突检测**（见下方规则），与原文冲突的建议词禁用并标红
-   - ⚠️ 疑似已描述槽位：原文含相关自由文本描述（如「黑金」「运镜」「光影」）但未用收录词条时，标注「疑似已描述，请人工确认」，不盲目补词
-   - ⚠️ 不确定源：所有确定性 < 60 的词条，逐个给出替换/补强建议
-3. 冲突检测规则（内置冲突表）：补词前先扫原文，命中冲突词（如 黑金↔青橙、一镜到底↔航拍、写实↔动漫、黑白↔高饱和、8K↔胶片颗粒）的条目不得推荐
-4. 计算得分：
+1. 先判断模态与意图（image/video）：**静态图片默认运镜槽位 = N/A**；适用槽位之外的留白是 Freedom 不是错误
+2. 逐槽扫描（Matcher 2.0）：最长词优先 + span 去重（extreme close-up 不再同时命中 close-up）+ 别名归一（close up/closeup）+ 英文边界；蕴含关系计覆盖不重复计分（rainy-night ⟹ night）
+3. 输出「9 槽位报告」，槽位状态为以下之一：
+   - ✅ SPECIFIED 已指定（列出词条 + 分数）
+   - ⚠️ FREE_TEXT 疑似已描述（原文含相关自由文本，标注人工确认）
+   - ◻️ UNSPECIFIED 未指定（不是错误，是留给模型的决定）
+   - ➖ NOT_APPLICABLE 不适用（如静态图片的运镜）
+   - 🚫 CONFLICT 冲突（relations.hardConflict 或自由文本冲突提示）
+   - ⚠️ 不确定源：所有 heuristic 低分（<60）词条，逐个给出替换/补强建议；Macro（复合词）建议「拆解并增强」
+4. 计算得分（v0.2 公式，分母 = 适用槽位数）：
    ```
-   覆盖率 = 已覆盖槽位数 / 9
+   覆盖率 = 已覆盖槽位数 / 适用槽位数
    确定性得分 = round(覆盖率 × (40 + 0.6 × 已识别词条平均分))
    ```
-   分级：≥80 高确定性 · 60–79 中 · 40–59 低 · <40 危险区；如存在「疑似已描述」槽位，注明实际确定性可能高于得分
-5. 输出「优化版提示词」：原文保留 + 仅追加通过冲突检测的词条，附逐槽结构化解读（✅ 原文含 / ➕ 新增 / ⛔ 跳过冲突 / ⚠️ 疑似已描述），而非散装堆到末尾
+   分级：≥80 高 · 60–79 中 · 40–59 低 · <40 大量留白；如存在 FREE_TEXT 槽位，注明实际确定性可能高于得分
+5. 输出「优化版提示词」（Optimizer 2.0）：
+   - **每槽最多新增 1 个词条**；候选必须与原文 + 已选词条**两两冲突检查**（relations.hardConflict）
+   - 无合适候选时输出 **NO_SUGGESTION（保留自由）**——「不改」是正常结果
+   - 长提示词新增词放开头作全局前缀；附逐槽结构化解读（✅ 原文含 / ➕ 新增 / ⛔ 跳过冲突 / ◻️ 无建议 / ⚠️ 疑似已描述）
 
 ## 5. 工作流 C：词库扩充 / Workflow C — Extend the Dictionary
 
 **触发**：用户想新增词条、词条缺英文/描述、词条分数存疑。
 
-**规范 / Rules**：
-- 必填字段：`id`（kebab-case）、`slot`（必须属于 9 槽位之一）、`zh`、`en`、`score`、`desc`、`descEn`、`example`
-- **评分标准（打分依据）**：高确定性（80+）= 任何主流模型都能稳定还原的物理事实（golden hour、close-up、time-lapse）；中确定性（60–79）= 常见风格/技法，模型间有差异（film grain、handheld）；低确定性（<60）= 抽象、复合、易漂移的概念（cinematic、rule of thirds、long take）
-- 查重：先搜索 `zh`/`en`，避免同义重复；同义词应合并
+**规范 / Rules**（v2 schema，CI 强制校验）：
+- 必填字段：`id`（kebab-case 唯一）、`type`（atom/macro）、`slot`（必须属于 9 槽位之一）、`modalities`、`zh`、`en`、`score`（value 0–100 + status）、`relations`、`desc`、`descEn`、`example`
+- **Macro 判定测试**：能否用一次 A/B 分离出独立效果？不能则 type=macro，且必须填 `expandsTo` 或 `implies`
+- **评分标准**：新词条 score.status 一律 `heuristic`，注明经验依据；只有通过 `docs/BENCHMARK.md` 管道才可标 `benchmarked`
+- 关系声明：`hardConflict` 必须双向对称；`implies`（如 rainy-night ⟹ night）用于覆盖映射；`softTension` 用于「组合困难但非互斥」
+- 别名：常见差异（close up/closeup、time lapse/timelapse）进 `aliases` 归一，不造新词条；同语言别名不得与现有词条冲突
+- 查重：先搜索 `zh`/`en`/`aliases`，同义词应合并
+- 提交前本地跑：`node scripts/validate-core.js` + `pwsh -File build.ps1` + `node tests/run-tests.js`（三者 CI 都会强制跑）
 - 扩充来源见 `docs/LAUNCH.md` 的 4 条管道（批量自生成 / CC0 素材匹配 / 悬赏认领 / 一词成名周赛）
 
 ## 6. 边界与红线 / Boundaries
