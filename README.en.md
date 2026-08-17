@@ -73,7 +73,13 @@ prompt-atlas/
 ├── README.md / .en.md    # Overview (中文 / English)
 ├── core.json             # Dictionary source of truth (bilingual fields)
 ├── build.ps1             # Sync script: core.json → web/core-data.js
+├── schema/core.schema.json  # JSON Schema contract (enforced by ajv in CI)
+├── scripts/                 # validate-schema / validate-core / check.js CLI / migrations
+├── tests/                   # Matcher & Optimizer regression fixtures
+├── benchmark/               # Reproducible benchmark pipeline (manifests / run / eval / aggregate / results)
 ├── docs/
+│   ├── SCHEMA.md         # Data model spec
+│   ├── BENCHMARK.md      # Reproducible benchmark protocol + first-run record
 │   ├── ECONOMY.md        # Points / badges / bounty incentive system
 │   └── LAUNCH.md         # Cold-start plan + 4 collection pipelines
 ├── web/                  # Web demo (pure static, zh/en toggle)
@@ -92,21 +98,25 @@ A complete prompt = Subject/Action/Scene (free text) + 9 slots (dictionary terms
 
 ## 📊 Determinism Score / 确定性分数
 
-**Honest disclosure: all 60 terms are currently `heuristic` (editorial estimates), not measured probabilities.** Scores are relative ordering from editorial judgment; probability-style claims apply only to `benchmarked` terms published through the pipeline in `docs/BENCHMARK.md`.
+**Honest disclosure: 8 of 60 terms are now `benchmarked` (Confidence C); the other 52 remain `heuristic` editorial estimates.** First run `image-baseline-001`: 2 models × 6 scenes × Control/Treatment A/B, 12 paired observations per term (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
 
 | Score | Meaning | Examples |
 |---|---|---|
-| ≥ 80 high | Physically strong controls per editorial judgment | golden hour (92), close-up (90), time-lapse (88) |
-| 60–79 mid | Common styles/techniques; varies between models | film grain (75), handheld (65) |
-| < 60 low | Abstract, compound, drift-prone concepts | cinematic (55, now a Macro), rule of thirds (55) |
+| ≥ 80 high | Strong physical / style controls | monochrome (**100, benchmarked C**), anime style (**100, benchmarked C**), golden hour (**80, benchmarked C**) |
+| 60–79 mid | Common styles/techniques; varies between models | rule of thirds (**63, benchmarked C**), film grain (75, estimate) |
+| < 60 low | Abstract, compound, drift-prone concepts | cinematic (55, Macro, estimate) |
+
+Notable corrections from measurement: golden hour 92→80 (was overestimated), volumetric light 72→80 (underestimated), anime style 82→100 (fully controllable).
 
 ## 🗺️ Roadmap / 路线图
 
 - [x] v0.1 Core dictionary (60 terms) + Checker + Recipe Card + Library
 - [x] v0.2 Checker upgrade: conflict detection + likely-described hints + optimized version (≤1 term/slot + NO_SUGGESTION)
-- [x] v0.3a Schema v2: Atom/Macro + relations + score.status + JSON Schema + 84 regression fixtures + full CI
-- [ ] v0.3b Benchmark MVP: 8-image 192-sample A/B + 4-video smoke (protocol ready, awaiting API resources — see `docs/BENCHMARK.md`)
-- [ ] Control Profile 4-dimension report (Reliability/Coverage/Consistency/Freedom)
+- [x] v0.3a Schema v2: Atom/Macro + relations + score.status + JSON Schema + regression fixtures + full CI
+- [x] Control Profile 4-dimension report (Reliability/Coverage/Consistency/Freedom; single score retired)
+- [x] v0.3b (image) first benchmark run: 8 terms × 2 models × 6 scenes A/B = 192 images, all upgraded to Confidence C (`benchmark/results/summary-image-baseline-001.json`)
+- [ ] v0.3b (video) 4-term smoke: protocol ready, awaiting video API resources
+- [ ] Benchmark scale-up: Confidence B (3 seeds → 36 paired obs/term) and cover the remaining 52 terms
 - [ ] Grow to 200 terms (4 pipelines — see `docs/LAUNCH.md`)
 - [ ] Points system & bounty board (needs a backend; interfaces in `docs/ECONOMY.md`)
 
