@@ -99,15 +99,15 @@ A complete prompt = Subject/Action/Scene (free text) + 9 slots (dictionary terms
 
 ## 📊 Determinism Score / 确定性分数
 
-**Honest disclosure: 8 of 60 terms are now `benchmarked` (Confidence B); the other 52 remain `heuristic` editorial estimates.** Two runs (`image-baseline-001/002`): 2 models × 6 scenes × 3 seeds × Control/Treatment A/B, 36 paired observations per term (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
+**Honest disclosure: 8 of 60 terms are now `benchmarked` (Confidence B); the other 52 remain `heuristic` editorial estimates.** Three runs (`image-baseline-001/002/003`): **3 independent model families** (Seedream 4.0 / Seedream 4.5 / Zhipu CogView-4) × 6 scenes × 3 seeds × Control/Treatment A/B, 54 paired observations per term (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
 
 | Score | Meaning | Examples |
 |---|---|---|
-| ≥ 80 high | Strong physical / style controls | monochrome (**100, B**), anime style (**100, B**), volumetric light (**86, B**) |
-| 60–79 mid | Common styles/techniques; varies between models | symmetry (**78**), golden hour (**79**), close-up (**67**), rule of thirds (**66, B**) |
-| < 60 low | Abstract, compound, drift-prone concepts | cinematic (55, Macro, estimate) |
+| ≥ 80 high | Strong physical / style controls | anime style (**100, perfect on all 3 families**), monochrome (**82, B**) |
+| 60–79 mid | Common styles/techniques; varies between models | golden hour (**79**), shallow dof (**66**), symmetry (**65**), volumetric light (**64**), close-up (**61, B**) |
+| < 60 low | Abstract, compound, drift-prone concepts | rule of thirds (**57, B**), cinematic (55, Macro, estimate) |
 
-Going from 12 to 36 paired observations pulled two C-grade scores back to earth: close-up 90→**67**, symmetry 80→**78** (seed variance is real); volumetric light rose to **86**. Lesson: **with small samples, even a "measurement" can be luck**.
+Two lessons: **with small samples, even a "measurement" can be luck** (12→36 pairs pulled close-up from 80 to 67); **two generations of one vendor ≠ independent evidence** (adding the third family moved monochrome 100→82 and volumetric light 86→64 — they score only 61/38 on CogView-4. Cross-family variance dwarfs seed variance).
 
 ## 🗺️ Roadmap / 路线图
 
@@ -115,9 +115,9 @@ Going from 12 to 36 paired observations pulled two C-grade scores back to earth:
 - [x] v0.2 Checker upgrade: conflict detection + likely-described hints + optimized version (≤1 term/slot + NO_SUGGESTION)
 - [x] v0.3a Schema v2: Atom/Macro + relations + score.status + JSON Schema + regression fixtures + full CI
 - [x] Control Profile 4-dimension report (Reliability/Coverage/Consistency/Freedom; single score retired)
-- [x] v0.3b (image) benchmark: 8 terms × 2 models × 6 scenes × 3 seeds = 576 A/B images, all at Confidence B (`benchmark/results/summary-*.json`)
+- [x] v0.3b (image) benchmark: **3 model families** × 6 scenes × 3 seeds = 864 A/B images, 8 terms at Confidence B (`benchmark/results/summary-*.json`)
 - [ ] v0.3b (video) 4-term smoke: protocol ready, awaiting video API resources
-- [ ] Benchmark scale-up: cover the remaining 52 terms; Confidence A requires ≥3 models (see `docs/BENCHMARK.md`)
+- [ ] Benchmark scale-up: cover the remaining 52 terms; Confidence A requires 72 paired obs/term (3 families × 4 seeds — see `docs/BENCHMARK.md`)
 - [ ] Grow to 200 terms (4 pipelines — see `docs/LAUNCH.md`)
 - [ ] Points system & bounty board (needs a backend; interfaces in `docs/ECONOMY.md`)
 
