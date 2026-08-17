@@ -1,7 +1,22 @@
 # BENCHMARK · 可复现实测协议 / Reproducible Benchmark Protocol
 
-> **当前状态：协议就绪，尚未执行。** 执行需要真实生图/生视频 API 资源与预算（见第 5 节）。
-> 本文件是 v0.3 的 Week 3 交付物：跑通后，词条分数才允许从 `heuristic` 升级为 `benchmarked`。
+> **状态（2026-08-17）：图像首轮已执行并完成聚合。** runId `image-baseline-001`：2 模型（doubao-seedream-4-0-250828 / doubao-seedream-4-5-251128）× 6 场景 × 8 词条 × Control/Treatment = 192 张（2048×2048，seed=1）。
+> 评测 = 豆包 VLM YES/NO adherence + 119 张复评 + 4 处两轮矛盾的人工裁决（逐张核对图片，注记见 evaluations 文件的 `evaluator.auditResolved` 字段）。
+> 结果：8 词条全部升级 `benchmarked`（Confidence C，每词 12 对观测），汇总见 `benchmark/results/summary-image-baseline-001.json`。
+> 与 §4.1 规划的差异：模型 3→2、场景 4→6（维持每词 12 对观测的 C 门槛）；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
+
+首轮实测结果（heuristic 估计 → benchmarked 实测）：
+
+| 词条 | heuristic | benchmarked（C） |
+|---|---:|---:|
+| monochrome 黑白 | 88 | **100** |
+| anime style 动漫风格 | 82 | **100** |
+| symmetrical composition 对称构图 | 80 | **90** |
+| golden hour 黄金时刻 | 92 | **80** |
+| volumetric light 体积光 | 72 | **80** |
+| close-up 特写 | 90 | **80** |
+| shallow depth of field 浅景深 | 82 | **77** |
+| rule of thirds 三分法 | 55 | **63** |
 
 ## 1. 测什么 / What we measure
 
