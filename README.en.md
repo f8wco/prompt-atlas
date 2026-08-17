@@ -36,7 +36,7 @@ Other prompt libraries are collections. This project is a **methodology + dictio
 
 | Feature | Description |
 |---|---|
-| 🔍 **Prompt Checker** | Paste a prompt → slot-by-slot scan → coverage report + determinism score + uncertain-source warnings + shareable report |
+| 🔍 **Prompt Checker** | Paste a prompt → slot-by-slot scan → coverage report + determinism score + **conflict detection** (suggestions contradicting your text are auto-disabled) + **one-click optimized version** + shareable report |
 | 🧪 **Visual Recipe Card** | Pick terms across 9 slots → live card preview → one-click copy of EN/中文 prompts |
 | 📚 **Atom Dictionary** | 60 terms × 9 slots, bilingual (zh/en), with scores, effect notes and examples |
 
