@@ -18,14 +18,15 @@ if (!API_KEY) {
   process.exit(2);
 }
 
-const manifestPath = path.join(__dirname, 'manifests', 'image-baseline-001.json');
-const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-
 const args = process.argv.slice(2);
 function argVal(name, fallback) {
   const i = args.indexOf(name);
   return i !== -1 && args[i + 1] ? args[i + 1] : fallback;
 }
+const runIdArg = argVal('--run', 'image-baseline-001');
+const manifestPath = path.join(__dirname, 'manifests', runIdArg + '.json');
+const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+const seeds = manifest.seeds && manifest.seeds.length ? manifest.seeds : [1];
 const model = argVal('--model', null);
 const limit = parseInt(argVal('--limit', '999999'), 10);
 
@@ -92,18 +93,21 @@ async function main() {
     const atom = { en: atomId };
     manifest.scenes.forEach(function (scene) {
       manifest.conditions.forEach(function (cond) {
-        const prompt = cond === 'treatment'
-          ? scene.prompt + ', ' + atom.en
-          : scene.prompt;
-        tasks.push({ atomId: atomId, scene: scene, cond: cond, prompt: prompt });
+        seeds.forEach(function (seed) {
+          const prompt = cond === 'treatment'
+            ? scene.prompt + ', ' + atom.en
+            : scene.prompt;
+          tasks.push({ atomId: atomId, scene: scene, cond: cond, seed: seed, prompt: prompt });
+        });
       });
     });
   });
-  console.log('model: ' + model + ' | tasks: ' + tasks.length + ' (limit ' + limit + ')');
+  console.log('model: ' + model + ' | seeds: ' + seeds.join(',') + ' | tasks: ' + tasks.length + ' (limit ' + limit + ')');
   let done = 0, skipped = 0, failed = 0;
 
   for (const t of tasks.slice(0, limit)) {
-    const id = [model.split('-').pop(), t.atomId.replace(/[^a-z0-9]+/g, '-'), t.scene.id, t.cond].join('__');
+    const seedTag = t.seed > 1 ? '__s' + t.seed : '';
+    const id = [model.split('-').pop(), t.atomId.replace(/[^a-z0-9]+/g, '-'), t.scene.id, t.cond].join('__') + seedTag;
     const imgFile = path.join(imgDir, id + '.jpg');
     const recPath = id + '.jpg';
     if (fs.existsSync(imgFile) && fs.statSync(imgFile).size > 10000) {
@@ -140,7 +144,7 @@ async function main() {
         model: model,
         sceneTemplate: t.scene.id,
         condition: t.cond,
-        seed: 1,
+        seed: t.seed,
         size: manifest.size,
         prompt: t.prompt,
         imageFile: recPath,
