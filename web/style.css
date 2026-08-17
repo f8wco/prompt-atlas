@@ -249,6 +249,16 @@ textarea:focus, input:focus { outline: none; border-color: var(--accent); box-sh
   padding: 14px 16px;
 }
 .opt-title { font-weight: 700; color: var(--accent-2); font-size: 14px; margin-bottom: 8px; }
+.opt-complete {
+  font-weight: 700;
+  color: var(--ok);
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  margin-bottom: 10px;
+}
 .opt-en {
   background: var(--bg-soft);
   border-radius: 8px;
