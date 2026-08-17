@@ -14,6 +14,7 @@
   <p align="center">
     <img src="https://img.shields.io/badge/Skill-Agent%20Skill-7c5cff" alt="Agent Skill">
     <img src="https://img.shields.io/badge/Atoms-60-fb923c" alt="60 atoms">
+    <img src="https://img.shields.io/badge/Benchmark-8%20benchmarked%20(C)-16a34a" alt="8 atoms benchmarked">
     <img src="https://img.shields.io/badge/Slots-9-22d3ee" alt="9 slots">
     <img src="https://img.shields.io/badge/Language-中英双语-d74a3a" alt="bilingual">
     <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT">
