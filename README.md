@@ -77,12 +77,18 @@ prompt-atlas/
 ├── schema/
 │   └── core.schema.json  # JSON Schema 契约
 ├── scripts/
-│   ├── validate-core.js  # 数据校验（schema/引用/别名/关系）
-│   └── migrate-v2.js     # v1→v2 一次性迁移脚本（审计留档）
+│   ├── validate-schema.js # JSON Schema 结构校验（ajv，CI 强制）
+│   ├── validate-core.js   # 语义校验（引用/别名/关系/对称性）
+│   ├── check.js           # CLI：命令行体检（Agent 工作流 B 的确定性入口）
+│   └── migrate-v2.js 等   # 一次性迁移脚本（审计留档）
 ├── tests/
 │   ├── run-tests.js      # 回归测试运行器（Matcher/Optimizer fixtures）
 │   ├── matcher.fixtures.json
 │   └── optimizer.fixtures.json
+├── benchmark/            # Benchmark 管道（可复现实测）
+│   ├── manifests/        # 运行清单（模型/场景/seed/评测问题）
+│   ├── run-image-baseline.js · eval-vlm.js · aggregate.js
+│   └── results/          # 原始观测 + VLM 判定 + summary-*.json
 ├── docs/
 │   ├── SCHEMA.md         # 数据模型规范
 │   ├── MIGRATION-v2.md   # 迁移记录
@@ -106,21 +112,25 @@ prompt-atlas/
 
 ## 📊 确定性分数 / Determinism Score
 
-**诚实声明：当前 60 个词条全部为 `heuristic`（经验估计），不是实测概率。** 分数来自编辑经验，用于相对排序；「被模型稳定还原的概率」类表述仅适用于 `benchmarked` 状态（通过 `docs/BENCHMARK.md` 管道实测后发布）。
+**诚实声明：60 个词条中 8 个已实测（`benchmarked`，Confidence C），其余 52 个为 `heuristic`（经验估计）。** 首轮实测 `image-baseline-001`：2 模型 × 6 场景 × Control/Treatment A/B，每词 12 对观测（协议与原始数据见 `docs/BENCHMARK.md`、`benchmark/results/`）。
 
 | 分数 | 含义 | 例子 |
 |---|---|---|
-| ≥ 80 高 | 编辑判断为强控制的物理事实 | golden hour 黄金时刻（92）、close-up 特写（90）、time-lapse 延时（88） |
-| 60–79 中 | 常见风格/技法，模型间有差异 | film grain 胶片颗粒（75）、handheld 手持（65） |
-| < 60 低 | 抽象、复合、易漂移的概念 | cinematic 电影感（55，已标为 Macro 复合词）、rule of thirds 三分法（55） |
+| ≥ 80 高 | 强控制的物理事实/风格开关 | monochrome 黑白（**100，实测 C**）、anime style 动漫（**100，实测 C**）、golden hour 黄金时刻（**80，实测 C**） |
+| 60–79 中 | 常见风格/技法，模型间有差异 | rule of thirds 三分法（**63，实测 C**）、film grain 胶片颗粒（75，估计） |
+| < 60 低 | 抽象、复合、易漂移的概念 | cinematic 电影感（55，Macro 复合词，估计） |
+
+实测对估计的代表性修正：`golden hour` 92→80（原高估）、`volumetric light` 72→80（原低估）、`anime style` 82→100（完全可控）。
 
 ## 🗺️ 路线图 / Roadmap
 
 - [x] v0.1 核心词库 60 词条 + 体检仪 + 配方卡 + 词库浏览
 - [x] v0.2 Checker 升级：冲突检测 + 疑似已描述 + 一键优化版（每槽最多 1 词 + NO_SUGGESTION）
-- [x] v0.3a Schema v2：Atom/Macro + 关系图 + score.status + JSON Schema + 84 项回归测试 + CI 全量校验
-- [ ] v0.3b Benchmark MVP：8 图 192 样本 A/B + 4 视频 smoke（协议已就绪，待 API 资源，见 `docs/BENCHMARK.md`）
-- [ ] Control Profile 四维报告（Reliability/Coverage/Consistency/Freedom 分离）
+- [x] v0.3a Schema v2：Atom/Macro + 关系图 + score.status + JSON Schema + 回归测试 + CI 全量校验
+- [x] Control Profile 四维报告（Reliability/Coverage/Consistency/Freedom 分离，废单一总分）
+- [x] v0.3b（图像）Benchmark 首轮实测：8 词条 × 2 模型 × 6 场景 A/B = 192 张，全部升 Confidence C（`benchmark/results/summary-image-baseline-001.json`）
+- [ ] v0.3b（视频）4 词条 smoke：协议已就绪，待视频 API 资源
+- [ ] Benchmark 扩容：升 Confidence B（3 seeds → 36 对观测/词条）并覆盖其余 52 词条
 - [ ] 图库扩充至 200 词条（4 管道，见 `docs/LAUNCH.md`）
 - [ ] 积分系统与悬赏榜（需要后端，接口已在 `docs/ECONOMY.md` 定义）
 
