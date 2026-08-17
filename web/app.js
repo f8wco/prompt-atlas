@@ -115,6 +115,7 @@
       'lib-sub-prefix': '共',
       'lib-sub-mid': '个原子词条 · 9 大槽位 · 确定性分数',
       'lib-legend': '≥80 高 · 60–79 中 · <60 低',
+      'atom-measured': '依从 {a}% · 基线 {b}% · 增益 +{l}pp',
       'lib-search-ph': '搜索词条（中/英文）',
       'lib-all': '全部',
       'lib-no-result': '没有匹配的词条',
@@ -221,6 +222,7 @@
       'lib-sub-prefix': 'Total:',
       'lib-sub-mid': 'atoms · 9 slots · determinism score',
       'lib-legend': '≥80 high · 60–79 mid · <60 low',
+      'atom-measured': 'Adherence {a}% · Baseline {b}% · Lift +{l}pp',
       'lib-search-ph': 'Search terms (EN/中文)',
       'lib-all': 'All',
       'lib-no-result': 'No matching terms',
@@ -741,11 +743,19 @@
         }).join('、');
         expandHtml = '<div class="atom-meta">' + t('macro-expands') + '：' + names + '</div>';
       }
+      var measuredHtml = '';
+      if (a.score && a.score.status === 'benchmarked' && a.score.measured) {
+        var mm = a.score.measured;
+        measuredHtml = '<div class="atom-measured">' +
+          t('atom-measured').replace('{a}', mm.adherence).replace('{b}', mm.baseline).replace('{l}', mm.lift) +
+          '</div>';
+      }
       card.innerHTML =
         '<div class="atom-head"><span class="atom-zh">' + a.zh + meta + '</span>' + scoreBadgeHtml(a) + '</div>' +
         '<div class="atom-en">' + a.en + '</div>' +
         '<div class="atom-desc">' + term({ zh: a.desc, en: a.descEn }) + '</div>' +
         expandHtml +
+        measuredHtml +
         '<div class="atom-example">' + a.example + '</div>';
       grid.appendChild(card);
     });
