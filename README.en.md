@@ -62,8 +62,7 @@ Double-click `web/index.html` — no server needed. Includes a **🌐 中/EN lan
 
 ### Web demo (online)
 
-GitHub repo → Settings → Pages → Source: `main` branch, folder `/web` → Save.
-Visit `https://f8wco.github.io/prompt-atlas/` a few minutes later.
+The live demo is deployed automatically by GitHub Actions (`.github/workflows/deploy-pages.yml`). In repo Settings → Pages, set the Source to **GitHub Actions**; every `web/` update then ships automatically. Visit <https://f8wco.github.io/prompt-atlas/>.
 
 ## 📁 Structure / 项目结构
 
