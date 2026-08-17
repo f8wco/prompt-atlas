@@ -23,15 +23,17 @@ window.PROMPT_ATLAS = {
                                                                ]
                                                     },
                                         "score":  {
-                                                      "value":  92,
-                                                      "status":  "heuristic",
-                                                      "confidence":  null,
-                                                      "benchmarkVersion":  null,
-                                                      "sampleSize":  0,
+                                                      "value":  80,
+                                                      "status":  "benchmarked",
+                                                      "confidence":  "C",
+                                                      "benchmarkVersion":  "0.1",
+                                                      "sampleSize":  24,
                                                       "models":  [
-
+                                                                     "doubao-seedream-4-0-250828",
+                                                                     "doubao-seedream-4-5-251128"
                                                                  ],
-                                                      "updatedAt":  "2026-08"
+                                                      "updatedAt":  "2026-08",
+                                                      "heuristicValue":  92
                                                   },
                                         "relations":  {
                                                           "hardConflict":  [
@@ -209,15 +211,17 @@ window.PROMPT_ATLAS = {
                                                                ]
                                                     },
                                         "score":  {
-                                                      "value":  72,
-                                                      "status":  "heuristic",
-                                                      "confidence":  null,
-                                                      "benchmarkVersion":  null,
-                                                      "sampleSize":  0,
+                                                      "value":  80,
+                                                      "status":  "benchmarked",
+                                                      "confidence":  "C",
+                                                      "benchmarkVersion":  "0.1",
+                                                      "sampleSize":  24,
                                                       "models":  [
-
+                                                                     "doubao-seedream-4-0-250828",
+                                                                     "doubao-seedream-4-5-251128"
                                                                  ],
-                                                      "updatedAt":  "2026-08"
+                                                      "updatedAt":  "2026-08",
+                                                      "heuristicValue":  72
                                                   },
                                         "relations":  {
                                                           "hardConflict":  [
@@ -624,15 +628,17 @@ window.PROMPT_ATLAS = {
                                                             ]
                                                  },
                                      "score":  {
-                                                   "value":  82,
-                                                   "status":  "heuristic",
-                                                   "confidence":  null,
-                                                   "benchmarkVersion":  null,
-                                                   "sampleSize":  0,
+                                                   "value":  100,
+                                                   "status":  "benchmarked",
+                                                   "confidence":  "C",
+                                                   "benchmarkVersion":  "0.1",
+                                                   "sampleSize":  24,
                                                    "models":  [
-
+                                                                  "doubao-seedream-4-0-250828",
+                                                                  "doubao-seedream-4-5-251128"
                                                               ],
-                                                   "updatedAt":  "2026-08"
+                                                   "updatedAt":  "2026-08",
+                                                   "heuristicValue":  82
                                                },
                                      "relations":  {
                                                        "hardConflict":  [
@@ -1236,15 +1242,17 @@ window.PROMPT_ATLAS = {
                                                             ]
                                                  },
                                      "score":  {
-                                                   "value":  88,
-                                                   "status":  "heuristic",
-                                                   "confidence":  null,
-                                                   "benchmarkVersion":  null,
-                                                   "sampleSize":  0,
+                                                   "value":  100,
+                                                   "status":  "benchmarked",
+                                                   "confidence":  "C",
+                                                   "benchmarkVersion":  "0.1",
+                                                   "sampleSize":  24,
                                                    "models":  [
-
+                                                                  "doubao-seedream-4-0-250828",
+                                                                  "doubao-seedream-4-5-251128"
                                                               ],
-                                                   "updatedAt":  "2026-08"
+                                                   "updatedAt":  "2026-08",
+                                                   "heuristicValue":  88
                                                },
                                      "relations":  {
                                                        "hardConflict":  [
@@ -1728,15 +1736,17 @@ window.PROMPT_ATLAS = {
                                                                   ]
                                                        },
                                            "score":  {
-                                                         "value":  55,
-                                                         "status":  "heuristic",
-                                                         "confidence":  null,
-                                                         "benchmarkVersion":  null,
-                                                         "sampleSize":  0,
+                                                         "value":  63,
+                                                         "status":  "benchmarked",
+                                                         "confidence":  "C",
+                                                         "benchmarkVersion":  "0.1",
+                                                         "sampleSize":  24,
                                                          "models":  [
-
+                                                                        "doubao-seedream-4-0-250828",
+                                                                        "doubao-seedream-4-5-251128"
                                                                     ],
-                                                         "updatedAt":  "2026-08"
+                                                         "updatedAt":  "2026-08",
+                                                         "heuristicValue":  55
                                                      },
                                            "relations":  {
                                                              "hardConflict":  [
@@ -1787,15 +1797,17 @@ window.PROMPT_ATLAS = {
                                                                   ]
                                                        },
                                            "score":  {
-                                                         "value":  80,
-                                                         "status":  "heuristic",
-                                                         "confidence":  null,
-                                                         "benchmarkVersion":  null,
-                                                         "sampleSize":  0,
+                                                         "value":  90,
+                                                         "status":  "benchmarked",
+                                                         "confidence":  "C",
+                                                         "benchmarkVersion":  "0.1",
+                                                         "sampleSize":  24,
                                                          "models":  [
-
+                                                                        "doubao-seedream-4-0-250828",
+                                                                        "doubao-seedream-4-5-251128"
                                                                     ],
-                                                         "updatedAt":  "2026-08"
+                                                         "updatedAt":  "2026-08",
+                                                         "heuristicValue":  80
                                                      },
                                            "relations":  {
                                                              "hardConflict":  [
@@ -2790,15 +2802,17 @@ window.PROMPT_ATLAS = {
                                                            ]
                                                 },
                                     "score":  {
-                                                  "value":  90,
-                                                  "status":  "heuristic",
-                                                  "confidence":  null,
-                                                  "benchmarkVersion":  null,
-                                                  "sampleSize":  0,
+                                                  "value":  80,
+                                                  "status":  "benchmarked",
+                                                  "confidence":  "C",
+                                                  "benchmarkVersion":  "0.1",
+                                                  "sampleSize":  24,
                                                   "models":  [
-
+                                                                 "doubao-seedream-4-0-250828",
+                                                                 "doubao-seedream-4-5-251128"
                                                              ],
-                                                  "updatedAt":  "2026-08"
+                                                  "updatedAt":  "2026-08",
+                                                  "heuristicValue":  90
                                               },
                                     "relations":  {
                                                       "hardConflict":  [
@@ -3148,15 +3162,17 @@ window.PROMPT_ATLAS = {
                                                                 ]
                                                      },
                                          "score":  {
-                                                       "value":  82,
-                                                       "status":  "heuristic",
-                                                       "confidence":  null,
-                                                       "benchmarkVersion":  null,
-                                                       "sampleSize":  0,
+                                                       "value":  77,
+                                                       "status":  "benchmarked",
+                                                       "confidence":  "C",
+                                                       "benchmarkVersion":  "0.1",
+                                                       "sampleSize":  24,
                                                        "models":  [
-
+                                                                      "doubao-seedream-4-0-250828",
+                                                                      "doubao-seedream-4-5-251128"
                                                                   ],
-                                                       "updatedAt":  "2026-08"
+                                                       "updatedAt":  "2026-08",
+                                                       "heuristicValue":  82
                                                    },
                                          "relations":  {
                                                            "hardConflict":  [
@@ -3617,15 +3633,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  92,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  80,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  92
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -3803,15 +3821,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  72,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  80,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  72
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -4501,15 +4521,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  90,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  80,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  90
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -4856,15 +4878,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  55,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  63,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  55
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -4915,15 +4939,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  80,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  90,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  80
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -5452,15 +5478,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  88,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  100,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  88
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -5765,15 +5793,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  82,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  100,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  82
                                 },
                       "relations":  {
                                         "hardConflict":  [
@@ -6726,15 +6756,17 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  82,
-                                    "status":  "heuristic",
-                                    "confidence":  null,
-                                    "benchmarkVersion":  null,
-                                    "sampleSize":  0,
+                                    "value":  77,
+                                    "status":  "benchmarked",
+                                    "confidence":  "C",
+                                    "benchmarkVersion":  "0.1",
+                                    "sampleSize":  24,
                                     "models":  [
-
+                                                   "doubao-seedream-4-0-250828",
+                                                   "doubao-seedream-4-5-251128"
                                                ],
-                                    "updatedAt":  "2026-08"
+                                    "updatedAt":  "2026-08",
+                                    "heuristicValue":  82
                                 },
                       "relations":  {
                                         "hardConflict":  [
