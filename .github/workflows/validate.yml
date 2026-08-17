@@ -30,6 +30,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install deps
+        run: npm ci
+
+      - name: Validate against JSON Schema (ajv)
+        run: node scripts/validate-schema.js
+
       - name: Rebuild core-data.js from core.json
         shell: pwsh
         run: ./build.ps1
