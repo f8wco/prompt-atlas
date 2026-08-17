@@ -6,11 +6,13 @@ on:
       - 'core.json'
       - 'build.ps1'
       - 'web/core-data.js'
+      - '.github/workflows/validate.yml'
   pull_request:
     paths:
       - 'core.json'
       - 'build.ps1'
       - 'web/core-data.js'
+      - '.github/workflows/validate.yml'
   workflow_dispatch:
 
 jobs:
@@ -27,14 +29,16 @@ jobs:
           $committedRaw = git show "HEAD:$file"
           ./build.ps1
           $rebuiltRaw = Get-Content $file -Raw
-          $strip = { param($s) (($s -replace '^window\.PROMPT_ATLAS\s*=\s*', '') -replace ';\s*$', '') }
-          $committedJson = & $strip $committedRaw
-          $rebuiltJson = & $strip $rebuiltRaw
-          $c = $committedJson | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
-          $r = $rebuiltJson | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
+          function Get-Payload($s) {
+            $m = [regex]::Match($s, 'window\.PROMPT_ATLAS\s*=\s*([\s\S]*?);\s*$')
+            if (-not $m.Success) { throw "cannot locate window.PROMPT_ATLAS payload" }
+            return $m.Groups[1].Value
+          }
+          $c = Get-Payload $committedRaw | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
+          $r = Get-Payload $rebuiltRaw | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
           if ($c -ne $r) {
             Write-Host "::error::web/core-data.js is out of sync with core.json. Run ./build.ps1 locally and commit the result."
             exit 1
           }
-          $atoms = ($rebuiltJson | ConvertFrom-Json).atoms.Count
-          Write-Host "core-data.js is in sync with core.json ($atoms atoms)"
+          $atomsCount = (Get-Payload $rebuiltRaw | ConvertFrom-Json).atoms.Count
+          Write-Host "core-data.js is in sync with core.json ($atomsCount atoms)"
