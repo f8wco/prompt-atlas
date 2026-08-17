@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://f8wco.github.io/prompt-atlas/schema/core.schema.json",
+  "title": "Visual Prompt Atlas core dictionary v2",
+  "type": "object",
+  "required": ["version", "name", "nameEn", "slots", "atoms", "meta"],
+  "properties": {
+    "version": { "const": 2 },
+    "name": { "type": "string" },
+    "nameEn": { "type": "string" },
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "zh", "en", "order", "desc", "descEn"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "zh": { "type": "string" },
+          "en": { "type": "string" },
+          "order": { "type": "number" },
+          "desc": { "type": "string" },
+          "descEn": { "type": "string" }
+        }
+      }
+    },
+    "atoms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "slot", "modalities", "zh", "en", "score", "relations", "desc", "descEn", "example"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "type": { "enum": ["atom", "macro"] },
+          "slot": { "type": "string" },
+          "modalities": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "enum": ["image", "video"] }
+          },
+          "zh": { "type": "string" },
+          "en": { "type": "string" },
+          "aliases": {
+            "type": "object",
+            "properties": {
+              "zh": { "type": "array", "items": { "type": "string" } },
+              "en": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "score": {
+            "type": "object",
+            "required": ["value", "status"],
+            "properties": {
+              "value": { "type": "number", "minimum": 0, "maximum": 100 },
+              "status": { "enum": ["heuristic", "benchmarked"] },
+              "confidence": { "enum": ["A", "B", "C", null] },
+              "benchmarkVersion": { "type": ["string", "null"] },
+              "sampleSize": { "type": "number" },
+              "models": { "type": "array", "items": { "type": "string" } },
+              "updatedAt": { "type": "string" }
+            }
+          },
+          "relations": {
+            "type": "object",
+            "required": ["hardConflict", "softTension", "redundant", "requires", "implies", "expandsTo"],
+            "properties": {
+              "hardConflict": { "type": "array", "items": { "type": "string" } },
+              "softTension": { "type": "array", "items": { "type": "string" } },
+              "redundant": { "type": "array", "items": { "type": "string" } },
+              "requires": { "type": "array", "items": { "type": "string" } },
+              "implies": { "type": "array", "items": { "type": "string" } },
+              "expandsTo": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "desc": { "type": "string" },
+          "descEn": { "type": "string" },
+          "example": { "type": "string" }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "required": ["totalAtoms"],
+      "properties": {
+        "totalAtoms": { "type": "number" }
+      }
+    }
+  }
+}
