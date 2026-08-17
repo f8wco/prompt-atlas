@@ -41,6 +41,18 @@
       'uncertain-title': '⚠️ 不确定源（低确定性词条）',
       'uncertain-desc': '以下词条在模型里经常「说了白说」，建议替换或补强：',
       'share-btn': '📤 分享体检报告',
+      'suggest-maybe': '⚠️ 疑似已描述',
+      'suggest-conflict': '冲突',
+      'conflict-tip': '该词条与原文描述冲突，已禁用',
+      'opt-btn': '🚀 一键生成优化版',
+      'opt-title': '优化版提示词（冲突过滤 + 结构化解读）',
+      'opt-add': '➕ 新增',
+      'opt-skip': '⛔ 跳过（冲突）',
+      'opt-maybe-line': '疑似已描述，无需新增',
+      'opt-note': '注：{n} 个槽位疑似已用自由文本描述，实际确定性可能高于得分',
+      'opt-note-short': '注：{n} 槽疑似已描述',
+      'opt-copy': '📋 复制优化版',
+      'opt-covered': '✅ 原文含',
       'copy-ok': '已复制到剪贴板 ✓',
       'copy-fail': '复制失败，请手动复制',
       'input-empty': '请先贴入提示词',
@@ -100,6 +112,18 @@
       'uncertain-title': '⚠️ Uncertain sources (low-determinism terms)',
       'uncertain-desc': 'These terms often fail to produce the intended effect. Consider replacing or reinforcing them:',
       'share-btn': '📤 Share report',
+      'suggest-maybe': '⚠️ Likely described',
+      'suggest-conflict': 'conflict',
+      'conflict-tip': 'This term conflicts with your prompt (disabled)',
+      'opt-btn': '🚀 Generate optimized version',
+      'opt-title': 'Optimized prompt (conflicts filtered, structured breakdown)',
+      'opt-add': '➕ Added',
+      'opt-skip': '⛔ Skipped (conflict)',
+      'opt-maybe-line': 'likely already described — nothing added',
+      'opt-note': 'Note: {n} slot(s) appear described in free text; real determinism may exceed the score',
+      'opt-note-short': 'Note: {n} slot(s) likely described',
+      'opt-copy': '📋 Copy optimized version',
+      'opt-covered': '✅ in original',
       'copy-ok': 'Copied to clipboard ✓',
       'copy-fail': 'Copy failed, please copy manually',
       'input-empty': 'Please paste a prompt first',
@@ -227,6 +251,83 @@
     bad: 'a girl in a city, cinematic'
   };
 
+  /* ---------------- conflict & hint tables ---------------- */
+  var CONFLICTS = {
+    'golden-hour': ['夜晚', '深夜', '午夜', 'midnight', '黑金', '漆黑', 'dark room'],
+    'overcast': ['阳光', '烈日', 'sunny', 'bright sunlight', 'golden hour', '黄金时刻'],
+    'neon': ['自然光', '日光', 'daylight', '白天', '阳光', 'sunlit'],
+    'rembrandt': ['平光', 'flat light'],
+    'backlit': ['正面光', 'front light', '顺光'],
+    'dolly-in': ['拉远', '拉镜头', 'pull back', 'dolly out', '镜头拉远'],
+    'dolly-out': ['推进', '推近', 'push in', 'dolly in', '镜头推近'],
+    'orbit': ['静止镜头', 'static camera', '固定机位', 'fixed camera'],
+    'tracking': ['静止', 'static', '固定机位', '固定镜头'],
+    'handheld': ['稳定器', 'gimbal', '丝滑', 'smooth', 'steady', 'steadicam', '平稳'],
+    'aerial': ['一镜到底', 'long take', '手持', 'handheld', '特写', 'close-up', '面部特写', '过肩', 'over-the-shoulder', '跟拍', 'tracking'],
+    'crane': ['手持', 'handheld'],
+    'close-up': ['全景', 'wide shot', '大远景', '全身', 'full body', 'extreme wide'],
+    'extreme-close-up': ['全景', 'wide shot', '大远景', '全身', 'full body'],
+    'medium': ['大远景', 'extreme wide'],
+    'wide': ['特写', 'close-up', '大特写', 'extreme close-up'],
+    'extreme-wide': ['特写', 'close-up', '大特写', '面部'],
+    'over-shoulder': ['全景', 'wide shot', '航拍', 'aerial'],
+    'rule-of-thirds': ['对称', 'symmetrical', '居中', 'centered'],
+    'symmetry': ['三分法', 'rule of thirds', '不对称', 'asymmetric'],
+    'negative-space': ['复杂背景', 'busy background', '杂乱'],
+    'teal-orange': ['黑金', '金黑', 'black and gold', '黑白', 'monochrome', '粉彩', 'pastel', '冷白'],
+    'film-grain': ['8k', '超清', 'ultra hd', '干净', 'clean', '4k'],
+    'high-sat': ['黑白', 'monochrome', '低饱和', 'desaturated', 'muted', '灰调', '褪色'],
+    'desaturated': ['高饱和', 'vivid', '鲜艳', '色彩丰富', 'colorful'],
+    'cyberpunk-palette': ['黑金', '金黑', '黑白', 'monochrome', '粉彩', 'pastel'],
+    'monochrome': ['彩色', 'colorful', '高饱和', 'vivid', '黑金', '金黑', '青橙', 'teal and orange', '鲜艳'],
+    'pastel': ['黑金', '暗黑', 'dark', '重金属', '哥特'],
+    'photoreal': ['动漫', 'anime', '卡通', 'cartoon', '国漫', '二次元', '水墨', 'ink', '像素', 'pixel'],
+    'documentary': ['特效', 'vfx', 'cgi', '粒子特效', '奇幻'],
+    'anime': ['写实', 'photoreal', '真人', 'realistic', '电影质感', 'cinematic realism', '8k超清', '实拍'],
+    'cyberpunk-style': ['古装', '仙侠', '古代', '水墨', '田园'],
+    'ink-wash': ['3d', '三维', '写实', 'photoreal', '8k'],
+    'claymation': ['写实', 'photoreal', '真人'],
+    'pixel-art': ['写实', 'photoreal', '8k', '高清'],
+    'serene': ['史诗', 'epic', '紧张', 'suspense', '激烈', '战斗'],
+    'epic': ['温馨', 'cozy', '宁静', 'serene', '日常'],
+    'melancholic': ['温馨', 'cozy', '欢乐', '开心'],
+    'cozy': ['史诗', 'epic', '末日', 'wasteland', '恐怖', '暗黑'],
+    'suspense': ['温馨', 'cozy', '宁静', '治愈'],
+    'wasteland': ['温馨', 'cozy', '都市', '繁华'],
+    'dawn': ['夜晚', '深夜', '午夜', 'midnight', '黑金'],
+    'blue-hour': ['正午', 'noon', '黑金', '烈日'],
+    'dusk': ['深夜', 'midnight'],
+    'night': ['白天', 'daytime', '正午', 'noon', '阳光'],
+    'rainy-night': ['晴天', 'sunny', '白天', 'daytime'],
+    'shallow-dof': ['全景清晰', 'deep focus', '大景深', '全部清晰'],
+    'macro': ['全景', 'wide shot', '大远景'],
+    'time-lapse': ['慢动作', 'slow motion'],
+    'slow-motion': ['延时', 'time-lapse', '快进'],
+    'long-take': ['分镜', 'storyboard', '剪辑', 'cuts', '蒙太奇', '多镜头', '转场'],
+    'fisheye': ['电影感', 'cinematic', '写实'],
+    'vhs': ['8k', '超清', 'ultra hd', '高清', '4k']
+  };
+
+  var SLOT_HINTS = {
+    lighting: ['光影', '灯光', '打光', '柔光', '逆光', '侧光', '光照', 'light', 'lighting', 'shadow', '光线'],
+    camera: ['运镜', '镜头运动', '推近', '拉远', '环绕', '旋转镜头', '视角', '机位', 'camera', 'zoom', 'pan', 'rotate', '漩涡'],
+    shot: ['特写', '全景', '中景', '远景', '全身', '面部', '半身', 'framing', 'close-up', 'wide shot', 'medium shot'],
+    composition: ['构图', '居中', '中央', '对称', '三分', '留白', '前景', 'background', 'composition', 'centered'],
+    color: ['配色', '色调', '色彩', '黑金', '冷暖', '饱和度', '影调', '滤镜', 'color', 'palette', 'tone', 'grading'],
+    style: ['风格', '质感', '画风', '电影感', '国漫', '日系', '写实', '二次元', '水墨', '院线', 'style', 'look', 'realistic', 'render'],
+    mood: ['氛围', '情绪', '史诗', '温馨', '紧张', '神秘', '压抑', '张力', 'mood', 'atmosphere', 'epic', 'tense'],
+    time: ['夜晚', '白天', '清晨', '黄昏', '时代', '古代', '未来', 'night', 'day', 'morning', 'evening'],
+    technique: ['特效', '粒子', '景深', '慢镜头', '延时', '一镜到底', '渲染', 'depth of field', 'effect', 'particle', 'render', 'vfx']
+  };
+
+  function hasConflict(a, lowerText) {
+    var words = CONFLICTS[a.id] || [];
+    for (var i = 0; i < words.length; i++) {
+      if (lowerText.indexOf(words[i].toLowerCase()) !== -1) return true;
+    }
+    return false;
+  }
+
   function analyze(text) {
     var found = [];
     var lower = text.toLowerCase();
@@ -250,7 +351,21 @@
     var score = found.length ? Math.round(coverage * (40 + 0.6 * avg)) : 0;
     var grade = score >= 80 ? 1 : (score >= 60 ? 2 : (score >= 40 ? 3 : 4));
     var uncertain = found.filter(function (a) { return a.score < 60; });
-    return { text: text, found: found, perSlot: perSlot, covered: covered, missing: missing, coverage: coverage, avg: avg, score: score, grade: grade, uncertain: uncertain };
+
+    var maybeCount = 0;
+    var missingDetail = missing.map(function (s) {
+      var hints = SLOT_HINTS[s.id] || [];
+      var maybe = false;
+      for (var h = 0; h < hints.length; h++) {
+        if (lower.indexOf(hints[h].toLowerCase()) !== -1) { maybe = true; break; }
+      }
+      if (maybe) maybeCount++;
+      var suggs = (BY_SLOT[s.id] || []).slice().sort(function (x, y) { return y.score - x.score; }).slice(0, 3)
+        .map(function (x) { return { atom: x, conflict: hasConflict(x, lower) }; });
+      return { slot: s, maybe: maybe, suggs: suggs };
+    });
+
+    return { text: text, found: found, perSlot: perSlot, covered: covered, missing: missing, missingDetail: missingDetail, maybeCount: maybeCount, coverage: coverage, avg: avg, score: score, grade: grade, uncertain: uncertain };
   }
 
   function shareText(r) {
@@ -277,6 +392,9 @@
     html += '<div class="rep-meta">';
     html += '<div class="rep-grade grade-' + r.grade + '">' + t('grade-' + r.grade) + '</div>';
     html += '<div class="rep-cov"><span>' + t('cov-label') + '</span><div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div><b>' + r.covered.length + '/' + SLOTS.length + '</b></div>';
+    if (r.maybeCount > 0) {
+      html += '<div class="rep-maybe-note">' + t('opt-note-short').replace('{n}', r.maybeCount) + '</div>';
+    }
     html += '</div></div>';
     html += '<div class="rep-slots">';
     SLOTS.forEach(function (s) {
@@ -288,12 +406,23 @@
         });
         html += '</div></div>';
       } else {
-        var sugg = (BY_SLOT[s.id] || []).slice().sort(function (x, y) { return y.score - x.score; }).slice(0, 2);
-        html += '<div class="rep-slot miss"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
-        html += '<span class="miss-tag">' + t('missing-label') + '</span>';
-        sugg.forEach(function (a) {
-          html += '<span class="chip sugg" data-add="' + a.en.replace(/"/g, '&quot;') + '">+ ' + atomName(a) + ' <span class="chip-en">' + a.en + '</span></span>';
-        });
+        var detail = null;
+        for (var k = 0; k < r.missingDetail.length; k++) {
+          if (r.missingDetail[k].slot.id === s.id) { detail = r.missingDetail[k]; break; }
+        }
+        var isMaybe = detail && detail.maybe;
+        html += '<div class="rep-slot ' + (isMaybe ? 'maybe' : 'miss') + '"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
+        html += '<span class="miss-tag">' + (isMaybe ? t('suggest-maybe') : t('missing-label')) + '</span>';
+        if (detail) {
+          detail.suggs.forEach(function (x) {
+            var a = x.atom;
+            if (x.conflict) {
+              html += '<span class="chip conflict-chip" title="' + t('conflict-tip') + '">' + atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a.score) + '<span class="conflict-badge">' + t('suggest-conflict') + '</span></span>';
+            } else {
+              html += '<span class="chip sugg" data-add="' + a.en.replace(/"/g, '&quot;') + '">+ ' + atomName(a) + ' <span class="chip-en">' + a.en + '</span></span>';
+            }
+          });
+        }
         html += '</div></div>';
       }
     });
@@ -305,7 +434,7 @@
       });
       html += '</div>';
     }
-    html += '<div class="btn-row"><button id="share-report" class="btn primary">' + t('share-btn') + '</button></div>';
+    html += '<div class="btn-row"><button id="share-report" class="btn primary">' + t('share-btn') + '</button><button id="opt-report" class="btn">' + t('opt-btn') + '</button></div>';
     box.innerHTML = html;
 
     var suggs = box.querySelectorAll('.chip.sugg');
@@ -318,6 +447,73 @@
       });
     }
     $('share-report').addEventListener('click', function () { copyText(shareText(r)); });
+    $('opt-report').addEventListener('click', function () {
+      var existing = box.querySelector('.opt-block');
+      if (existing) { existing.parentNode.removeChild(existing); return; }
+      var opt = buildOptimized(r);
+      var div = el('div', 'opt-block');
+      div.innerHTML = renderOptimizedHtml(opt);
+      var head = box.querySelector('.rep-head');
+      head.parentNode.insertBefore(div, head.nextSibling);
+      var copyBtn = div.querySelector('[data-optcopy]');
+      if (copyBtn) copyBtn.addEventListener('click', function () { copyText(optCopyText(opt)); });
+    });
+  }
+
+  function buildOptimized(r) {
+    var cleanAdds = [];
+    var skippedCount = 0;
+    var slotNotes = [];
+    var lower = r.text.toLowerCase();
+    r.missingDetail.forEach(function (d) {
+      var adds = [], confs = [];
+      d.suggs.forEach(function (x) { (x.conflict ? confs : adds).push(x.atom); });
+      var parts = [];
+      if (d.maybe) {
+        parts.push(t('opt-maybe-line'));
+      } else {
+        if (adds.length) {
+          parts.push(t('opt-add') + '：' + adds.map(atomName).join('、'));
+          adds.forEach(function (a) { cleanAdds.push(a); });
+        }
+        if (confs.length) {
+          parts.push(t('opt-skip') + '：' + confs.map(atomName).join('、'));
+          skippedCount += confs.length;
+        }
+      }
+      slotNotes.push({ name: slotName(d.slot), text: parts.join('；') || '—' });
+    });
+    var base = r.text.trim();
+    var en = base + (cleanAdds.length ? ', ' + cleanAdds.map(function (a) { return a.en; }).join(', ') : '');
+    var zhLines = [];
+    r.covered.forEach(function (s) {
+      var names = r.perSlot[s.id].map(atomName).join('、');
+      zhLines.push(slotName(s) + '：' + t('opt-covered') + ' ' + names);
+    });
+    slotNotes.forEach(function (n) { zhLines.push(n.name + '：' + n.text); });
+    return { en: en, zhLines: zhLines, added: cleanAdds.length, skipped: skippedCount, maybe: r.maybeCount };
+  }
+
+  function renderOptimizedHtml(opt) {
+    var html = '';
+    html += '<div class="opt-title">' + t('opt-title') + '</div>';
+    html += '<div class="opt-en">' + opt.en + '</div>';
+    html += '<div class="opt-zh">' + opt.zhLines.join('<br>') + '</div>';
+    if (opt.maybe) html += '<div class="opt-note">' + t('opt-note').replace('{n}', opt.maybe) + '</div>';
+    html += '<div class="opt-stats">' + t('opt-add') + '：' + opt.added + ' · ' + t('opt-skip') + '：' + opt.skipped + '</div>';
+    html += '<button class="btn primary" data-optcopy="1">' + t('opt-copy') + '</button>';
+    return html;
+  }
+
+  function optCopyText(opt) {
+    var lines = [];
+    lines.push('🎬 ' + t('opt-title'));
+    lines.push('EN: ' + opt.en);
+    lines.push(t('out-zh') + '：');
+    opt.zhLines.forEach(function (l) { lines.push('  ' + l); });
+    if (opt.maybe) lines.push(t('opt-note').replace('{n}', opt.maybe));
+    lines.push('—— ' + t('brand') + ' Visual Prompt Atlas');
+    return lines.join('\n');
   }
 
   function runCheck() {
