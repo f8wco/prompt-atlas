@@ -558,3 +558,6 @@ footer code { background: #f0effe; border-radius: 5px; padding: 1px 6px; font-si
   .header-right { width: 100%; justify-content: space-between; }
   .hero { padding: 20px 18px 18px; }
 }
+
+/* ---------- Measured detail (benchmarked atoms) ---------- */
+.atom-measured { margin-top: 4px; font-size: 11.5px; color: #16a34a; font-weight: 600; letter-spacing: .2px; }
