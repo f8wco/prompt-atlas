@@ -11,14 +11,13 @@ const https = require('https');
 const API_KEY = process.env.ARK_API_KEY;
 if (!API_KEY) { console.error('ARK_API_KEY env var is required'); process.exit(2); }
 
-const manifestPath = path.join(__dirname, 'manifests', 'image-baseline-001.json');
-const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-const runId = manifest.runId;
-
 const args = process.argv.slice(2);
 function argVal(name, fallback) { const i = args.indexOf(name); return i !== -1 && args[i + 1] ? args[i + 1] : fallback; }
 const limit = parseInt(argVal('--limit', '999999'), 10);
 const VLM_MODEL = argVal('--model', 'doubao-seed-2-0-lite-260215');
+const runId = argVal('--run', 'image-baseline-001');
+const FORCE = args.indexOf('--force') !== -1;
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifests', runId + '.json'), 'utf8'));
 
 const obsFile = path.join(__dirname, 'results', 'observations-' + runId + '.jsonl');
 const evalFile = path.join(__dirname, 'results', 'evaluations-' + runId + '.jsonl');
@@ -27,9 +26,14 @@ const imgDir = path.join(__dirname, 'results', 'images', runId);
 if (!fs.existsSync(obsFile)) { console.error('no observations file: ' + obsFile); process.exit(2); }
 const observations = fs.readFileSync(obsFile, 'utf8').trim().split('\n').filter(Boolean).map(function (l) { return JSON.parse(l); });
 
-// already evaluated?
+function obsKey(o) {
+  return o.atomId + '__' + o.model + '__' + o.sceneTemplate + '__' + o.condition +
+    (o.seed && o.seed > 1 ? '__s' + o.seed : '');
+}
+
+// already evaluated? (skip unless --force)
 const done = {};
-if (fs.existsSync(evalFile)) {
+if (fs.existsSync(evalFile) && !FORCE) {
   fs.readFileSync(evalFile, 'utf8').trim().split('\n').filter(Boolean).forEach(function (l) {
     const e = JSON.parse(l);
     done[e.observationKey] = true;
@@ -69,11 +73,11 @@ const sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms
 
 async function main() {
   let doneCount = 0, failed = 0;
-  const todo = observations.filter(function (o) { return !done[o.atomId + '__' + o.model + '__' + o.sceneTemplate + '__' + o.condition]; }).slice(0, limit);
-  console.log('VLM model: ' + VLM_MODEL + ' | to evaluate: ' + todo.length + ' (already done: ' + (observations.length - todo.length) + ')');
+  const todo = observations.filter(function (o) { return !done[obsKey(o)]; }).slice(0, limit);
+  console.log('VLM model: ' + VLM_MODEL + ' | run: ' + runId + (FORCE ? ' (force re-eval)' : '') + ' | to evaluate: ' + todo.length + ' (already done: ' + (observations.length - todo.length) + ')');
 
   for (const o of todo) {
-    const key = o.atomId + '__' + o.model + '__' + o.sceneTemplate + '__' + o.condition;
+    const key = obsKey(o);
     const imgPath = path.join(imgDir, o.imageFile);
     if (!fs.existsSync(imgPath)) { console.error('MISSING image ' + o.imageFile); failed++; continue; }
     const question = manifest.evaluator.questions[o.atomId];
@@ -97,6 +101,7 @@ async function main() {
         model: o.model,
         sceneTemplate: o.sceneTemplate,
         condition: o.condition,
+        seed: o.seed || 1,
         question: question,
         evaluator: { type: manifest.evaluator.type, model: VLM_MODEL },
         rawAnswer: answer,
