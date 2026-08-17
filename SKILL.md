@@ -32,7 +32,7 @@ description: >-
 
 **确定性分数（Determinism Score，0–100）** —— 词条控制力的量化估计：
 - **status = heuristic（当前 52 个词条）**：编辑经验估计，**不是实测概率**，不得表述为「稳定还原概率 X%」或「跨模型已验证」
-- **status = benchmarked（当前 8 个词条，Confidence B）**：经 `docs/BENCHMARK.md` 管道实测（image-baseline-001/002：2 模型 × 6 场景 × 3 seeds A/B，每词 36 对观测），附样本量、模型、置信度（A/B/C）、方法版本
+- **status = benchmarked（当前 8 个词条，Confidence B）**：经 `docs/BENCHMARK.md` 管道实测（image-baseline-001/002/003：**3 个独立模型家族**（Seedream 4.0/4.5 + 智谱 CogView-4）× 6 场景 × 3 seeds A/B，每词 54 对观测），附样本量、模型、置信度（A/B/C）、方法版本
 - 分级：≥ 80 高 · 60–79 中 · < 60 低；低分 = 常「说了白说」，建议替换/补强
 
 核心理念：**未指定的槽位不是错误，是留给模型的自由。** Unspecified slots are creative freedom handed to the model, not mistakes.
