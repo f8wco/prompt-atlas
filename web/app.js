@@ -10,6 +10,7 @@
   var SLOTS = ATLAS.slots.slice().sort(function (a, b) { return a.order - b.order; });
   var ATOMS = ATLAS.atoms;
   var BY_SLOT = ATLAS.bySlot || {};
+  var LIB = window.PromptAtlasLib || null;
 
   /* ---------------- i18n ---------------- */
   var I18N = {
@@ -19,25 +20,31 @@
       'tab-recipe': '🧪 视觉配方卡',
       'tab-library': '📚 词库浏览',
       'checker-title': '提示词体检仪',
-      'checker-sub': '贴入你的提示词，10 秒输出「9 槽位缺漏报告」——没写的槽位，AI 会随机脑补。',
+      'checker-sub': '贴入你的提示词，10 秒输出「9 槽位缺漏报告」——没写的槽位，是你留给模型的自由发挥空间。',
       'checker-ph': '例如：a girl walking in cyberpunk city, neon lights, close-up, shallow depth of field, slow motion（中英文均可）',
       'checker-run': '开始体检',
       'btn-clear': '清空',
       'checker-ex-good': '填入高分示例',
       'checker-ex-bad': '填入“裸奔”示例',
       'checker-hint': '检测基于词库收录词条（中英文均可识别）；词库之外的描述不影响检测，报告只统计已收录词条。',
+      'mode-label': '模式',
+      'mode-image': '🖼️ 图片',
+      'mode-video': '🎬 视频',
       'report-empty': '等待输入…',
       'report-score': '确定性得分',
       'grade-1': '高确定性 · 指哪打哪',
       'grade-2': '中确定性 · 基本可控',
       'grade-3': '低确定性 · 开始靠运气',
-      'grade-4': '危险区 · AI 随机脑补',
+      'grade-4': '危险区 · 大量留白交给模型',
       'grade-short-1': '高确定性',
       'grade-short-2': '中确定性',
       'grade-short-3': '低确定性',
       'grade-short-4': '危险区',
       'cov-label': '槽位覆盖率',
-      'missing-label': '缺失',
+      'missing-label': '未指定',
+      'na-tag': '不适用',
+      'na-label': '不适用',
+      'na-note': '图片模式：运镜不适用，按 {n} 个适用槽位计算',
       'uncertain-title': '⚠️ 不确定源（低确定性词条）',
       'uncertain-desc': '以下词条在模型里经常「说了白说」，建议替换或补强：',
       'share-btn': '📤 分享体检报告',
@@ -49,6 +56,7 @@
       'opt-add': '➕ 新增',
       'opt-skip': '⛔ 跳过（冲突）',
       'opt-maybe-line': '疑似已描述，无需新增',
+      'opt-none': '未指定 · 无建议（保留自由发挥）',
       'opt-note': '注：{n} 个槽位疑似已用自由文本描述，实际确定性可能高于得分',
       'opt-note-short': '注：{n} 槽疑似已描述',
       'opt-copy': '📋 复制优化版',
@@ -93,25 +101,31 @@
       'tab-recipe': '🧪 Recipe Card',
       'tab-library': '📚 Library',
       'checker-title': 'Prompt Checker',
-      'checker-sub': 'Paste your prompt and get a 9-slot coverage report in 10 seconds — slots you leave blank, the model fills with randomness.',
+      'checker-sub': 'Paste your prompt and get a 9-slot coverage report in 10 seconds — slots you leave blank are creative freedom you hand to the model.',
       'checker-ph': 'e.g. a girl walking in cyberpunk city, neon lights, close-up, shallow depth of field, slow motion (EN/中文 both work)',
       'checker-run': 'Run Check',
       'btn-clear': 'Clear',
       'checker-ex-good': 'Load a good example',
       'checker-ex-bad': 'Load a "naked" example',
       'checker-hint': 'Detection matches terms registered in the dictionary (Chinese and English). Words outside the dictionary are ignored — the report only counts registered terms.',
+      'mode-label': 'Mode',
+      'mode-image': '🖼️ Image',
+      'mode-video': '🎬 Video',
       'report-empty': 'Waiting for input…',
       'report-score': 'Determinism Score',
       'grade-1': 'High determinism · you get what you asked',
       'grade-2': 'Medium determinism · mostly controllable',
       'grade-3': 'Low determinism · luck is involved',
-      'grade-4': 'Danger zone · the model improvises',
+      'grade-4': 'Danger zone · lots left to the model',
       'grade-short-1': 'High determinism',
       'grade-short-2': 'Medium determinism',
       'grade-short-3': 'Low determinism',
       'grade-short-4': 'Danger zone',
       'cov-label': 'Slot coverage',
-      'missing-label': 'Missing',
+      'missing-label': 'Unspecified',
+      'na-tag': 'N/A',
+      'na-label': 'Not applicable',
+      'na-note': 'Image mode: camera movement N/A, scored over {n} applicable slots',
       'uncertain-title': '⚠️ Uncertain sources (low-determinism terms)',
       'uncertain-desc': 'These terms often fail to produce the intended effect. Consider replacing or reinforcing them:',
       'share-btn': '📤 Share report',
@@ -123,6 +137,7 @@
       'opt-add': '➕ Added',
       'opt-skip': '⛔ Skipped (conflict)',
       'opt-maybe-line': 'likely already described — nothing added',
+      'opt-none': 'unspecified · no suggestion (freedom preserved)',
       'opt-note': 'Note: {n} slot(s) appear described in free text; real determinism may exceed the score',
       'opt-note-short': 'Note: {n} slot(s) likely described',
       'opt-copy': '📋 Copy optimized version',
@@ -252,135 +267,21 @@
 
   /* ================= Prompt Checker / 体检仪 ================= */
   var lastAnalysis = null;
+  var checkMode = 'video';
   var EXAMPLES = {
     good: 'a young woman walking in the rain, golden hour, tracking shot, close-up, symmetrical composition, teal and orange, anime style, serene, rainy night, shallow depth of field, slow motion',
     bad: 'a girl in a city, cinematic'
   };
 
-  /* ---------------- conflict & hint tables ---------------- */
-  var CONFLICTS = {
-    'golden-hour': ['夜晚', '深夜', '午夜', 'midnight', '黑金', '漆黑', 'dark room'],
-    'overcast': ['阳光', '烈日', 'sunny', 'bright sunlight', 'golden hour', '黄金时刻'],
-    'neon': ['自然光', '日光', 'daylight', '白天', '阳光', 'sunlit'],
-    'rembrandt': ['平光', 'flat light'],
-    'backlit': ['正面光', 'front light', '顺光'],
-    'dolly-in': ['拉远', '拉镜头', 'pull back', 'dolly out', '镜头拉远'],
-    'dolly-out': ['推进', '推近', 'push in', 'dolly in', '镜头推近'],
-    'orbit': ['静止镜头', 'static camera', '固定机位', 'fixed camera'],
-    'tracking': ['静止', 'static', '固定机位', '固定镜头'],
-    'handheld': ['稳定器', 'gimbal', '丝滑', 'smooth', 'steady', 'steadicam', '平稳'],
-    'aerial': ['一镜到底', 'long take', '手持', 'handheld', '特写', 'close-up', '面部特写', '过肩', 'over-the-shoulder', '跟拍', 'tracking'],
-    'crane': ['手持', 'handheld'],
-    'close-up': ['全景', 'wide shot', '大远景', '全身', 'full body', 'extreme wide'],
-    'extreme-close-up': ['全景', 'wide shot', '大远景', '全身', 'full body'],
-    'medium': ['大远景', 'extreme wide'],
-    'wide': ['特写', 'close-up', '大特写', 'extreme close-up'],
-    'extreme-wide': ['特写', 'close-up', '大特写', '面部'],
-    'over-shoulder': ['全景', 'wide shot', '航拍', 'aerial'],
-    'rule-of-thirds': ['对称', 'symmetrical', '居中', 'centered'],
-    'symmetry': ['三分法', 'rule of thirds', '不对称', 'asymmetric'],
-    'negative-space': ['复杂背景', 'busy background', '杂乱'],
-    'teal-orange': ['黑金', '金黑', 'black and gold', '黑白', 'monochrome', '粉彩', 'pastel', '冷白'],
-    'film-grain': ['8k', '超清', 'ultra hd', '干净', 'clean', '4k'],
-    'high-sat': ['黑白', 'monochrome', '低饱和', 'desaturated', 'muted', '灰调', '褪色'],
-    'desaturated': ['高饱和', 'vivid', '鲜艳', '色彩丰富', 'colorful'],
-    'cyberpunk-palette': ['黑金', '金黑', '黑白', 'monochrome', '粉彩', 'pastel'],
-    'monochrome': ['彩色', 'colorful', '高饱和', 'vivid', '黑金', '金黑', '青橙', 'teal and orange', '鲜艳'],
-    'pastel': ['黑金', '暗黑', 'dark', '重金属', '哥特'],
-    'photoreal': ['动漫', 'anime', '卡通', 'cartoon', '国漫', '二次元', '水墨', 'ink', '像素', 'pixel'],
-    'documentary': ['特效', 'vfx', 'cgi', '粒子特效', '奇幻'],
-    'anime': ['写实', 'photoreal', '真人', 'realistic', '电影质感', 'cinematic realism', '8k超清', '实拍'],
-    'cyberpunk-style': ['古装', '仙侠', '古代', '水墨', '田园'],
-    'ink-wash': ['3d', '三维', '写实', 'photoreal', '8k'],
-    'claymation': ['写实', 'photoreal', '真人'],
-    'pixel-art': ['写实', 'photoreal', '8k', '高清'],
-    'serene': ['史诗', 'epic', '紧张', 'suspense', '激烈', '战斗'],
-    'epic': ['温馨', 'cozy', '宁静', 'serene', '日常'],
-    'melancholic': ['温馨', 'cozy', '欢乐', '开心'],
-    'cozy': ['史诗', 'epic', '末日', 'wasteland', '恐怖', '暗黑'],
-    'suspense': ['温馨', 'cozy', '宁静', '治愈'],
-    'wasteland': ['温馨', 'cozy', '都市', '繁华'],
-    'dawn': ['夜晚', '深夜', '午夜', 'midnight', '黑金'],
-    'blue-hour': ['正午', 'noon', '黑金', '烈日'],
-    'dusk': ['深夜', 'midnight'],
-    'night': ['白天', 'daytime', '正午', 'noon', '阳光'],
-    'rainy-night': ['晴天', 'sunny', '白天', 'daytime'],
-    'shallow-dof': ['全景清晰', 'deep focus', '大景深', '全部清晰'],
-    'macro': ['全景', 'wide shot', '大远景'],
-    'time-lapse': ['慢动作', 'slow motion'],
-    'slow-motion': ['延时', 'time-lapse', '快进'],
-    'long-take': ['分镜', 'storyboard', '剪辑', 'cuts', '蒙太奇', '多镜头', '转场'],
-    'fisheye': ['电影感', 'cinematic', '写实'],
-    'vhs': ['8k', '超清', 'ultra hd', '高清', '4k']
-  };
-
-  var SLOT_HINTS = {
-    lighting: ['光影', '灯光', '打光', '柔光', '逆光', '侧光', '光照', 'light', 'lighting', 'shadow', '光线'],
-    camera: ['运镜', '镜头运动', '推近', '拉远', '环绕', '旋转镜头', '视角', '机位', 'camera', 'zoom', 'pan', 'rotate', '漩涡'],
-    shot: ['特写', '全景', '中景', '远景', '全身', '面部', '半身', 'framing', 'close-up', 'wide shot', 'medium shot'],
-    composition: ['构图', '居中', '中央', '对称', '三分', '留白', '前景', 'background', 'composition', 'centered'],
-    color: ['配色', '色调', '色彩', '黑金', '冷暖', '饱和度', '影调', '滤镜', 'color', 'palette', 'tone', 'grading'],
-    style: ['风格', '质感', '画风', '电影感', '国漫', '日系', '写实', '二次元', '水墨', '院线', 'style', 'look', 'realistic', 'render'],
-    mood: ['氛围', '情绪', '史诗', '温馨', '紧张', '神秘', '压抑', '张力', 'mood', 'atmosphere', 'epic', 'tense'],
-    time: ['夜晚', '白天', '清晨', '黄昏', '时代', '古代', '未来', '隧道', '虚空', '抽象', '星云', '太空', '宇宙', '黑洞', 'night', 'day', 'morning', 'evening', 'space', 'nebula', 'void', 'tunnel'],
-    technique: ['特效', '粒子', '景深', '慢镜头', '延时', '一镜到底', '渲染', 'depth of field', 'effect', 'particle', 'render', 'vfx']
-  };
-
-  function hasConflict(a, lowerText) {
-    var words = CONFLICTS[a.id] || [];
-    for (var i = 0; i < words.length; i++) {
-      if (lowerText.indexOf(words[i].toLowerCase()) !== -1) return true;
-    }
-    return false;
-  }
-
-  function analyze(text) {
-    var found = [];
-    var lower = text.toLowerCase();
-    for (var i = 0; i < ATOMS.length; i++) {
-      var a = ATOMS[i];
-      if (lower.indexOf(a.en.toLowerCase()) !== -1 || text.indexOf(a.zh) !== -1) found.push(a);
-    }
-    var perSlot = {};
-    SLOTS.forEach(function (s) {
-      perSlot[s.id] = found.filter(function (a) { return a.slot === s.id; });
-    });
-    var covered = SLOTS.filter(function (s) { return perSlot[s.id].length > 0; });
-    var missing = SLOTS.filter(function (s) { return perSlot[s.id].length === 0; });
-    var coverage = SLOTS.length ? covered.length / SLOTS.length : 0;
-    var avg = 0;
-    if (found.length) {
-      var sum = 0;
-      found.forEach(function (a) { sum += a.score; });
-      avg = sum / found.length;
-    }
-    var score = found.length ? Math.round(coverage * (40 + 0.6 * avg)) : 0;
-    var grade = score >= 80 ? 1 : (score >= 60 ? 2 : (score >= 40 ? 3 : 4));
-    var uncertain = found.filter(function (a) { return a.score < 60; });
-
-    var maybeCount = 0;
-    var missingDetail = missing.map(function (s) {
-      var hints = SLOT_HINTS[s.id] || [];
-      var maybe = false;
-      for (var h = 0; h < hints.length; h++) {
-        if (lower.indexOf(hints[h].toLowerCase()) !== -1) { maybe = true; break; }
-      }
-      if (maybe) maybeCount++;
-      var suggs = (BY_SLOT[s.id] || []).slice().sort(function (x, y) { return y.score - x.score; }).slice(0, 3)
-        .map(function (x) { return { atom: x, conflict: hasConflict(x, lower) }; });
-      return { slot: s, maybe: maybe, suggs: suggs };
-    });
-
-    return { text: text, found: found, perSlot: perSlot, covered: covered, missing: missing, missingDetail: missingDetail, maybeCount: maybeCount, coverage: coverage, avg: avg, score: score, grade: grade, uncertain: uncertain };
-  }
 
   function shareText(r) {
     var coveredNames = r.covered.map(function (s) { return slotName(s); }).join('、');
     var missingNames = r.missing.map(function (s) { return slotName(s); }).join('、');
     var lines = [];
     lines.push('【' + t('checker-title') + '】' + t('report-score') + ' ' + r.score + '/100（' + t('grade-short-' + r.grade) + '）');
-    lines.push('✅ ' + r.covered.length + '/9 ' + t('cov-label') + '：' + (coveredNames || '—'));
-    if (r.missing.length) lines.push('❌ ' + t('missing-label') + '：' + missingNames);
+    lines.push('✅ ' + r.covered.length + '/' + r.applicable.length + ' ' + t('cov-label') + '：' + (coveredNames || '—'));
+    if (r.missing.length) lines.push('◻️ ' + t('missing-label') + '：' + missingNames);
+    if (r.notApplicable.length) lines.push('➖ ' + t('na-label') + '：' + r.notApplicable.map(function (s) { return slotName(s); }).join('、'));
     if (r.uncertain.length) {
       var unc = r.uncertain.map(function (a) { return atomName(a); }).join('、');
       lines.push('⚠️ ' + t('uncertain-title') + '：' + unc);
@@ -397,19 +298,30 @@
     html += '<div class="rep-score" style="--p:' + pct + '"><span class="score-num">' + r.score + '</span><span class="score-max">/100</span></div>';
     html += '<div class="rep-meta">';
     html += '<div class="rep-grade grade-' + r.grade + '">' + t('grade-' + r.grade) + '</div>';
-    html += '<div class="rep-cov"><span>' + t('cov-label') + '</span><div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div><b>' + r.covered.length + '/' + SLOTS.length + '</b></div>';
+    html += '<div class="rep-cov"><span>' + t('cov-label') + '</span><div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div><b>' + r.covered.length + '/' + r.applicable.length + '</b></div>';
     if (r.maybeCount > 0) {
       html += '<div class="rep-maybe-note">' + t('opt-note-short').replace('{n}', r.maybeCount) + '</div>';
+    }
+    if (r.notApplicable.length > 0) {
+      html += '<div class="rep-na-note">' + t('na-note').replace('{n}', r.applicable.length) + '</div>';
     }
     html += '</div></div>';
     html += '<div class="rep-slots">';
     SLOTS.forEach(function (s) {
       var atoms = r.perSlot[s.id];
+      var isNA = false;
+      for (var na = 0; na < r.notApplicable.length; na++) {
+        if (r.notApplicable[na].id === s.id) { isNA = true; break; }
+      }
       if (atoms.length) {
         html += '<div class="rep-slot ok"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
         atoms.forEach(function (a) {
           html += '<span class="chip found"><b>' + atomName(a) + '</b><span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a.score) + '</span>';
         });
+        html += '</div></div>';
+      } else if (isNA) {
+        html += '<div class="rep-slot na"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
+        html += '<span class="na-tag">' + t('na-tag') + '</span>';
         html += '</div></div>';
       } else {
         var detail = null;
@@ -458,81 +370,59 @@
       if (existing) { existing.parentNode.removeChild(existing); return; }
       var opt = buildOptimized(r);
       var div = el('div', 'opt-block');
-      div.innerHTML = renderOptimizedHtml(opt);
+      div.innerHTML = renderOptimizedHtml(opt, r);
       var btnRow = box.querySelector('.btn-row');
       btnRow.parentNode.insertBefore(div, btnRow);
       if (div.scrollIntoView) div.scrollIntoView({ behavior: 'smooth', block: 'center' });
       var copyBtn = div.querySelector('[data-optcopy]');
-      if (copyBtn) copyBtn.addEventListener('click', function () { copyText(optCopyText(opt)); });
+      if (copyBtn) copyBtn.addEventListener('click', function () { copyText(optCopyText(opt, r)); });
     });
   }
 
   function buildOptimized(r) {
-    var cleanAdds = [];
-    var skippedCount = 0;
-    var slotNotes = [];
-    var lower = r.text.toLowerCase();
-    r.missingDetail.forEach(function (d) {
-      var adds = [], confs = [];
-      d.suggs.forEach(function (x) { (x.conflict ? confs : adds).push(x.atom); });
-      var parts = [];
-      if (d.maybe) {
-        parts.push(t('opt-maybe-line'));
-      } else {
-        if (adds.length) {
-          parts.push(t('opt-add') + '：' + adds.map(atomName).join('、'));
-          adds.forEach(function (a) { cleanAdds.push(a); });
-        }
-        if (confs.length) {
-          parts.push(t('opt-skip') + '：' + confs.map(atomName).join('、'));
-          skippedCount += confs.length;
-        }
-      }
-      slotNotes.push({ name: slotName(d.slot), text: parts.join('；') || '—' });
-    });
-    var base = r.text.trim();
-    var isLong = base.length > 180;
-    var en;
-    if (cleanAdds.length) {
-      if (isLong) {
-        en = 'Global directives: ' + cleanAdds.map(function (a) { return a.en; }).join(', ') + '\n\n' + base;
-      } else {
-        en = base + ', ' + cleanAdds.map(function (a) { return a.en; }).join(', ');
-      }
-    } else {
-      en = base;
+    return LIB.buildOptimized(ATLAS, r);
+  }
+
+  function slotById(id) {
+    for (var i = 0; i < SLOTS.length; i++) if (SLOTS[i].id === id) return SLOTS[i];
+    return { id: id, zh: id, en: id, desc: '', descEn: '' };
+  }
+
+  function renderOptimizedHtml(opt, r) {
+    var html = '';
+    html += '<div class="opt-title">' + t('opt-title') + '</div>';
+    if (opt.added.length === 0 && opt.skipped.length === 0) {
+      html += '<div class="opt-complete">' + t('opt-complete') + '</div>';
     }
+    html += '<div class="opt-en">' + opt.en + '</div>';
     var zhLines = [];
     r.covered.forEach(function (s) {
       var names = r.perSlot[s.id].map(atomName).join('、');
       zhLines.push(slotName(s) + '：' + t('opt-covered') + ' ' + names);
     });
-    slotNotes.forEach(function (n) { zhLines.push(n.name + '：' + n.text); });
-    return { en: en, zhLines: zhLines, added: cleanAdds.length, skipped: skippedCount, maybe: r.maybeCount, longPrefix: !!(cleanAdds.length && isLong) };
-  }
-
-  function renderOptimizedHtml(opt) {
-    var html = '';
-    html += '<div class="opt-title">' + t('opt-title') + '</div>';
-    if (opt.added === 0 && opt.skipped === 0) {
-      html += '<div class="opt-complete">' + t('opt-complete') + '</div>';
-    }
-    html += '<div class="opt-en">' + opt.en + '</div>';
-    html += '<div class="opt-zh">' + opt.zhLines.join('<br>') + '</div>';
-    if (opt.maybe) html += '<div class="opt-note">' + t('opt-note').replace('{n}', opt.maybe) + '</div>';
-    html += '<div class="opt-stats">' + t('opt-add') + '：' + opt.added + ' · ' + t('opt-skip') + '：' + opt.skipped + '</div>';
+    opt.maybeSlots.forEach(function (id) { zhLines.push(slotName(slotById(id)) + '：' + t('opt-maybe-line')); });
+    opt.added.forEach(function (a) { zhLines.push(slotName(slotById(a.slot)) + '：' + t('opt-add') + ' ' + atomName(a) + '（' + a.en + '）'); });
+    opt.noSuggestion.forEach(function (id) { zhLines.push(slotName(slotById(id)) + '：' + t('opt-none')); });
+    html += '<div class="opt-zh">' + zhLines.join('<br>') + '</div>';
+    if (opt.maybeCount) html += '<div class="opt-note">' + t('opt-note').replace('{n}', opt.maybeCount) + '</div>';
+    html += '<div class="opt-stats">' + t('opt-add') + '：' + opt.added.length + ' · ' + t('opt-skip') + '：' + opt.skipped.length + '</div>';
     if (opt.longPrefix) html += '<div class="opt-note">' + t('opt-prefix-note') + '</div>';
     html += '<button class="btn primary" data-optcopy="1">' + t('opt-copy') + '</button>';
     return html;
   }
 
-  function optCopyText(opt) {
+  function optCopyText(opt, r) {
     var lines = [];
     lines.push('🎬 ' + t('opt-title'));
     lines.push('EN: ' + opt.en);
     lines.push(t('opt-zh-title') + '：');
-    opt.zhLines.forEach(function (l) { lines.push('  ' + l); });
-    if (opt.maybe) lines.push(t('opt-note').replace('{n}', opt.maybe));
+    r.covered.forEach(function (s) {
+      lines.push('  ' + slotName(s) + '：' + t('opt-covered') + ' ' + r.perSlot[s.id].map(atomName).join('、'));
+    });
+    opt.maybeSlots.forEach(function (id) { lines.push('  ' + slotName(slotById(id)) + '：' + t('opt-maybe-line')); });
+    opt.added.forEach(function (a) { lines.push('  ' + slotName(slotById(a.slot)) + '：' + t('opt-add') + ' ' + atomName(a) + '（' + a.en + '）'); });
+    opt.noSuggestion.forEach(function (id) { lines.push('  ' + slotName(slotById(id)) + '：' + t('opt-none')); });
+    if (opt.maybeCount) lines.push(t('opt-note').replace('{n}', opt.maybeCount));
     if (opt.longPrefix) lines.push(t('opt-prefix-note'));
     lines.push('—— ' + t('brand') + ' Visual Prompt Atlas');
     return lines.join('\n');
@@ -541,7 +431,7 @@
   function runCheck() {
     var text = $('checker-input').value.trim();
     if (!text) { toast(t('input-empty'), true); return; }
-    lastAnalysis = analyze(text);
+    lastAnalysis = LIB.analyze(ATLAS, text, checkMode);
     renderReport(lastAnalysis);
   }
 
@@ -754,6 +644,16 @@
       tabs[i].addEventListener('click', function () { switchTab(this.getAttribute('data-tab')); });
     }
     $('checker-run').addEventListener('click', runCheck);
+    var modeImage = $('mode-image');
+    var modeVideo = $('mode-video');
+    function setMode(mode) {
+      checkMode = mode;
+      if (modeImage) modeImage.className = 'mode-btn' + (mode === 'image' ? ' active' : '');
+      if (modeVideo) modeVideo.className = 'mode-btn' + (mode === 'video' ? ' active' : '');
+      if (lastAnalysis) runCheck();
+    }
+    if (modeImage) modeImage.addEventListener('click', function () { setMode('image'); });
+    if (modeVideo) modeVideo.addEventListener('click', function () { setMode('video'); });
     $('checker-clear').addEventListener('click', function () {
       $('checker-input').value = '';
       lastAnalysis = null;
