@@ -162,7 +162,20 @@
     return [];
   }
 
-  /* ---------------- Conflict helpers ---------------- */
+  /* ---------------- score & relations helpers (v2) ---------------- */
+  function readScore(a) {
+    return (a.score && typeof a.score === 'object') ? a.score.value : a.score;
+  }
+  function atomById(data, id) {
+    var list = data.atoms || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function relationHardConflict(a, b) {
+    var ra = (a.relations && a.relations.hardConflict) || [];
+    var rb = (b.relations && b.relations.hardConflict) || [];
+    return ra.indexOf(b.id) !== -1 || rb.indexOf(a.id) !== -1;
+  }
   function hasFreeTextConflict(atom, lowerText) {
     var words = CONFLICTS[atom.id] || [];
     for (var i = 0; i < words.length; i++) {
@@ -171,6 +184,7 @@
     return false;
   }
   function pairConflict(a, b) {
+    if (relationHardConflict(a, b)) return true;
     var words = CONFLICTS[a.id] || [];
     var text = (b.en + ' ' + b.zh).toLowerCase();
     for (var i = 0; i < words.length; i++) {
@@ -182,31 +196,46 @@
   /* ---------------- Analyzer ---------------- */
   function analyze(data, text, mode) {
     var slots = data.slots || [];
-    var ATOMS = data.atoms || [];
     var bySlot = data.bySlot || {};
     var lower = text.toLowerCase();
     var found = matchAtoms(data, text);
+    var foundIds = {};
+    found.forEach(function (a) { foundIds[a.id] = true; });
+
+    // implied coverage: e.g. rainy-night -> night counts for its slot, but
+    // reliability is only computed over canonical matches (counted once).
+    var impliedBySlot = {};
+    slots.forEach(function (s) { impliedBySlot[s.id] = []; });
+    found.forEach(function (a) {
+      var rels = a.relations || {};
+      (rels.implies || []).forEach(function (tid) {
+        var t = atomById(data, tid);
+        if (t && !foundIds[t.id]) {
+          impliedBySlot[t.slot] = impliedBySlot[t.slot] || [];
+          if (impliedBySlot[t.slot].indexOf(t) === -1) impliedBySlot[t.slot].push(t);
+        }
+      });
+    });
+
     var applicable = applicableSlots(data, mode);
     var notApplicable = notApplicableSlots(data, mode);
-    var applicableIds = {};
-    applicable.forEach(function (s) { applicableIds[s.id] = true; });
 
     var perSlot = {};
     slots.forEach(function (s) { perSlot[s.id] = found.filter(function (a) { return a.slot === s.id; }); });
 
-    var covered = applicable.filter(function (s) { return perSlot[s.id].length > 0; });
-    var missing = applicable.filter(function (s) { return perSlot[s.id].length === 0; });
+    var covered = applicable.filter(function (s) { return perSlot[s.id].length > 0 || impliedBySlot[s.id].length > 0; });
+    var missing = applicable.filter(function (s) { return perSlot[s.id].length === 0 && impliedBySlot[s.id].length === 0; });
     var coverage = applicable.length ? covered.length / applicable.length : 0;
 
     var avg = 0;
     if (found.length) {
       var sum = 0;
-      found.forEach(function (a) { sum += a.score; });
+      found.forEach(function (a) { sum += readScore(a); });
       avg = sum / found.length;
     }
     var score = found.length ? Math.round(coverage * (40 + 0.6 * avg)) : 0;
     var grade = score >= 80 ? 1 : (score >= 60 ? 2 : (score >= 40 ? 3 : 4));
-    var uncertain = found.filter(function (a) { return a.score < 60; });
+    var uncertain = found.filter(function (a) { return readScore(a) < 60; });
 
     var maybeCount = 0;
     var missingDetail = missing.map(function (s) {
@@ -216,14 +245,22 @@
         if (lower.indexOf(hints[h].toLowerCase()) !== -1) { maybe = true; break; }
       }
       if (maybe) maybeCount++;
-      var suggs = (bySlot[s.id] || []).slice().sort(function (x, y) { return y.score - x.score; }).slice(0, 3)
-        .map(function (x) { return { atom: x, conflict: hasFreeTextConflict(x, lower) }; });
+      var suggs = (bySlot[s.id] || []).slice().sort(function (x, y) { return readScore(y) - readScore(x); }).slice(0, 3)
+        .map(function (x) {
+          var conflict = hasFreeTextConflict(x, lower);
+          if (!conflict) {
+            for (var f = 0; f < found.length; f++) {
+              if (relationHardConflict(x, found[f])) { conflict = true; break; }
+            }
+          }
+          return { atom: x, conflict: conflict };
+        });
       return { slot: s, maybe: maybe, suggs: suggs };
     });
 
     return {
       text: text, mode: mode,
-      found: found, perSlot: perSlot,
+      found: found, perSlot: perSlot, impliedBySlot: impliedBySlot,
       applicable: applicable, notApplicable: notApplicable,
       covered: covered, missing: missing, missingDetail: missingDetail,
       maybeCount: maybeCount,
@@ -249,7 +286,7 @@
           if (pairConflict(x.atom, selected[j]) || pairConflict(selected[j], x.atom)) { bad = true; break; }
         }
         if (bad) { skipped.push(x.atom); continue; }
-        if (x.atom.score >= SUGGESTION_MIN_SCORE) { chosen = x.atom; }
+        if (readScore(x.atom) >= SUGGESTION_MIN_SCORE) { chosen = x.atom; }
         else { skipped.push(x.atom); }
         break; // at most ONE candidate per slot
       }
@@ -287,6 +324,8 @@
     analyze: analyze,
     buildOptimized: buildOptimized,
     hasFreeTextConflict: hasFreeTextConflict,
-    pairConflict: pairConflict
+    pairConflict: pairConflict,
+    readScore: readScore,
+    atomById: atomById
   };
 }));
