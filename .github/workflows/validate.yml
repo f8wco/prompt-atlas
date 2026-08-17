@@ -22,23 +22,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Rebuild and semantic sync check
+      - name: Rebuild core-data.js from core.json
         shell: pwsh
+        run: ./build.ps1
+
+      - name: Semantic sync check (order-insensitive)
+        shell: bash
         run: |
-          $file = "web/core-data.js"
-          $committedRaw = git show "HEAD:$file"
-          ./build.ps1
-          $rebuiltRaw = Get-Content $file -Raw
-          function Get-Payload($s) {
-            $m = [regex]::Match($s, 'window\.PROMPT_ATLAS\s*=\s*([\s\S]*?);\s*$')
-            if (-not $m.Success) { throw "cannot locate window.PROMPT_ATLAS payload" }
-            return $m.Groups[1].Value
+          git show HEAD:web/core-data.js > /tmp/committed-core-data.js
+          node <<'EOF'
+          const fs = require('fs');
+          function extract(text) {
+            const m = text.match(/window\.PROMPT_ATLAS\s*=\s*([\s\S]*?);\s*$/);
+            if (!m) throw new Error('window.PROMPT_ATLAS payload not found');
+            return JSON.parse(m[1]);
           }
-          $c = Get-Payload $committedRaw | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
-          $r = Get-Payload $rebuiltRaw | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
-          if ($c -ne $r) {
-            Write-Host "::error::web/core-data.js is out of sync with core.json. Run ./build.ps1 locally and commit the result."
-            exit 1
+          function canon(v) {
+            if (Array.isArray(v)) return v.map(canon);
+            if (v && typeof v === 'object') {
+              const out = {};
+              for (const k of Object.keys(v).sort()) out[k] = canon(v[k]);
+              return out;
+            }
+            return v;
           }
-          $atomsCount = (Get-Payload $rebuiltRaw | ConvertFrom-Json).atoms.Count
-          Write-Host "core-data.js is in sync with core.json ($atomsCount atoms)"
+          const committed = extract(fs.readFileSync('/tmp/committed-core-data.js', 'utf8'));
+          const rebuilt = extract(fs.readFileSync('web/core-data.js', 'utf8'));
+          const a = JSON.stringify(canon(committed));
+          const b = JSON.stringify(canon(rebuilt));
+          if (a !== b) {
+            console.error('::error::web/core-data.js is out of sync with core.json. Run ./build.ps1 locally and commit the result.');
+            process.exit(1);
+          }
+          console.log('core-data.js is in sync with core.json (' + rebuilt.atoms.length + ' atoms)');
+          EOF
