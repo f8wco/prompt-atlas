@@ -60,7 +60,15 @@
               "benchmarkVersion": { "type": ["string", "null"] },
               "sampleSize": { "type": "number" },
               "models": { "type": "array", "items": { "type": "string" } },
-              "updatedAt": { "type": "string" }
+              "updatedAt": { "type": "string" },
+              "measured": {
+                "type": "object",
+                "properties": {
+                  "adherence": { "type": "number", "minimum": 0, "maximum": 100 },
+                  "baseline": { "type": "number", "minimum": 0, "maximum": 100 },
+                  "lift": { "type": "number", "minimum": 0, "maximum": 100 }
+                }
+              }
             }
           },
           "relations": {
