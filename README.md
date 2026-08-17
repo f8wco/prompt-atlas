@@ -62,8 +62,7 @@ git clone https://github.com/f8wco/prompt-atlas.git ~/.codex/skills/prompt-atlas
 
 ### 网页演示（在线）
 
-GitHub 仓库 → Settings → Pages → Source 选 `main` 分支 → 目录选 `/web` → Save。
-几分钟后访问 `https://f8wco.github.io/prompt-atlas/`。
+在线演示由 GitHub Actions 自动部署（`.github/workflows/deploy-pages.yml`）。仓库 Settings → Pages 的 Source 设为 **GitHub Actions** 即可，之后每次更新 `web/` 自动上线。访问 <https://f8wco.github.io/prompt-atlas/>。
 
 ## 📁 项目结构 / Structure
 
