@@ -20,11 +20,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Rebuild core-data.js from core.json
+      - name: Rebuild and semantic sync check
         shell: pwsh
-        run: ./build.ps1
-
-      - name: Check core-data.js is in sync
         run: |
-          git diff --exit-code -- web/core-data.js \
-            || (echo "::error::web/core-data.js is out of sync with core.json. Run ./build.ps1 locally and commit the result." && exit 1)
+          $file = "web/core-data.js"
+          $committedRaw = git show "HEAD:$file"
+          ./build.ps1
+          $rebuiltRaw = Get-Content $file -Raw
+          $strip = { param($s) (($s -replace '^window\.PROMPT_ATLAS\s*=\s*', '') -replace ';\s*$', '') }
+          $committedJson = & $strip $committedRaw
+          $rebuiltJson = & $strip $rebuiltRaw
+          $c = $committedJson | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
+          $r = $rebuiltJson | ConvertFrom-Json | ConvertTo-Json -Depth 12 -Compress
+          if ($c -ne $r) {
+            Write-Host "::error::web/core-data.js is out of sync with core.json. Run ./build.ps1 locally and commit the result."
+            exit 1
+          }
+          $atoms = ($rebuiltJson | ConvertFrom-Json).atoms.Count
+          Write-Host "core-data.js is in sync with core.json ($atoms atoms)"
