@@ -1,0 +1,2 @@
+# Normalize line endings across platforms (prevents CRLF/LF noise in diffs)
+* text=auto
