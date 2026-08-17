@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视觉提示词图库 · Visual Prompt Atlas</title>
+  <meta name="description" content="Visual Prompt Atlas — 9-slot prompt atom dictionary with determinism scores. Checker, Recipe Card & Library. 9 槽位原子词库 + 确定性评分 + 提示词体检仪。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">🎬 <span data-i18n="brand">视觉提示词图库</span> <span class="tag">Visual Prompt Atlas v0.1</span></div>
+    <div class="header-right">
+      <button id="lang-toggle" class="lang-btn" title="Switch language / 切换语言">🌐 EN</button>
+      <nav id="tabs">
+        <button data-tab="checker" class="active" data-i18n="tab-checker">🔍 提示词体检仪</button>
+        <button data-tab="recipe" data-i18n="tab-recipe">🧪 视觉配方卡</button>
+        <button data-tab="library" data-i18n="tab-library">📚 词库浏览</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ Checker / 提示词体检仪 ============ -->
+    <section id="view-checker" class="view active">
+      <div class="hero">
+        <h1 data-i18n="checker-title">提示词体检仪</h1>
+        <p data-i18n="checker-sub">贴入你的提示词，10 秒输出「9 槽位缺漏报告」——没写的槽位，AI 会随机脑补。</p>
+      </div>
+      <div class="checker-grid">
+        <div class="panel">
+          <textarea id="checker-input" rows="7" data-i18n-ph="checker-ph"></textarea>
+          <div class="btn-row">
+            <button id="checker-run" class="btn primary" data-i18n="checker-run">开始体检</button>
+            <button id="checker-clear" class="btn" data-i18n="btn-clear">清空</button>
+            <button id="checker-example" class="btn ghost" data-i18n="checker-ex-good">填入高分示例</button>
+            <button id="checker-example-bad" class="btn ghost" data-i18n="checker-ex-bad">填入“裸奔”示例</button>
+          </div>
+          <p class="hint" data-i18n="checker-hint"></p>
+        </div>
+        <div class="panel" id="checker-report">
+          <div class="report-empty" data-i18n="report-empty">等待输入…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Recipe Card / 视觉配方卡 ============ -->
+    <section id="view-recipe" class="view">
+      <div class="hero">
+        <h1 data-i18n="recipe-title">视觉配方卡生成器</h1>
+        <p data-i18n="recipe-sub">按 9 槽位选词拼装提示词，实时预览配方卡，一键复制中英文。</p>
+      </div>
+      <div class="recipe-grid">
+        <div class="panel">
+          <div class="field">
+            <label for="recipe-subject" data-i18n="f-subject">主体 Subject</label>
+            <input id="recipe-subject" data-i18n-ph="f-subject-ph">
+          </div>
+          <div class="field">
+            <label for="recipe-action" data-i18n="f-action">动作 Action</label>
+            <input id="recipe-action" data-i18n-ph="f-action-ph">
+          </div>
+          <div class="field">
+            <label for="recipe-scene" data-i18n="f-scene">场景 Scene</label>
+            <input id="recipe-scene" data-i18n-ph="f-scene-ph">
+          </div>
+          <div id="slot-pickers"></div>
+          <div class="btn-row">
+            <button id="recipe-random" class="btn" data-i18n="btn-random">🎲 随机配方</button>
+            <button id="recipe-reset" class="btn ghost" data-i18n="btn-reset">重置</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div id="card-preview"></div>
+          <div class="prompt-block">
+            <div class="prompt-title" data-i18n="out-en">English Prompt</div>
+            <div id="prompt-en" class="prompt-text">—</div>
+            <button class="mini" data-copy="prompt-en" data-i18n="btn-copy">复制</button>
+          </div>
+          <div class="prompt-block">
+            <div class="prompt-title" data-i18n="out-zh">中文提示词</div>
+            <div id="prompt-zh" class="prompt-text">—</div>
+            <button class="mini" data-copy="prompt-zh" data-i18n="btn-copy">复制</button>
+          </div>
+          <div class="prompt-block">
+            <div class="prompt-title" data-i18n="out-card">配方卡文本（可分享）</div>
+            <div id="prompt-card" class="prompt-text">—</div>
+            <button class="mini" data-copy="prompt-card" data-i18n="btn-copy">复制</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Library / 词库浏览 ============ -->
+    <section id="view-library" class="view">
+      <div class="hero">
+        <h1 data-i18n="lib-title">词库浏览</h1>
+        <p><span data-i18n="lib-sub-prefix">共</span> <strong id="lib-count"></strong> <span data-i18n="lib-sub-mid">个原子词条 · 9 大槽位 · 确定性分数</span>：<span class="score high" data-i18n="lib-legend"></span></p>
+      </div>
+      <div class="lib-toolbar">
+        <input id="lib-search" data-i18n-ph="lib-search-ph">
+        <div id="lib-slots"></div>
+      </div>
+      <div id="lib-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span data-i18n="footer"></span>
+  </footer>
+
+  <script src="core-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
