@@ -1,0 +1,208 @@
+{
+  "benchmarkVersion": "0.1",
+  "runId": "image-baseline-001",
+  "aggregatedAt": "2026-08-17T08:11:32.527Z",
+  "note": "Confidence C run: 2 models x 6 scenes = 12 paired observations per atom. Not intended for main-leaderboard A scores.",
+  "atoms": {
+    "close-up": {
+      "atomId": "close-up",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.83,
+          "B": 0.33,
+          "L": 0.5,
+          "modelScore": 73
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0.33,
+          "L": 0.67,
+          "modelScore": 90
+        }
+      },
+      "atlasScore": 80,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    },
+    "monochrome": {
+      "atomId": "monochrome",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        }
+      },
+      "atlasScore": 100,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    },
+    "golden hour": {
+      "atomId": "golden hour",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 0.67,
+          "L": 0.33,
+          "modelScore": 80
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0.67,
+          "L": 0.33,
+          "modelScore": 80
+        }
+      },
+      "atlasScore": 80,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    },
+    "symmetrical composition": {
+      "atomId": "symmetrical composition",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.83,
+          "B": 0,
+          "L": 0.83,
+          "modelScore": 83
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        }
+      },
+      "atlasScore": 90,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    },
+    "shallow depth of field": {
+      "atomId": "shallow depth of field",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 0.83,
+          "L": 0.17,
+          "modelScore": 75
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0.67,
+          "L": 0.33,
+          "modelScore": 80
+        }
+      },
+      "atlasScore": 77,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    },
+    "anime style": {
+      "atomId": "anime style",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        }
+      },
+      "atlasScore": 100,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    },
+    "volumetric light": {
+      "atomId": "volumetric light",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.83,
+          "B": 0.33,
+          "L": 0.5,
+          "modelScore": 73
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0.33,
+          "L": 0.67,
+          "modelScore": 90
+        }
+      },
+      "atlasScore": 80,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    },
+    "rule of thirds": {
+      "atomId": "rule of thirds",
+      "observations": 24,
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 1,
+          "L": 0,
+          "modelScore": 70
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 0.83,
+          "B": 0.83,
+          "L": 0,
+          "modelScore": 58
+        }
+      },
+      "atlasScore": 63,
+      "confidence": "C",
+      "sampleSize": 24,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128"
+      ]
+    }
+  }
+}
