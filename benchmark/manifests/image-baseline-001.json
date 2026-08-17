@@ -1,0 +1,36 @@
+{
+  "benchmarkVersion": "0.1",
+  "runId": "image-baseline-001",
+  "modality": "image",
+  "targetConfidence": "C",
+  "atoms": [
+    "close-up", "monochrome", "golden hour", "symmetrical composition",
+    "shallow depth of field", "anime style", "volumetric light", "rule of thirds"
+  ],
+  "models": ["doubao-seedream-4-0-250828", "doubao-seedream-4-5-251128"],
+  "scenes": [
+    { "id": "portrait", "prompt": "portrait of a woman standing by a window" },
+    { "id": "street", "prompt": "a street scene with a cyclist passing by" },
+    { "id": "product", "prompt": "a ceramic mug on a wooden table" },
+    { "id": "environment", "prompt": "a misty forest clearing" },
+    { "id": "animal", "prompt": "a cat sitting on a windowsill" },
+    { "id": "architecture", "prompt": "a modern building facade seen from below" }
+  ],
+  "conditions": ["control", "treatment"],
+  "size": "2048x2048",
+  "seedCount": 1,
+  "evaluator": {
+    "type": "vlm+human-audit",
+    "vlm": "doubao vision (Volcano Ark chat completions)",
+    "questions": {
+      "close-up": "Does the image show a close-up framing where the subject fills most of the frame? Answer YES or NO only.",
+      "monochrome": "Is the image black-and-white / monochrome with no color? Answer YES or NO only.",
+      "golden hour": "Does the image show warm golden-hour lighting (low, warm sunlight tones)? Answer YES or NO only.",
+      "symmetrical composition": "Is the composition clearly symmetrical with left-right mirror balance? Answer YES or NO only.",
+      "shallow depth of field": "Is the background strongly blurred while the subject is sharp (shallow depth of field)? Answer YES or NO only.",
+      "anime style": "Is the image in anime / cel-shaded illustration style rather than photorealistic? Answer YES or NO only.",
+      "volumetric light": "Are visible light beams or light rays (volumetric light) present in the image? Answer YES or NO only.",
+      "rule of thirds": "Is the main subject positioned near a rule-of-thirds line (clearly off-center)? Answer YES or NO only."
+    }
+  }
+}
