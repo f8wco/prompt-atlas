@@ -54,6 +54,7 @@
       'opt-copy': '📋 复制优化版',
       'opt-covered': '✅ 原文含',
       'opt-zh-title': '中文槽位解读',
+      'opt-complete': '✅ 体检结论：提示词已完整，无需修改（优化版 = 原文）',
       'opt-prefix-note': '注：新增词条已置于开头作为全局前缀（长提示词尾部权重低）',
       'copy-ok': '已复制到剪贴板 ✓',
       'copy-fail': '复制失败，请手动复制',
@@ -127,6 +128,7 @@
       'opt-copy': '📋 Copy optimized version',
       'opt-covered': '✅ in original',
       'opt-zh-title': 'Slot breakdown (中文)',
+      'opt-complete': '✅ Verdict: your prompt is complete, no changes needed (optimized = original)',
       'opt-prefix-note': 'Note: additions are placed at the front as global directives (tail weight is low in long prompts)',
       'copy-ok': 'Copied to clipboard ✓',
       'copy-fail': 'Copy failed, please copy manually',
@@ -512,6 +514,9 @@
   function renderOptimizedHtml(opt) {
     var html = '';
     html += '<div class="opt-title">' + t('opt-title') + '</div>';
+    if (opt.added === 0 && opt.skipped === 0) {
+      html += '<div class="opt-complete">' + t('opt-complete') + '</div>';
+    }
     html += '<div class="opt-en">' + opt.en + '</div>';
     html += '<div class="opt-zh">' + opt.zhLines.join('<br>') + '</div>';
     if (opt.maybe) html += '<div class="opt-note">' + t('opt-note').replace('{n}', opt.maybe) + '</div>';
