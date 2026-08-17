@@ -1,22 +1,22 @@
 # BENCHMARK · 可复现实测协议 / Reproducible Benchmark Protocol
 
-> **状态（2026-08-17）：图像首轮已执行并完成聚合。** runId `image-baseline-001`：2 模型（doubao-seedream-4-0-250828 / doubao-seedream-4-5-251128）× 6 场景 × 8 词条 × Control/Treatment = 192 张（2048×2048，seed=1）。
-> 评测 = 豆包 VLM YES/NO adherence + 119 张复评 + 4 处两轮矛盾的人工裁决（逐张核对图片，注记见 evaluations 文件的 `evaluator.auditResolved` 字段）。
-> 结果：8 词条全部升级 `benchmarked`（Confidence C，每词 12 对观测），汇总见 `benchmark/results/summary-image-baseline-001.json`。
-> 与 §4.1 规划的差异：模型 3→2、场景 4→6（维持每词 12 对观测的 C 门槛）；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
+> **状态（2026-08-17）：图像基准两轮已执行并完成聚合，8 词条升至 Confidence B。** run 001（seed 1，192 张）+ run 002（seeds 2–3，384 张）：2 模型（doubao-seedream-4-0-250828 / doubao-seedream-4-5-251128）× 6 场景 × 3 seeds × Control/Treatment，每词 36 对观测。
+> 评测 = 豆包 VLM YES/NO adherence，每图独立两轮 + 矛盾人工裁决（run 001 裁决 4 处、run 002 裁决 12 处，逐张核对图片，注记见 evaluations 文件的 `evaluator.auditResolved` 字段）。
+> 汇总：`benchmark/results/summary-image-baseline-001+image-baseline-002.json`；免费再分析：`node benchmark/analyze-baseline.js --run image-baseline-001`。
+> 与 §4.1 规划的差异：模型 3→2、场景 4→6（维持每词 12 对观测的 C 门槛），升 B 采用 3 seeds；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
 
-首轮实测结果（heuristic 估计 → benchmarked 实测）：
+实测结果（heuristic 估计 → C 级 12 对 → B 级 36 对）：
 
-| 词条 | heuristic | benchmarked（C） |
-|---|---:|---:|
-| monochrome 黑白 | 88 | **100** |
-| anime style 动漫风格 | 82 | **100** |
-| symmetrical composition 对称构图 | 80 | **90** |
-| golden hour 黄金时刻 | 92 | **80** |
-| volumetric light 体积光 | 72 | **80** |
-| close-up 特写 | 90 | **80** |
-| shallow depth of field 浅景深 | 82 | **77** |
-| rule of thirds 三分法 | 55 | **63** |
+| 词条 | heuristic | C（12 对） | **B（36 对）** |
+|---|---:|---:|---:|
+| monochrome 黑白 | 88 | 100 | **100** |
+| anime style 动漫风格 | 82 | 100 | **100** |
+| volumetric light 体积光 | 72 | 80 | **86** |
+| golden hour 黄金时刻 | 92 | 80 | **79** |
+| symmetrical composition 对称构图 | 80 | 90 | **78** |
+| shallow depth of field 浅景深 | 82 | 77 | **71** |
+| close-up 特写 | 90 | 80 | **67** |
+| rule of thirds 三分法 | 55 | 63 | **66** |
 
 ### 深度发现 / Findings（run 001，复用已付费数据的免费再分析）
 
