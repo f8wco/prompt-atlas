@@ -37,7 +37,12 @@ Atlas Score = 0.8 × mean(Model Scores) + 0.2 × min(Model Scores)
 
 ## 4. 首批执行方案 / First Runs
 
-### 4.1 Image Baseline（8 atoms）
+**首轮目标声明（重要）：192 张只能产生 Confidence C。**
+每个 atom 仅 3 models × 4 scenes = 12 paired observations，达到 C（≥12）门槛；**不是主榜 A 级分数**。首轮的目的只是跑通可复现协议。
+
+升 B 的配方：3 models × 4 scenes × 3 seeds = 36 pairs/atom（≥36），需 8×3×4×2×3 ≈ 576 张（或对边界组合追加 seeds）。
+
+### 4.1 Image Baseline（8 atoms，目标 Confidence C）
 
 | 参数 | 配置 |
 |---|---|
