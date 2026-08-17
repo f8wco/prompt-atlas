@@ -15,10 +15,10 @@
     "maxAddedPerSlot": 1
   },
   {
-    "name": "image mode: camera movement never suggested",
+    "name": "image mode: camera + video-only technique terms never suggested",
     "text": "a girl in a city",
     "mode": "image",
-    "expectNotAdded": ["aerial", "tracking", "orbit", "dolly-in", "handheld"],
+    "expectNotAdded": ["aerial", "tracking", "orbit", "dolly-in", "handheld", "time-lapse", "slow-motion", "long-take", "cinematic", "cyberpunk-style", "rainy-night"],
     "maxAddedPerSlot": 1
   },
   {
@@ -34,7 +34,7 @@
     "mode": "video",
     "expectAdded": [],
     "expectNotAdded": ["golden-hour", "teal-orange", "anime", "aerial", "dusk", "night"],
-    "expectMaybeSlots": ["lighting", "color", "camera", "composition", "style", "time"],
+    "expectMaybeSlots": ["lighting", "color", "camera", "composition", "style"],
     "maxAddedPerSlot": 1
   }
 ]
