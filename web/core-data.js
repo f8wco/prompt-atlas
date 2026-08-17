@@ -1,4 +1,4 @@
-﻿/* 由 build.ps1 从 core.json 自动生成，请勿手改本文件。
+/* 由 build.ps1 从 core.json 自动生成，请勿手改本文件。
    修改词库请编辑 core.json 后重新运行: pwsh -File build.ps1 */
 window.PROMPT_ATLAS = {
     "version":  1,
