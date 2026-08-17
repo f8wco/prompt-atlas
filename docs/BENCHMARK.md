@@ -67,6 +67,15 @@ Atlas Score = 0.8 × mean(Model Scores) + 0.2 × min(Model Scores)
 | C | ≥12 observations，或覆盖不足 | 探索性分数，不作强结论 |
 | heuristic | 未满足最小证据 | 只显示「经验估计」 |
 
+### Confidence v0.2（规划中，未实施）
+
+当前 A/B/C 仅由 paired observations 与模型/场景数决定，有两个已知局限，计划在 benchmarkVersion 0.2 引入：
+
+1. **model-family coverage**：Seedream 4.0/4.5 是同一家族的两代，双高分只证明「Seedream 域内可控」；跨家族（Flux / Imagen / GPT Image 类）证据才支撑普适结论——增加 seed 降低的是采样方差，降不了模型家族偏差。
+2. **judge agreement**：双轮 VLM 一致率（当前两轮不一致率约 3%）将显式计入 Confidence，替代「两轮取后值 + 人工裁决」的隐式处理。
+
+目标形态：Confidence = f(sample count, seed coverage, scene coverage, model-family coverage, judge agreement)。公式变更随 benchmarkVersion 发布，历史分数可追溯。
+
 ## 4. 首批执行方案 / First Runs
 
 **首轮目标声明（重要）：192 张只能产生 Confidence C。**
