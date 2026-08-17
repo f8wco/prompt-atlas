@@ -45,6 +45,11 @@
       'na-tag': '不适用',
       'na-label': '不适用',
       'na-note': '图片模式：运镜不适用，按 {n} 个适用槽位计算',
+      'implied-tip': '由原文词条蕴含（如雨夜 ⟹ 夜晚），仅计覆盖、不重复计分',
+      'macro-badge': '复合词',
+      'est-badge': '估计',
+      'bench-badge': '实测',
+      'macro-expands': '可拆解为',
       'uncertain-title': '⚠️ 不确定源（低确定性词条）',
       'uncertain-desc': '以下词条在模型里经常「说了白说」，建议替换或补强：',
       'share-btn': '📤 分享体检报告',
@@ -126,6 +131,11 @@
       'na-tag': 'N/A',
       'na-label': 'Not applicable',
       'na-note': 'Image mode: camera movement N/A, scored over {n} applicable slots',
+      'implied-tip': 'Implied by another term in the prompt (e.g. rainy night ⟹ night); counts coverage once',
+      'macro-badge': 'macro',
+      'est-badge': 'estimate',
+      'bench-badge': 'benchmarked',
+      'macro-expands': 'expands to',
       'uncertain-title': '⚠️ Uncertain sources (low-determinism terms)',
       'uncertain-desc': 'These terms often fail to produce the intended effect. Consider replacing or reinforcing them:',
       'share-btn': '📤 Share report',
@@ -206,8 +216,12 @@
     if (html !== undefined) n.innerHTML = html;
     return n;
   }
+  function readScore(a) { return (a.score && typeof a.score === 'object') ? a.score.value : a.score; }
   function scoreClass(s) { return s >= 80 ? 'high' : (s >= 60 ? 'mid' : 'low'); }
-  function scoreBadgeHtml(s) { return '<span class="score ' + scoreClass(s) + '">' + s + '</span>'; }
+  function scoreBadgeHtml(x) {
+    var s = (typeof x === 'object' && x !== null) ? readScore(x) : x;
+    return '<span class="score ' + scoreClass(s) + '">' + s + '</span>';
+  }
 
   var toastTimer = null;
   function toast(msg, isErr) {
@@ -316,7 +330,11 @@
       if (atoms.length) {
         html += '<div class="rep-slot ok"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
         atoms.forEach(function (a) {
-          html += '<span class="chip found"><b>' + atomName(a) + '</b><span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a.score) + '</span>';
+          html += '<span class="chip found"><b>' + atomName(a) + '</b><span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + '</span>';
+        });
+        var implied = r.impliedBySlot[s.id] || [];
+        implied.forEach(function (a) {
+          html += '<span class="chip implied" title="' + t('implied-tip') + '">⇐ ' + atomName(a) + ' <span class="chip-en">' + a.en + '</span></span>';
         });
         html += '</div></div>';
       } else if (isNA) {
@@ -497,7 +515,7 @@
     var partsZh = pickedAtoms().map(function (a) { return slotName(slotOf(a)) + '：' + a.zh; });
     var zh = (baseZh ? baseZh + '。' : '') + partsZh.join('，') + (partsZh.length ? '。' : '');
     var atoms = pickedAtoms();
-    var score = atoms.length ? Math.round(atoms.reduce(function (s, a) { return s + a.score; }, 0) / atoms.length) : 0;
+    var score = atoms.length ? Math.round(atoms.reduce(function (s, a) { return s + readScore(a); }, 0) / atoms.length) : 0;
     return { en: en || '—', zh: zh || '—', score: score, atoms: atoms };
   }
   function slotOf(a) {
@@ -615,10 +633,23 @@
     }
     list.forEach(function (a) {
       var card = el('div', 'atom-card');
+      var meta = '';
+      if (a.type === 'macro') meta += '<span class="macro-badge">' + t('macro-badge') + '</span>';
+      if (a.score && a.score.status === 'benchmarked') meta += '<span class="status-badge bench">' + t('bench-badge') + '</span>';
+      else meta += '<span class="status-badge est">' + t('est-badge') + '</span>';
+      var expandHtml = '';
+      if (a.relations && a.relations.expandsTo && a.relations.expandsTo.length) {
+        var names = a.relations.expandsTo.map(function (id) {
+          var t = LIB ? LIB.atomById(ATLAS, id) : null;
+          return t ? term({ zh: t.zh, en: t.en }) : id;
+        }).join('、');
+        expandHtml = '<div class="atom-meta">' + t('macro-expands') + '：' + names + '</div>';
+      }
       card.innerHTML =
-        '<div class="atom-head"><span class="atom-zh">' + a.zh + '</span>' + scoreBadgeHtml(a.score) + '</div>' +
+        '<div class="atom-head"><span class="atom-zh">' + a.zh + meta + '</span>' + scoreBadgeHtml(a) + '</div>' +
         '<div class="atom-en">' + a.en + '</div>' +
         '<div class="atom-desc">' + term({ zh: a.desc, en: a.descEn }) + '</div>' +
+        expandHtml +
         '<div class="atom-example">' + a.example + '</div>';
       grid.appendChild(card);
     });
