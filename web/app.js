@@ -32,6 +32,26 @@
       'mode-video': '🎬 视频',
       'report-empty': '等待输入…',
       'report-score': '确定性得分',
+      'profile-title': '提示词控制画像',
+      'dim-reliability': '可靠性',
+      'dim-coverage': '覆盖率',
+      'dim-consistency': '一致性',
+      'dim-freedom': '留白',
+      'level-label': '控制等级',
+      'level-high': '🟢 高控制 · 指哪打哪',
+      'level-medium': '🟡 中控制 · 基本可控',
+      'level-low': '🔵 低控制 · 大量留白',
+      'level-conflict': '🔴 存在冲突 · 先解决矛盾',
+      'count-macro': '复合词',
+      'sec-conflict': '硬冲突',
+      'sec-tension': '软张力',
+      'sec-redundant': '冗余',
+      'sec-tension-desc': '可以共存，但容易互相削弱，建议明确主次：',
+      'sec-redundant-desc': '后一个词已被前一个词蕴含，重复指定不增加控制量：',
+      'sec-mismatch-title': '⚠️ 模态不符（视频专属词出现在图片提示词中）',
+      'sec-mismatch-desc': '以下词条只适用于视频，不计入覆盖与得分：',
+      'time-irrelevant-note': '抽象空间语境 · 时间维度不适用',
+      'opt-expand-label': '{macro} 可拆解为',
       'grade-1': '高确定性 · 指哪打哪',
       'grade-2': '中确定性 · 基本可控',
       'grade-3': '低确定性 · 开始靠运气',
@@ -118,6 +138,26 @@
       'mode-video': '🎬 Video',
       'report-empty': 'Waiting for input…',
       'report-score': 'Determinism Score',
+      'profile-title': 'Prompt Control Profile',
+      'dim-reliability': 'Reliability',
+      'dim-coverage': 'Coverage',
+      'dim-consistency': 'Consistency',
+      'dim-freedom': 'Freedom',
+      'level-label': 'Control Level',
+      'level-high': '🟢 High control',
+      'level-medium': '🟡 Medium control',
+      'level-low': '🔵 Low control · mostly freedom',
+      'level-conflict': '🔴 Conflicts present',
+      'count-macro': 'macros',
+      'sec-conflict': 'hard conflicts',
+      'sec-tension': 'soft tensions',
+      'sec-redundant': 'redundant',
+      'sec-tension-desc': 'Can coexist but weaken each other; consider clarifying priority:',
+      'sec-redundant-desc': 'The second term is implied by the first; repeating adds no control:',
+      'sec-mismatch-title': '⚠️ Modality mismatch (video-only terms in an image prompt)',
+      'sec-mismatch-desc': 'These terms apply to video only; excluded from coverage and score:',
+      'time-irrelevant-note': 'abstract-space context · time N/A',
+      'opt-expand-label': '{macro} can be expanded to',
       'grade-1': 'High determinism · you get what you asked',
       'grade-2': 'Medium determinism · mostly controllable',
       'grade-3': 'Low determinism · luck is involved',
@@ -287,19 +327,24 @@
     bad: 'a girl in a city, cinematic'
   };
 
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function levelLabel(l) { return t('level-' + l); }
 
   function shareText(r) {
-    var coveredNames = r.covered.map(function (s) { return slotName(s); }).join('、');
-    var missingNames = r.missing.map(function (s) { return slotName(s); }).join('、');
     var lines = [];
-    lines.push('【' + t('checker-title') + '】' + t('report-score') + ' ' + r.score + '/100（' + t('grade-short-' + r.grade) + '）');
-    lines.push('✅ ' + r.covered.length + '/' + r.applicable.length + ' ' + t('cov-label') + '：' + (coveredNames || '—'));
-    if (r.missing.length) lines.push('◻️ ' + t('missing-label') + '：' + missingNames);
+    lines.push('【' + t('checker-title') + '】' + t('profile-title'));
+    lines.push(t('dim-reliability') + '：' + (r.reliability === null ? '—' : r.reliability + '/100'));
+    lines.push(t('dim-coverage') + '：' + r.covered.length + '/' + r.applicable.length + '（' + (r.covered.length ? r.covered.map(function (s) { return slotName(s); }).join('、') : '—') + '）');
+    lines.push(t('dim-consistency') + '：' + r.consistency + '/100');
+    lines.push(t('dim-freedom') + '：' + r.freedom + '/' + r.applicable.length + (r.missing.length ? '（' + r.missing.map(function (s) { return slotName(s); }).join('、') + '）' : ''));
+    lines.push(t('level-label') + '：' + levelLabel(r.controlLevel));
     if (r.notApplicable.length) lines.push('➖ ' + t('na-label') + '：' + r.notApplicable.map(function (s) { return slotName(s); }).join('、'));
-    if (r.uncertain.length) {
-      var unc = r.uncertain.map(function (a) { return atomName(a); }).join('、');
-      lines.push('⚠️ ' + t('uncertain-title') + '：' + unc);
-    }
+    if (r.hardConflicts.length) lines.push('🚫 ' + t('sec-conflict') + '：' + r.hardConflicts.map(function (p) { return atomName(p.a) + ' ↔ ' + atomName(p.b); }).join('；'));
+    if (r.tensions.length) lines.push('⚠️ ' + t('sec-tension') + '：' + r.tensions.map(function (p) { return atomName(p.a) + ' ↔ ' + atomName(p.b); }).join('；'));
+    if (r.modalityMismatches.length) lines.push('⚠️ ' + t('sec-mismatch-title') + '：' + r.modalityMismatches.map(atomName).join('、'));
+    if (r.uncertain.length) lines.push('⚠️ ' + t('uncertain-title') + '：' + r.uncertain.map(atomName).join('、'));
     lines.push('—— ' + t('brand') + ' Visual Prompt Atlas');
     return lines.join('\n');
   }
@@ -309,17 +354,55 @@
     var pct = Math.round(r.coverage * 100);
     var html = '';
     html += '<div class="rep-head">';
-    html += '<div class="rep-score" style="--p:' + pct + '"><span class="score-num">' + r.score + '</span><span class="score-max">/100</span></div>';
+    html += '<div class="rep-score" style="--p:' + (r.reliability === null ? 0 : r.reliability) + '"><span class="score-num">' + (r.reliability === null ? '—' : r.reliability) + '</span><span class="score-max">/100</span></div>';
     html += '<div class="rep-meta">';
-    html += '<div class="rep-grade grade-' + r.grade + '">' + t('grade-' + r.grade) + '</div>';
-    html += '<div class="rep-cov"><span>' + t('cov-label') + '</span><div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div><b>' + r.covered.length + '/' + r.applicable.length + '</b></div>';
+    html += '<div class="rep-level level-' + r.controlLevel + '">' + levelLabel(r.controlLevel) + '</div>';
+    html += '<div class="rep-cov"><span>' + t('dim-coverage') + '</span><div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div><b>' + r.covered.length + '/' + r.applicable.length + '</b></div>';
+    html += '<div class="rep-cov"><span>' + t('dim-consistency') + '</span><div class="bar"><div class="bar-fill" style="width:' + r.consistency + '%"></div></div><b>' + r.consistency + '</b></div>';
+    html += '<div class="rep-cov"><span>' + t('dim-freedom') + '</span><div class="bar"><div class="bar-fill" style="width:' + Math.round(r.freedom / Math.max(1, r.applicable.length) * 100) + '%"></div></div><b>' + r.freedom + '/' + r.applicable.length + '</b></div>';
+    var counts = [];
+    counts.push(t('count-macro') + ' ' + r.macroCount);
+    counts.push(t('sec-conflict') + ' ' + r.hardConflicts.length);
+    counts.push(t('sec-tension') + ' ' + r.tensions.length);
+    counts.push(t('sec-redundant') + ' ' + r.redundants.length);
+    html += '<div class="rep-counts">' + counts.join(' · ') + '</div>';
     if (r.maybeCount > 0) {
       html += '<div class="rep-maybe-note">' + t('opt-note-short').replace('{n}', r.maybeCount) + '</div>';
     }
     if (r.notApplicable.length > 0) {
-      html += '<div class="rep-na-note">' + t('na-note').replace('{n}', r.applicable.length) + '</div>';
+      html += '<div class="rep-na-note">' + t('na-note').replace('{n}', r.applicable.length) + (r.timeIrrelevant ? ' · ' + t('time-irrelevant-note') : '') + '</div>';
     }
     html += '</div></div>';
+
+    if (r.modalityMismatches.length) {
+      html += '<div class="rep-uncertain mismatch"><div class="rep-unc-title">' + t('sec-mismatch-title') + '</div><div class="rep-unc-desc">' + t('sec-mismatch-desc') + '</div>';
+      r.modalityMismatches.forEach(function (a) {
+        html += '<span class="chip low-chip">' + atomName(a) + ' <span class="chip-en">' + a.en + '</span></span>';
+      });
+      html += '</div>';
+    }
+    if (r.hardConflicts.length) {
+      html += '<div class="rep-uncertain conflict-sec"><div class="rep-unc-title">🚫 ' + t('sec-conflict') + '</div>';
+      r.hardConflicts.forEach(function (p) {
+        html += '<span class="chip conflict-chip">' + atomName(p.a) + ' ↔ ' + atomName(p.b) + '</span>';
+      });
+      html += '</div>';
+    }
+    if (r.tensions.length) {
+      html += '<div class="rep-uncertain tension-sec"><div class="rep-unc-title">' + t('sec-tension') + '</div><div class="rep-unc-desc">' + t('sec-tension-desc') + '</div>';
+      r.tensions.forEach(function (p) {
+        html += '<span class="chip">' + atomName(p.a) + ' ↔ ' + atomName(p.b) + '</span>';
+      });
+      html += '</div>';
+    }
+    if (r.redundants.length) {
+      html += '<div class="rep-uncertain tension-sec"><div class="rep-unc-title">' + t('sec-redundant') + '</div><div class="rep-unc-desc">' + t('sec-redundant-desc') + '</div>';
+      r.redundants.forEach(function (p) {
+        html += '<span class="chip">' + atomName(p.a) + ' ⟸ ' + atomName(p.b) + '</span>';
+      });
+      html += '</div>';
+    }
+
     html += '<div class="rep-slots">';
     SLOTS.forEach(function (s) {
       var atoms = r.perSlot[s.id];
@@ -330,7 +413,7 @@
       if (atoms.length) {
         html += '<div class="rep-slot ok"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
         atoms.forEach(function (a) {
-          html += '<span class="chip found"><b>' + atomName(a) + '</b><span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + '</span>';
+          html += '<span class="chip found"><b>' + atomName(a) + '</b><span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + (a.type === 'macro' ? '<span class="macro-mini">M</span>' : '') + '</span>';
         });
         var implied = r.impliedBySlot[s.id] || [];
         implied.forEach(function (a) {
@@ -353,11 +436,14 @@
           detail.suggs.forEach(function (x) {
             var a = x.atom;
             if (x.conflict) {
-              html += '<span class="chip conflict-chip" title="' + t('conflict-tip') + '">' + atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a.score) + '<span class="conflict-badge">' + t('suggest-conflict') + '</span></span>';
+              html += '<span class="chip conflict-chip" title="' + t('conflict-tip') + '">' + atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + '<span class="conflict-badge">' + t('suggest-conflict') + '</span></span>';
             } else {
-              html += '<span class="chip sugg" data-add="' + a.en.replace(/"/g, '&quot;') + '">+ ' + atomName(a) + ' <span class="chip-en">' + a.en + '</span></span>';
+              html += '<span class="chip sugg" data-add="' + escapeHtml(a.en) + '">+ ' + atomName(a) + ' <span class="chip-en">' + a.en + '</span></span>';
             }
           });
+          if (!detail.suggs.length) {
+            html += '<span class="miss-tag">' + t('opt-none') + '</span>';
+          }
         }
         html += '</div></div>';
       }
@@ -366,7 +452,7 @@
     if (r.uncertain.length) {
       html += '<div class="rep-uncertain"><div class="rep-unc-title">' + t('uncertain-title') + '</div><div class="rep-unc-desc">' + t('uncertain-desc') + '</div>';
       r.uncertain.forEach(function (a) {
-        html += '<span class="chip low-chip">' + atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a.score) + '</span>';
+        html += '<span class="chip low-chip">' + atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + '</span>';
       });
       html += '</div>';
     }
@@ -412,16 +498,20 @@
     if (opt.added.length === 0 && opt.skipped.length === 0) {
       html += '<div class="opt-complete">' + t('opt-complete') + '</div>';
     }
-    html += '<div class="opt-en">' + opt.en + '</div>';
+    html += '<div class="opt-en">' + escapeHtml(opt.en) + '</div>';
     var zhLines = [];
     r.covered.forEach(function (s) {
       var names = r.perSlot[s.id].map(atomName).join('、');
-      zhLines.push(slotName(s) + '：' + t('opt-covered') + ' ' + names);
+      var impliedNames = (r.impliedBySlot[s.id] || []).map(atomName).join('、');
+      zhLines.push(slotName(s) + '：' + t('opt-covered') + ' ' + (names ? names : impliedNames));
     });
     opt.maybeSlots.forEach(function (id) { zhLines.push(slotName(slotById(id)) + '：' + t('opt-maybe-line')); });
     opt.added.forEach(function (a) { zhLines.push(slotName(slotById(a.slot)) + '：' + t('opt-add') + ' ' + atomName(a) + '（' + a.en + '）'); });
     opt.noSuggestion.forEach(function (id) { zhLines.push(slotName(slotById(id)) + '：' + t('opt-none')); });
-    html += '<div class="opt-zh">' + zhLines.join('<br>') + '</div>';
+    html += '<div class="opt-zh">' + zhLines.map(escapeHtml).join('<br>') + '</div>';
+    opt.expansions.forEach(function (e) {
+      html += '<div class="opt-expand">💡 ' + escapeHtml(t('opt-expand-label').replace('{macro}', atomName(e.macro))) + '：' + e.targets.map(function (a) { return atomName(a) + '（' + a.en + '）'; }).map(escapeHtml).join(' + ') + '</div>';
+    });
     if (opt.maybeCount) html += '<div class="opt-note">' + t('opt-note').replace('{n}', opt.maybeCount) + '</div>';
     html += '<div class="opt-stats">' + t('opt-add') + '：' + opt.added.length + ' · ' + t('opt-skip') + '：' + opt.skipped.length + '</div>';
     if (opt.longPrefix) html += '<div class="opt-note">' + t('opt-prefix-note') + '</div>';
@@ -435,11 +525,16 @@
     lines.push('EN: ' + opt.en);
     lines.push(t('opt-zh-title') + '：');
     r.covered.forEach(function (s) {
-      lines.push('  ' + slotName(s) + '：' + t('opt-covered') + ' ' + r.perSlot[s.id].map(atomName).join('、'));
+      var names = r.perSlot[s.id].map(atomName).join('、');
+      var impliedNames = (r.impliedBySlot[s.id] || []).map(atomName).join('、');
+      lines.push('  ' + slotName(s) + '：' + t('opt-covered') + ' ' + (names ? names : impliedNames));
     });
     opt.maybeSlots.forEach(function (id) { lines.push('  ' + slotName(slotById(id)) + '：' + t('opt-maybe-line')); });
     opt.added.forEach(function (a) { lines.push('  ' + slotName(slotById(a.slot)) + '：' + t('opt-add') + ' ' + atomName(a) + '（' + a.en + '）'); });
     opt.noSuggestion.forEach(function (id) { lines.push('  ' + slotName(slotById(id)) + '：' + t('opt-none')); });
+    opt.expansions.forEach(function (e) {
+      lines.push('💡 ' + t('opt-expand-label').replace('{macro}', atomName(e.macro)) + '：' + e.targets.map(function (a) { return atomName(a) + '（' + a.en + '）'; }).join(' + '));
+    });
     if (opt.maybeCount) lines.push(t('opt-note').replace('{n}', opt.maybeCount));
     if (opt.longPrefix) lines.push(t('opt-prefix-note'));
     lines.push('—— ' + t('brand') + ' Visual Prompt Atlas');
@@ -455,6 +550,7 @@
 
   /* ================= Recipe Card / 配方卡 ================= */
   var recipe = { subject: '', action: '', scene: '', picks: {} };
+  var recipeMode = 'video';
   var SAMPLES = {
     zh: {
       subjects: ['一位年轻女子', '一只白猫', '一位老者', '一名宇航员', '一个旧机器人'],
@@ -476,10 +572,10 @@
       var head = el('div', 'picker-head');
       head.innerHTML = '<span class="picker-name">' + slotName(s) + '</span><span class="picker-desc">' + slotDesc(s) + '</span>';
       var chips = el('div', 'picker-chips');
-      (BY_SLOT[s.id] || []).forEach(function (a) {
+      (BY_SLOT[s.id] || []).filter(function (a) { return LIB ? LIB.atomAppliesToMode(a, recipeMode) : true; }).forEach(function (a) {
         var c = el('button', 'chip' + (recipe.picks[s.id] === a.id ? ' sel' : ''));
         c.setAttribute('data-atom', a.id);
-        c.innerHTML = atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a.score);
+        c.innerHTML = atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a);
         c.addEventListener('click', function () {
           recipe.picks[s.id] = (recipe.picks[s.id] === a.id) ? null : a.id;
           renderPickers();
@@ -559,7 +655,7 @@
     if (!hasAny) {
       box.innerHTML = '<div class="card-empty">' + t('card-empty') + '</div>';
     } else {
-      var midMain = (recipe.subject ? recipe.subject + ' ' : '') + (recipe.action ? recipe.action : '') + (recipe.scene ? ' @ ' + recipe.scene : '');
+      var midMain = escapeHtml((recipe.subject ? recipe.subject + ' ' : '') + (recipe.action ? recipe.action : '') + (recipe.scene ? ' @ ' + recipe.scene : ''));
       var chipsHtml = a.atoms.map(function (x) { return '<span class="cc">' + atomName(x) + '</span>'; }).join('');
       box.innerHTML =
         '<div class="card-stage ' + gradClass() + '">' +
@@ -585,7 +681,7 @@
     recipe.scene = pick(s.scenes);
     recipe.picks = {};
     SLOTS.forEach(function (slot) {
-      var list = BY_SLOT[slot.id] || [];
+      var list = (BY_SLOT[slot.id] || []).filter(function (a) { return LIB ? LIB.atomAppliesToMode(a, recipeMode) : true; });
       if (list.length) recipe.picks[slot.id] = list[Math.floor(Math.random() * list.length)].id;
     });
     $('recipe-subject').value = recipe.subject;
@@ -693,6 +789,18 @@
     $('checker-example').addEventListener('click', function () { $('checker-input').value = EXAMPLES.good; runCheck(); });
     $('checker-example-bad').addEventListener('click', function () { $('checker-input').value = EXAMPLES.bad; runCheck(); });
     $('recipe-random').addEventListener('click', randomRecipe);
+    var rModeImage = $('recipe-mode-image');
+    var rModeVideo = $('recipe-mode-video');
+    function setRecipeMode(mode) {
+      recipeMode = mode;
+      if (rModeImage) rModeImage.className = 'mode-btn' + (mode === 'image' ? ' active' : '');
+      if (rModeVideo) rModeVideo.className = 'mode-btn' + (mode === 'video' ? ' active' : '');
+      recipe.picks = {};
+      renderPickers();
+      renderPreview();
+    }
+    if (rModeImage) rModeImage.addEventListener('click', function () { setRecipeMode('image'); });
+    if (rModeVideo) rModeVideo.addEventListener('click', function () { setRecipeMode('video'); });
     $('recipe-reset').addEventListener('click', resetRecipe);
     ['recipe-subject', 'recipe-action', 'recipe-scene'].forEach(function (id) {
       $(id).addEventListener('input', function () {
