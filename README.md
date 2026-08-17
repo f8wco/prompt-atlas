@@ -113,15 +113,15 @@ prompt-atlas/
 
 ## 📊 确定性分数 / Determinism Score
 
-**诚实声明：60 个词条中 8 个已实测（`benchmarked`，Confidence B），其余 52 个为 `heuristic`（经验估计）。** 实测共两轮（`image-baseline-001/002`）：2 模型 × 6 场景 × 3 seeds × Control/Treatment A/B，每词 36 对观测（协议与原始数据见 `docs/BENCHMARK.md`、`benchmark/results/`）。
+**诚实声明：60 个词条中 8 个已实测（`benchmarked`，Confidence B），其余 52 个为 `heuristic`（经验估计）。** 实测共三轮（`image-baseline-001/002/003`）：**3 个独立模型家族**（Seedream 4.0 / Seedream 4.5 / 智谱 CogView-4）× 6 场景 × 3 seeds × Control/Treatment A/B，每词 54 对观测（协议与原始数据见 `docs/BENCHMARK.md`、`benchmark/results/`）。
 
 | 分数 | 含义 | 例子 |
 |---|---|---|
-| ≥ 80 高 | 强控制的物理事实/风格开关 | monochrome 黑白（**100，实测 B**）、anime style 动漫（**100，实测 B**）、volumetric light 体积光（**86，实测 B**） |
-| 60–79 中 | 常见风格/技法，模型间有差异 | symmetry 对称（**78**）、golden hour 黄金时刻（**79**）、close-up 特写（**67**）、rule of thirds 三分法（**66，实测 B**） |
-| < 60 低 | 抽象、复合、易漂移的概念 | cinematic 电影感（55，Macro 复合词，估计） |
+| ≥ 80 高 | 强控制的物理事实/风格开关 | anime style 动漫（**100，三家族全满**）、monochrome 黑白（**82，实测 B**） |
+| 60–79 中 | 常见风格/技法，模型间有差异 | golden hour 黄金时刻（**79**）、shallow dof 浅景深（**66**）、symmetry 对称（**65**）、volumetric light 体积光（**64**）、close-up 特写（**61，实测 B**） |
+| < 60 低 | 抽象、复合、易漂移的概念 | rule of thirds 三分法（**57，实测 B**）、cinematic 电影感（55，Macro 复合词，估计） |
 
-样本从 12 对扩到 36 对后，两个 C 级分数被拉回现实：close-up 90→**67**、symmetry 80→**78**（种子间方差真实存在）；volumetric light 反而升至 **86**。实测 vs 估计的教训：**样本量不够时，连"实测"都可能是巧合**。
+两个教训：**样本量不够时，连「实测」都可能是巧合**（12 对 → 36 对，close-up 从 80 掉到 67）；**同厂两代 ≠ 独立证据**（加入第三家族后 monochrome 100→82、volumetric light 86→64——CogView-4 上分别只有 61/38。跨家族方差远大于种子方差）。
 
 ## 🗺️ 路线图 / Roadmap
 
@@ -129,9 +129,9 @@ prompt-atlas/
 - [x] v0.2 Checker 升级：冲突检测 + 疑似已描述 + 一键优化版（每槽最多 1 词 + NO_SUGGESTION）
 - [x] v0.3a Schema v2：Atom/Macro + 关系图 + score.status + JSON Schema + 回归测试 + CI 全量校验
 - [x] Control Profile 四维报告（Reliability/Coverage/Consistency/Freedom 分离，废单一总分）
-- [x] v0.3b（图像）Benchmark 实测：8 词条 × 2 模型 × 6 场景 × 3 seeds = 576 张 A/B，全部升 Confidence B（`benchmark/results/summary-*.json`）
+- [x] v0.3b（图像）Benchmark 实测：**3 个模型家族** × 6 场景 × 3 seeds = 864 张 A/B，8 词条 Confidence B（`benchmark/results/summary-*.json`）
 - [ ] v0.3b（视频）4 词条 smoke：协议已就绪，待视频 API 资源
-- [ ] Benchmark 扩容：覆盖其余 52 词条；升 A 需 ≥3 模型（见 `docs/BENCHMARK.md`）
+- [ ] Benchmark 扩容：覆盖其余 52 词条；升 A 需每词 72 对观测（3 家族 × 4 seeds，见 `docs/BENCHMARK.md`）
 - [ ] 图库扩充至 200 词条（4 管道，见 `docs/LAUNCH.md`）
 - [ ] 积分系统与悬赏榜（需要后端，接口已在 `docs/ECONOMY.md` 定义）
 
