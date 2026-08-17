@@ -232,11 +232,11 @@
         "en": []
       },
       "score": {
-        "value": 80,
+        "value": 79,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -368,11 +368,11 @@
         "en": []
       },
       "score": {
-        "value": 80,
+        "value": 86,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -860,11 +860,11 @@
         ]
       },
       "score": {
-        "value": 80,
+        "value": 67,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -1115,11 +1115,11 @@
         "en": []
       },
       "score": {
-        "value": 63,
+        "value": 66,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -1162,11 +1162,11 @@
         "en": []
       },
       "score": {
-        "value": 90,
+        "value": 78,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -1555,9 +1555,9 @@
       "score": {
         "value": 100,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -1794,9 +1794,9 @@
       "score": {
         "value": 100,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -2499,11 +2499,11 @@
         ]
       },
       "score": {
-        "value": 77,
+        "value": 71,
         "status": "benchmarked",
-        "confidence": "C",
+        "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 24,
+        "sampleSize": 72,
         "models": [
           "doubao-seedream-4-0-250828",
           "doubao-seedream-4-5-251128"
@@ -2821,7 +2821,7 @@
   "meta": {
     "totalAtoms": 60,
     "coverageTarget": 200,
-    "source": "核心词库 v3：8 词条经 benchmark 管道实测（image-baseline-001，Confidence C），其余 52 词条为 heuristic 经验估计；冲突表与槽位提示已迁入数据。",
+    "source": "核心词库 v3：8 词条经 benchmark 管道实测（36 对观测/词条，Confidence B），其余 52 词条为 heuristic 经验估计；冲突表与槽位提示已迁入数据。",
     "scoreGuide": {
       "high": 80,
       "mid": 60,
@@ -2839,12 +2839,13 @@
     },
     "benchmark": {
       "runs": [
-        "image-baseline-001"
+        "image-baseline-001",
+        "image-baseline-002"
       ],
       "benchmarkVersion": "0.1",
       "benchmarkedAtoms": 8,
-      "confidence": "C",
-      "note": "8 atoms measured via 2 models x 6 scenes A/B (12 paired observations each, Confidence C). Full protocol & raw data: docs/BENCHMARK.md + benchmark/results/."
+      "confidence": "B",
+      "note": "8 atoms measured across 2 runs: 2 models x 6 scenes x 3 seeds A/B (36 paired observations each, Confidence B). Protocol & raw data: docs/BENCHMARK.md + benchmark/results/."
     }
   }
 }
