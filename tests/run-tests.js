@@ -24,12 +24,17 @@ function check(cond, msg) {
 console.log('== Matcher ==');
 const matcherCases = JSON.parse(fs.readFileSync(path.join(__dirname, 'matcher.fixtures.json'), 'utf8'));
 matcherCases.forEach(function (c, i) {
-  const found = lib.analyze(ATLAS, c.text, 'video').found.map(function (a) { return a.id; });
+  const r = lib.analyze(ATLAS, c.text, 'video');
+  const found = r.found.map(function (a) { return a.id; });
   (c.expectFound || []).forEach(function (id) {
     check(found.indexOf(id) !== -1, 'matcher#' + i + ' "' + c.text + '" should find ' + id + ' (found: ' + found.join(',') + ')');
   });
   (c.expectNot || []).forEach(function (id) {
     check(found.indexOf(id) === -1, 'matcher#' + i + ' "' + c.text + '" must NOT find ' + id + ' (found: ' + found.join(',') + ')');
+  });
+  (c.expectImplied || []).forEach(function (imp) {
+    const got = (r.impliedBySlot[imp.slot] || []).map(function (a) { return a.id; });
+    check(got.indexOf(imp.atom) !== -1, 'matcher#' + i + ' "' + c.text + '" should imply ' + imp.atom + ' in slot ' + imp.slot + ' (got: ' + got.join(',') + ')');
   });
 });
 
