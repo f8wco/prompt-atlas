@@ -13,9 +13,14 @@ Desktop.ini
 tmp/
 temp/
 
-# Node (reserved for future backend)
+# Node
 node_modules/
-package-lock.json
+
+# Secrets & large artifacts (never commit API keys or generated images)
+.env
+.env.local
+benchmark/.env.local
+benchmark/results/images/
 
 # GitHub Pages cache
 .sass-cache/
