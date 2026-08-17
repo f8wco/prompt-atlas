@@ -236,16 +236,17 @@
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 92,
         "measured": {
           "adherence": 100,
-          "baseline": 70,
+          "baseline": 69,
           "lift": 31
         }
       },
@@ -373,21 +374,22 @@
         "en": []
       },
       "score": {
-        "value": 86,
+        "value": 64,
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 72,
         "measured": {
-          "adherence": 97,
-          "baseline": 36,
-          "lift": 62
+          "adherence": 79,
+          "baseline": 31,
+          "lift": 48
         }
       },
       "relations": {
@@ -870,21 +872,22 @@
         ]
       },
       "score": {
-        "value": 67,
+        "value": 61,
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 90,
         "measured": {
-          "adherence": 78,
-          "baseline": 28,
-          "lift": 50
+          "adherence": 72,
+          "baseline": 30,
+          "lift": 43
         }
       },
       "relations": {
@@ -1130,20 +1133,21 @@
         "en": []
       },
       "score": {
-        "value": 66,
+        "value": 57,
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 55,
         "measured": {
-          "adherence": 94,
-          "baseline": 97,
+          "adherence": 85,
+          "baseline": 87,
           "lift": 0
         }
       },
@@ -1182,21 +1186,22 @@
         "en": []
       },
       "score": {
-        "value": 78,
+        "value": 65,
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 80,
         "measured": {
-          "adherence": 81,
-          "baseline": 6,
-          "lift": 75
+          "adherence": 70,
+          "baseline": 4,
+          "lift": 67
         }
       },
       "relations": {
@@ -1578,21 +1583,22 @@
         "en": []
       },
       "score": {
-        "value": 100,
+        "value": 82,
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 88,
         "measured": {
-          "adherence": 100,
+          "adherence": 87,
           "baseline": 0,
-          "lift": 100
+          "lift": 87
         }
       },
       "relations": {
@@ -1826,10 +1832,11 @@
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 82,
@@ -2534,21 +2541,22 @@
         ]
       },
       "score": {
-        "value": 71,
+        "value": 66,
         "status": "benchmarked",
         "confidence": "B",
         "benchmarkVersion": "0.1",
-        "sampleSize": 72,
+        "sampleSize": 108,
         "models": [
           "doubao-seedream-4-0-250828",
-          "doubao-seedream-4-5-251128"
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
         ],
         "updatedAt": "2026-08",
         "heuristicValue": 82,
         "measured": {
-          "adherence": 95,
-          "baseline": 75,
-          "lift": 20
+          "adherence": 91,
+          "baseline": 76,
+          "lift": 15
         }
       },
       "relations": {
@@ -2861,7 +2869,7 @@
   "meta": {
     "totalAtoms": 60,
     "coverageTarget": 200,
-    "source": "核心词库 v3：8 词条经 benchmark 管道实测（36 对观测/词条，Confidence B），其余 52 词条为 heuristic 经验估计；冲突表与槽位提示已迁入数据。",
+    "source": "核心词库 v3：8 词条经 benchmark 管道实测（3 个模型家族，54 对观测/词条，Confidence B），其余 52 词条为 heuristic 经验估计；冲突表与槽位提示已迁入数据。",
     "scoreGuide": {
       "high": 80,
       "mid": 60,
@@ -2880,12 +2888,13 @@
     "benchmark": {
       "runs": [
         "image-baseline-001",
-        "image-baseline-002"
+        "image-baseline-002",
+        "image-baseline-003"
       ],
       "benchmarkVersion": "0.1",
       "benchmarkedAtoms": 8,
       "confidence": "B",
-      "note": "8 atoms measured across 2 runs: 2 models x 6 scenes x 3 seeds A/B (36 paired observations each, Confidence B). Protocol & raw data: docs/BENCHMARK.md + benchmark/results/."
+      "note": "8 atoms measured across 3 model families (Seedream 4.0/4.5 + Zhipu CogView-4): 54 paired observations each (Confidence B). Protocol & raw data: docs/BENCHMARK.md + benchmark/results/."
     }
   }
 }
