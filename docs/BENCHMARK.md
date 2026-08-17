@@ -18,6 +18,23 @@
 | shallow depth of field 浅景深 | 82 | **77** |
 | rule of thirds 三分法 | 55 | **63** |
 
+### 深度发现 / Findings（run 001，复用已付费数据的免费再分析）
+
+**基线出现率 B（不加该词时模型自己画出来的比例）**——B 越高，这个词越「白写」：
+
+| 词条 | 基线 B | 结论 |
+|---|---:|---|
+| rule of thirds | **92%** | 6 个场景 lift 全为 0——「说了白说」的实测铁证 |
+| shallow depth of field | 75% | 人像/产品/动物场景模型默认就虚化；仅街景/建筑有增量 |
+| golden hour | 67% | 暖光是模型的审美默认值；仅森林/建筑场景听指令 |
+| close-up | 33% | 人像/产品/建筑场景默认就近；街景/动物需明写 |
+| volumetric light | 33% | 对照图偶发眩光被误判，人工裁决已修正 |
+| monochrome / anime / symmetry | **0%** | 真正的强控制开关：写了 100% 生效 |
+
+**模型代差（Seedream 4.0 → 4.5 的 modelScore）**：4.5 在 close-up / symmetry / volumetric 上各 +17，但 rule of thirds 反而 −12（4.5 的构图默认倾向更强）。新一代 ≠ 更听话，分数必须分模型看。
+
+复跑：`node benchmark/analyze-baseline.js --run image-baseline-001`
+
 ## 1. 测什么 / What we measure
 
 不是「这个词画出来好不好看」，而是 **instruction lift（指令增量）**：加入该词后，目标效果正确出现的比例相比基线提升多少。
