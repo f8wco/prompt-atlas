@@ -14,7 +14,7 @@
   <p align="center">
     <img src="https://img.shields.io/badge/Skill-Agent%20Skill-7c5cff" alt="Agent Skill">
     <img src="https://img.shields.io/badge/Atoms-60-fb923c" alt="60 atoms">
-    <img src="https://img.shields.io/badge/Benchmark-8%20benchmarked%20(C)-16a34a" alt="8 atoms benchmarked">
+    <img src="https://img.shields.io/badge/Benchmark-8%20benchmarked%20(B)-16a34a" alt="8 atoms benchmarked">
     <img src="https://img.shields.io/badge/Slots-9-22d3ee" alt="9 slots">
     <img src="https://img.shields.io/badge/Language-Bilingual%20(zh%2Fen)-d74a3a" alt="bilingual">
     <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT">
@@ -99,15 +99,15 @@ A complete prompt = Subject/Action/Scene (free text) + 9 slots (dictionary terms
 
 ## 📊 Determinism Score / 确定性分数
 
-**Honest disclosure: 8 of 60 terms are now `benchmarked` (Confidence C); the other 52 remain `heuristic` editorial estimates.** First run `image-baseline-001`: 2 models × 6 scenes × Control/Treatment A/B, 12 paired observations per term (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
+**Honest disclosure: 8 of 60 terms are now `benchmarked` (Confidence B); the other 52 remain `heuristic` editorial estimates.** Two runs (`image-baseline-001/002`): 2 models × 6 scenes × 3 seeds × Control/Treatment A/B, 36 paired observations per term (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
 
 | Score | Meaning | Examples |
 |---|---|---|
-| ≥ 80 high | Strong physical / style controls | monochrome (**100, benchmarked C**), anime style (**100, benchmarked C**), golden hour (**80, benchmarked C**) |
-| 60–79 mid | Common styles/techniques; varies between models | rule of thirds (**63, benchmarked C**), film grain (75, estimate) |
+| ≥ 80 high | Strong physical / style controls | monochrome (**100, B**), anime style (**100, B**), volumetric light (**86, B**) |
+| 60–79 mid | Common styles/techniques; varies between models | symmetry (**78**), golden hour (**79**), close-up (**67**), rule of thirds (**66, B**) |
 | < 60 low | Abstract, compound, drift-prone concepts | cinematic (55, Macro, estimate) |
 
-Notable corrections from measurement: golden hour 92→80 (was overestimated), volumetric light 72→80 (underestimated), anime style 82→100 (fully controllable).
+Going from 12 to 36 paired observations pulled two C-grade scores back to earth: close-up 90→**67**, symmetry 80→**78** (seed variance is real); volumetric light rose to **86**. Lesson: **with small samples, even a "measurement" can be luck**.
 
 ## 🗺️ Roadmap / 路线图
 
@@ -115,9 +115,9 @@ Notable corrections from measurement: golden hour 92→80 (was overestimated), v
 - [x] v0.2 Checker upgrade: conflict detection + likely-described hints + optimized version (≤1 term/slot + NO_SUGGESTION)
 - [x] v0.3a Schema v2: Atom/Macro + relations + score.status + JSON Schema + regression fixtures + full CI
 - [x] Control Profile 4-dimension report (Reliability/Coverage/Consistency/Freedom; single score retired)
-- [x] v0.3b (image) first benchmark run: 8 terms × 2 models × 6 scenes A/B = 192 images, all upgraded to Confidence C (`benchmark/results/summary-image-baseline-001.json`)
+- [x] v0.3b (image) benchmark: 8 terms × 2 models × 6 scenes × 3 seeds = 576 A/B images, all at Confidence B (`benchmark/results/summary-*.json`)
 - [ ] v0.3b (video) 4-term smoke: protocol ready, awaiting video API resources
-- [ ] Benchmark scale-up: Confidence B (3 seeds → 36 paired obs/term) and cover the remaining 52 terms
+- [ ] Benchmark scale-up: cover the remaining 52 terms; Confidence A requires ≥3 models (see `docs/BENCHMARK.md`)
 - [ ] Grow to 200 terms (4 pipelines — see `docs/LAUNCH.md`)
 - [ ] Points system & bounty board (needs a backend; interfaces in `docs/ECONOMY.md`)
 
