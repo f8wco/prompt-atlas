@@ -46,7 +46,7 @@ description: >-
 | `slots[].id / zh / en / desc / descEn` | 9 个槽位定义，中英双语 |
 | `atoms[].id / type / slot / modalities` | 词条 ID、类型（atom 原子 / macro 复合词）、主槽位、适用模态（image/video） |
 | `atoms[].zh / en / aliases` | 中英文词 + 别名（只参与匹配，不参与关系图） |
-| `atoms[].score` | 对象：`value` + `status`（heuristic/bemarked）+ confidence/sampleSize/models/benchmarkVersion |
+| `atoms[].score` | 对象：`value` + `status`（heuristic/benchmarked）+ confidence/sampleSize/models/benchmarkVersion |
 | `atoms[].relations` | 关系图：hardConflict / softTension / redundant / requires / implies / expandsTo |
 | `atoms[].desc / descEn / example` | 效果说明（双语）+ 英文示例 |
 
@@ -67,7 +67,7 @@ description: >-
 4. 输出「配方卡」：
    - 英文提示词（English prompt）
    - 中文逐槽解读（slot-by-slot Chinese breakdown）
-   - 配方确定性 = 所选词条平均分；覆盖率 = 已填槽位数/9
+   - 配方确定性 = 所选词条平均分；覆盖率 = 已填槽位数/适用槽位数
    - 提示：确定性 < 60 的词条给出替代建议
 
 **示例输出模板 / Output template**：
