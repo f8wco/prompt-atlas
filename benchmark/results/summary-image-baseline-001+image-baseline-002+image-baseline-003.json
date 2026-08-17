@@ -1,0 +1,290 @@
+{
+  "benchmarkVersion": "0.1",
+  "runs": [
+    "image-baseline-001",
+    "image-baseline-002",
+    "image-baseline-003"
+  ],
+  "aggregatedAt": "2026-08-17T16:38:58.031Z",
+  "models": [
+    "doubao-seedream-4-0-250828",
+    "doubao-seedream-4-5-251128",
+    "zhipu-cogview-4"
+  ],
+  "scenes": [
+    "portrait",
+    "street",
+    "product",
+    "environment",
+    "animal",
+    "architecture"
+  ],
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "counts": {
+    "observations": 864,
+    "evaluationLines": 864,
+    "uniqueJudgedKeys": 864
+  },
+  "atoms": {
+    "close-up": {
+      "atomId": "close-up",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.67,
+          "B": 0.28,
+          "L": 0.39,
+          "modelScore": 58
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 0.89,
+          "B": 0.28,
+          "L": 0.61,
+          "modelScore": 81
+        },
+        "zhipu-cogview-4": {
+          "A": 0.61,
+          "B": 0.33,
+          "L": 0.28,
+          "modelScore": 51
+        }
+      },
+      "atlasScore": 61,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    },
+    "monochrome": {
+      "atomId": "monochrome",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        },
+        "zhipu-cogview-4": {
+          "A": 0.61,
+          "B": 0,
+          "L": 0.61,
+          "modelScore": 61
+        }
+      },
+      "atlasScore": 82,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    },
+    "golden hour": {
+      "atomId": "golden hour",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 0.67,
+          "L": 0.33,
+          "modelScore": 80
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0.72,
+          "L": 0.28,
+          "modelScore": 78
+        },
+        "zhipu-cogview-4": {
+          "A": 1,
+          "B": 0.67,
+          "L": 0.33,
+          "modelScore": 80
+        }
+      },
+      "atlasScore": 79,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    },
+    "symmetrical composition": {
+      "atomId": "symmetrical composition",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.83,
+          "B": 0.06,
+          "L": 0.78,
+          "modelScore": 82
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 0.78,
+          "B": 0.06,
+          "L": 0.72,
+          "modelScore": 76
+        },
+        "zhipu-cogview-4": {
+          "A": 0.5,
+          "B": 0,
+          "L": 0.5,
+          "modelScore": 50
+        }
+      },
+      "atlasScore": 65,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    },
+    "shallow depth of field": {
+      "atomId": "shallow depth of field",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.89,
+          "B": 0.78,
+          "L": 0.11,
+          "modelScore": 66
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0.72,
+          "L": 0.28,
+          "modelScore": 78
+        },
+        "zhipu-cogview-4": {
+          "A": 0.83,
+          "B": 0.78,
+          "L": 0.06,
+          "modelScore": 60
+        }
+      },
+      "atlasScore": 66,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    },
+    "anime style": {
+      "atomId": "anime style",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        },
+        "zhipu-cogview-4": {
+          "A": 1,
+          "B": 0,
+          "L": 1,
+          "modelScore": 100
+        }
+      },
+      "atlasScore": 100,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    },
+    "volumetric light": {
+      "atomId": "volumetric light",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.94,
+          "B": 0.39,
+          "L": 0.56,
+          "modelScore": 83
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 1,
+          "B": 0.33,
+          "L": 0.67,
+          "modelScore": 90
+        },
+        "zhipu-cogview-4": {
+          "A": 0.44,
+          "B": 0.22,
+          "L": 0.22,
+          "modelScore": 38
+        }
+      },
+      "atlasScore": 64,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    },
+    "rule of thirds": {
+      "atomId": "rule of thirds",
+      "models": {
+        "doubao-seedream-4-0-250828": {
+          "A": 0.94,
+          "B": 1,
+          "L": 0,
+          "modelScore": 66
+        },
+        "doubao-seedream-4-5-251128": {
+          "A": 0.94,
+          "B": 0.94,
+          "L": 0,
+          "modelScore": 66
+        },
+        "zhipu-cogview-4": {
+          "A": 0.67,
+          "B": 0.67,
+          "L": 0,
+          "modelScore": 47
+        }
+      },
+      "atlasScore": 57,
+      "confidence": "B",
+      "pairs": 54,
+      "sampleSize": 108,
+      "modelsList": [
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "zhipu-cogview-4"
+      ]
+    }
+  }
+}
