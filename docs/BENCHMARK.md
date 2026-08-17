@@ -1,22 +1,24 @@
 # BENCHMARK · 可复现实测协议 / Reproducible Benchmark Protocol
 
-> **状态（2026-08-17）：图像基准两轮已执行并完成聚合，8 词条升至 Confidence B。** run 001（seed 1，192 张）+ run 002（seeds 2–3，384 张）：2 模型（doubao-seedream-4-0-250828 / doubao-seedream-4-5-251128）× 6 场景 × 3 seeds × Control/Treatment，每词 36 对观测。
-> 评测 = 豆包 VLM YES/NO adherence，每图独立两轮 + 矛盾人工裁决（run 001 裁决 4 处、run 002 裁决 12 处，逐张核对图片，注记见 evaluations 文件的 `evaluator.auditResolved` 字段）。
-> 汇总：`benchmark/results/summary-image-baseline-001+image-baseline-002.json`；免费再分析：`node benchmark/analyze-baseline.js --run image-baseline-001`。
-> 与 §4.1 规划的差异：模型 3→2、场景 4→6（维持每词 12 对观测的 C 门槛），升 B 采用 3 seeds；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
+> **状态（2026-08-17）：图像基准三轮已执行并完成聚合，8 词条升至 Confidence B（3 个独立模型家族）。** run 001（seed 1，192 张，2×Seedream）+ run 002（seeds 2–3，384 张，2×Seedream）+ run 003（seeds 1–3，288 张，智谱 CogView-4 @1440×1440）：3 家族 × 6 场景 × 3 seeds × Control/Treatment，每词 54 对观测。
+> 评测 = 豆包 VLM YES/NO adherence，每图独立两轮 + 矛盾人工裁决（三轮共裁决 4+12+11 处，逐张核对图片，注记见 evaluations 文件的 `evaluator.auditResolved` 字段）。
+> 汇总：`benchmark/results/summary-image-baseline-001+image-baseline-002+image-baseline-003.json`；免费再分析：`node benchmark/analyze-baseline.js --run image-baseline-001`。
+> 与 §4.1 规划的差异：Seedream 家族内 2 模型 + CogView 家族 1 模型补齐第三家族；CogView-4 不支持 2048²（上限 2²¹ px），用 1440²；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
 
-实测结果（heuristic 估计 → C 级 12 对 → B 级 36 对）：
+实测结果（heuristic 估计 → C 级 12 对 → B 级 36 对（Seedream×2）→ B 级 54 对（3 家族））：
 
-| 词条 | heuristic | C（12 对） | **B（36 对）** |
-|---|---:|---:|---:|
-| monochrome 黑白 | 88 | 100 | **100** |
-| anime style 动漫风格 | 82 | 100 | **100** |
-| volumetric light 体积光 | 72 | 80 | **86** |
-| golden hour 黄金时刻 | 92 | 80 | **79** |
-| symmetrical composition 对称构图 | 80 | 90 | **78** |
-| shallow depth of field 浅景深 | 82 | 77 | **71** |
-| close-up 特写 | 90 | 80 | **67** |
-| rule of thirds 三分法 | 55 | 63 | **66** |
+| 词条 | heuristic | C（12 对） | B 36 对 | **B 54 对（3 家族）** |
+|---|---:|---:|---:|---:|
+| monochrome 黑白 | 88 | 100 | 100 | **82** |
+| anime style 动漫风格 | 82 | 100 | 100 | **100** |
+| volumetric light 体积光 | 72 | 80 | 86 | **64** |
+| golden hour 黄金时刻 | 92 | 80 | 79 | **79** |
+| symmetrical composition 对称构图 | 80 | 90 | 78 | **65** |
+| shallow depth of field 浅景深 | 82 | 77 | 71 | **66** |
+| close-up 特写 | 90 | 80 | 67 | **61** |
+| rule of thirds 三分法 | 55 | 63 | 66 | **57** |
+
+**家族偏差 > 种子方差**：CogView-4 单家族 modelScore 与 Seedream 差距巨大——monochrome 100/100 vs **61**、volumetric light 83/90 vs **38**、anime 100/100/100（唯一跨家族满分）。这实证了 §Confidence v0.2 的判断：同厂两代模型的一致不能外推为跨模型结论，第三独立家族的信息增量远大于追加 seed。
 
 ### 深度发现 / Findings（run 001，复用已付费数据的免费再分析）
 
