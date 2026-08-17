@@ -232,13 +232,17 @@
         "en": []
       },
       "score": {
-        "value": 92,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 80,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 92
       },
       "relations": {
         "hardConflict": [],
@@ -364,13 +368,17 @@
         "en": []
       },
       "score": {
-        "value": 72,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 80,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 72
       },
       "relations": {
         "hardConflict": [],
@@ -852,13 +860,17 @@
         ]
       },
       "score": {
-        "value": 90,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 80,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 90
       },
       "relations": {
         "hardConflict": [],
@@ -1103,13 +1115,17 @@
         "en": []
       },
       "score": {
-        "value": 55,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 63,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 55
       },
       "relations": {
         "hardConflict": [],
@@ -1146,13 +1162,17 @@
         "en": []
       },
       "score": {
-        "value": 80,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 90,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 80
       },
       "relations": {
         "hardConflict": [],
@@ -1533,13 +1553,17 @@
         "en": []
       },
       "score": {
-        "value": 88,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 100,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 88
       },
       "relations": {
         "hardConflict": [
@@ -1768,13 +1792,17 @@
         "en": []
       },
       "score": {
-        "value": 82,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 100,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 82
       },
       "relations": {
         "hardConflict": [],
@@ -2471,13 +2499,17 @@
         ]
       },
       "score": {
-        "value": 82,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 77,
+        "status": "benchmarked",
+        "confidence": "C",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 24,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 82
       },
       "relations": {
         "hardConflict": [],
@@ -2789,7 +2821,7 @@
   "meta": {
     "totalAtoms": 60,
     "coverageTarget": 200,
-    "source": "核心词库 v3：冲突表与槽位提示迁入数据（atoms.freeTextConflicts / slots.freeTextHints / slots.timeIrrelevantHints），代码零硬编码规则。",
+    "source": "核心词库 v3：8 词条经 benchmark 管道实测（image-baseline-001，Confidence C），其余 52 词条为 heuristic 经验估计；冲突表与槽位提示已迁入数据。",
     "scoreGuide": {
       "high": 80,
       "mid": 60,
@@ -2804,6 +2836,15 @@
     "scoringStatus": {
       "heuristic": "经验估计，未经实测",
       "benchmarked": "经 benchmark 管道实测，附样本/模型/置信度"
+    },
+    "benchmark": {
+      "runs": [
+        "image-baseline-001"
+      ],
+      "benchmarkVersion": "0.1",
+      "benchmarkedAtoms": 8,
+      "confidence": "C",
+      "note": "8 atoms measured via 2 models x 6 scenes A/B (12 paired observations each, Confidence C). Full protocol & raw data: docs/BENCHMARK.md + benchmark/results/."
     }
   }
 }
