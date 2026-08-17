@@ -457,8 +457,9 @@
       var opt = buildOptimized(r);
       var div = el('div', 'opt-block');
       div.innerHTML = renderOptimizedHtml(opt);
-      var head = box.querySelector('.rep-head');
-      head.parentNode.insertBefore(div, head.nextSibling);
+      var btnRow = box.querySelector('.btn-row');
+      btnRow.parentNode.insertBefore(div, btnRow);
+      if (div.scrollIntoView) div.scrollIntoView({ behavior: 'smooth', block: 'center' });
       var copyBtn = div.querySelector('[data-optcopy]');
       if (copyBtn) copyBtn.addEventListener('click', function () { copyText(optCopyText(opt)); });
     });
