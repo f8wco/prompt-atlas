@@ -5,12 +5,18 @@
   { "text": "golden hours of fun", "expectFound": [], "expectNot": ["golden-hour"] },
   { "text": "大特写镜头", "expectFound": ["extreme-close-up"], "expectNot": ["close-up"] },
   { "text": "希区柯克变焦", "expectFound": ["dolly-zoom"], "expectNot": [] },
-  { "text": "a girl in a city, cinematic", "expectFound": ["cinematic"], "expectNot": [] },
+  { "text": "a girl in a city, cinematic", "expectFound": ["cinematic"], "expectNot": [], "expectMacroCount": 1, "expectReliability": null },
   { "text": "shallow depth of field, creamy bokeh", "expectFound": ["shallow-dof"], "expectNot": [] },
   { "text": "slow motion", "expectFound": ["slow-motion"], "expectNot": ["motion"] },
   { "text": "a dolly zoom shot, vertigo effect", "expectFound": ["dolly-zoom"], "expectNot": ["dolly-in", "dolly-out"] },
   { "text": "close up portrait", "expectFound": ["close-up"], "expectNot": [] },
   { "text": "timelapse sky", "expectFound": ["time-lapse"], "expectNot": [] },
   { "text": "雨夜街景", "expectFound": ["rainy-night"], "expectNot": [], "expectImplied": [{ "slot": "time", "atom": "night" }] },
-  { "text": "电影质感", "expectFound": ["cinematic"], "expectNot": [] }
+  { "text": "电影质感", "expectFound": ["cinematic"], "expectNot": [] },
+  { "text": "time-lapse sky", "mode": "image", "expectNot": ["time-lapse"], "expectMismatch": ["time-lapse"] },
+  { "text": "slow motion portrait", "mode": "image", "expectNot": ["slow-motion"], "expectMismatch": ["slow-motion"] },
+  { "text": "anime style, photorealistic portrait", "expectFound": ["anime", "photoreal"], "expectTensions": ["anime↔photoreal"], "expectConsistency": 90 },
+  { "text": "rainy night street, at night", "expectFound": ["rainy-night", "night"], "expectRedundants": ["rainy-night↔night"] },
+  { "text": "monochrome portrait, vivid colors", "expectFound": ["monochrome", "high-sat"], "expectConsistency": 70 },
+  { "text": "深邃隧道中的金色粒子", "expectNotApplicable": ["time"] }
 ]
