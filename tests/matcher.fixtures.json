@@ -1,0 +1,12 @@
+[
+  { "text": "extreme close-up portrait", "expectFound": ["extreme-close-up"], "expectNot": ["close-up"] },
+  { "text": "extreme wide shot of the valley", "expectFound": ["extreme-wide"], "expectNot": ["wide"] },
+  { "text": "rainy night street", "expectFound": ["rainy-night"], "expectNot": ["night"] },
+  { "text": "golden hours of fun", "expectFound": [], "expectNot": ["golden-hour"] },
+  { "text": "大特写镜头", "expectFound": ["extreme-close-up"], "expectNot": ["close-up"] },
+  { "text": "希区柯克变焦", "expectFound": ["dolly-zoom"], "expectNot": [] },
+  { "text": "a girl in a city, cinematic", "expectFound": ["cinematic"], "expectNot": [] },
+  { "text": "shallow depth of field, creamy bokeh", "expectFound": ["shallow-dof"], "expectNot": [] },
+  { "text": "slow motion", "expectFound": ["slow-motion"], "expectNot": ["motion"] },
+  { "text": "a dolly zoom shot, vertigo effect", "expectFound": ["dolly-zoom"], "expectNot": ["dolly-in", "dolly-out"] }
+]
