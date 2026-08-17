@@ -8,7 +8,8 @@
     "test": "node tests/run-tests.js",
     "validate:schema": "node scripts/validate-schema.js",
     "validate:core": "node scripts/validate-core.js",
-    "validate": "npm run validate:schema && npm run validate:core",
+    "validate:docs": "node scripts/check-docs-consistency.js",
+    "validate": "npm run validate:schema && npm run validate:core && npm run validate:docs",
     "check": "node scripts/check.js"
   },
   "devDependencies": {
