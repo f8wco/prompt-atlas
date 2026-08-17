@@ -75,6 +75,18 @@
 - 同一语言内，一个 alias 只能映射到一个 canonical id（CI 校验）；
 - 常见差异（`close up`/`closeup`/`close-up`、`time lapse`/`timelapse`）用 alias 归一，而不是造新词条。
 
+## 6. v3 新增：自由文本规则入数据 / Free-text Rules in Data (v3)
+
+v3 起，引擎**零硬编码规则**，所有自由文本规则都在 core.json（CI 校验）：
+
+| 字段 | 位置 | 语义 |
+|---|---|---|
+| `freeTextConflicts: string[]` | atoms[] | 词条 vs 自由文本的冲突关键词（如 teal-orange ↔ 黑金） |
+| `freeTextHints: string[]` | slots[] | 槽位「疑似已描述」的提示词（如 lighting ↔ 光影） |
+| `timeIrrelevantHints: string[]` | slots[time] | 时间维度失去意义的语境（隧道/星云/太空等抽象空间） |
+
+词条间关系仍走 `relations`（见第 3 节）；`freeTextConflicts` 只负责「词条 vs 原文自由文本」。
+
 ## 6. 校验清单（CI 强制执行）/ Validation Checklist
 
 1. JSON Schema：字段缺失、类型不符、enum 越界、score.value 非 0-100 → fail
