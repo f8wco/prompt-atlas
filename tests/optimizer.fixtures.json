@@ -1,0 +1,40 @@
+[
+  {
+    "name": "bare prompt, video mode: one candidate per slot, aerial wins camera",
+    "text": "a girl in a city",
+    "mode": "video",
+    "expectAdded": ["aerial"],
+    "expectNotAdded": ["orbit", "tracking", "dolly-in"],
+    "maxAddedPerSlot": 1
+  },
+  {
+    "name": "static camera: tracking/orbit must never be selected",
+    "text": "static camera",
+    "mode": "video",
+    "expectNotAdded": ["tracking", "orbit"],
+    "maxAddedPerSlot": 1
+  },
+  {
+    "name": "image mode: camera movement never suggested",
+    "text": "a girl in a city",
+    "mode": "image",
+    "expectNotAdded": ["aerial", "tracking", "orbit", "dolly-in", "handheld"],
+    "maxAddedPerSlot": 1
+  },
+  {
+    "name": "free-text hint: hinted slots get no suggestion",
+    "text": "电影级光影渲染",
+    "mode": "video",
+    "expectMaybeSlots": ["lighting"],
+    "expectNotAdded": ["golden-hour", "neon", "overcast"]
+  },
+  {
+    "name": "complete expert prompt: zero additions",
+    "text": "电影级光影渲染，黑金背景金色粒子深邃隧道，运镜一镜到底，面部特写镜头，对称法阵居中，史诗感，顶级国漫",
+    "mode": "video",
+    "expectAdded": [],
+    "expectNotAdded": ["golden-hour", "teal-orange", "anime", "aerial", "dusk", "night"],
+    "expectMaybeSlots": ["lighting", "color", "camera", "composition", "style", "time"],
+    "maxAddedPerSlot": 1
+  }
+]
