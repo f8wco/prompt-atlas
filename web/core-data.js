@@ -27,16 +27,17 @@ window.PROMPT_ATLAS = {
                                                       "status":  "benchmarked",
                                                       "confidence":  "B",
                                                       "benchmarkVersion":  "0.1",
-                                                      "sampleSize":  72,
+                                                      "sampleSize":  108,
                                                       "models":  [
                                                                      "doubao-seedream-4-0-250828",
-                                                                     "doubao-seedream-4-5-251128"
+                                                                     "doubao-seedream-4-5-251128",
+                                                                     "zhipu-cogview-4"
                                                                  ],
                                                       "updatedAt":  "2026-08",
                                                       "heuristicValue":  92,
                                                       "measured":  {
                                                                        "adherence":  100,
-                                                                       "baseline":  70,
+                                                                       "baseline":  69,
                                                                        "lift":  31
                                                                    }
                                                   },
@@ -216,21 +217,22 @@ window.PROMPT_ATLAS = {
                                                                ]
                                                     },
                                         "score":  {
-                                                      "value":  86,
+                                                      "value":  64,
                                                       "status":  "benchmarked",
                                                       "confidence":  "B",
                                                       "benchmarkVersion":  "0.1",
-                                                      "sampleSize":  72,
+                                                      "sampleSize":  108,
                                                       "models":  [
                                                                      "doubao-seedream-4-0-250828",
-                                                                     "doubao-seedream-4-5-251128"
+                                                                     "doubao-seedream-4-5-251128",
+                                                                     "zhipu-cogview-4"
                                                                  ],
                                                       "updatedAt":  "2026-08",
                                                       "heuristicValue":  72,
                                                       "measured":  {
-                                                                       "adherence":  97,
-                                                                       "baseline":  36,
-                                                                       "lift":  62
+                                                                       "adherence":  79,
+                                                                       "baseline":  31,
+                                                                       "lift":  48
                                                                    }
                                                   },
                                         "relations":  {
@@ -642,10 +644,11 @@ window.PROMPT_ATLAS = {
                                                    "status":  "benchmarked",
                                                    "confidence":  "B",
                                                    "benchmarkVersion":  "0.1",
-                                                   "sampleSize":  72,
+                                                   "sampleSize":  108,
                                                    "models":  [
                                                                   "doubao-seedream-4-0-250828",
-                                                                  "doubao-seedream-4-5-251128"
+                                                                  "doubao-seedream-4-5-251128",
+                                                                  "zhipu-cogview-4"
                                                               ],
                                                    "updatedAt":  "2026-08",
                                                    "heuristicValue":  82,
@@ -1257,21 +1260,22 @@ window.PROMPT_ATLAS = {
                                                             ]
                                                  },
                                      "score":  {
-                                                   "value":  100,
+                                                   "value":  82,
                                                    "status":  "benchmarked",
                                                    "confidence":  "B",
                                                    "benchmarkVersion":  "0.1",
-                                                   "sampleSize":  72,
+                                                   "sampleSize":  108,
                                                    "models":  [
                                                                   "doubao-seedream-4-0-250828",
-                                                                  "doubao-seedream-4-5-251128"
+                                                                  "doubao-seedream-4-5-251128",
+                                                                  "zhipu-cogview-4"
                                                               ],
                                                    "updatedAt":  "2026-08",
                                                    "heuristicValue":  88,
                                                    "measured":  {
-                                                                    "adherence":  100,
+                                                                    "adherence":  87,
                                                                     "baseline":  0,
-                                                                    "lift":  100
+                                                                    "lift":  87
                                                                 }
                                                },
                                      "relations":  {
@@ -1756,20 +1760,21 @@ window.PROMPT_ATLAS = {
                                                                   ]
                                                        },
                                            "score":  {
-                                                         "value":  66,
+                                                         "value":  57,
                                                          "status":  "benchmarked",
                                                          "confidence":  "B",
                                                          "benchmarkVersion":  "0.1",
-                                                         "sampleSize":  72,
+                                                         "sampleSize":  108,
                                                          "models":  [
                                                                         "doubao-seedream-4-0-250828",
-                                                                        "doubao-seedream-4-5-251128"
+                                                                        "doubao-seedream-4-5-251128",
+                                                                        "zhipu-cogview-4"
                                                                     ],
                                                          "updatedAt":  "2026-08",
                                                          "heuristicValue":  55,
                                                          "measured":  {
-                                                                          "adherence":  94,
-                                                                          "baseline":  97,
+                                                                          "adherence":  85,
+                                                                          "baseline":  87,
                                                                           "lift":  0
                                                                       }
                                                      },
@@ -1822,21 +1827,22 @@ window.PROMPT_ATLAS = {
                                                                   ]
                                                        },
                                            "score":  {
-                                                         "value":  78,
+                                                         "value":  65,
                                                          "status":  "benchmarked",
                                                          "confidence":  "B",
                                                          "benchmarkVersion":  "0.1",
-                                                         "sampleSize":  72,
+                                                         "sampleSize":  108,
                                                          "models":  [
                                                                         "doubao-seedream-4-0-250828",
-                                                                        "doubao-seedream-4-5-251128"
+                                                                        "doubao-seedream-4-5-251128",
+                                                                        "zhipu-cogview-4"
                                                                     ],
                                                          "updatedAt":  "2026-08",
                                                          "heuristicValue":  80,
                                                          "measured":  {
-                                                                          "adherence":  81,
-                                                                          "baseline":  6,
-                                                                          "lift":  75
+                                                                          "adherence":  70,
+                                                                          "baseline":  4,
+                                                                          "lift":  67
                                                                       }
                                                      },
                                            "relations":  {
@@ -2832,21 +2838,22 @@ window.PROMPT_ATLAS = {
                                                            ]
                                                 },
                                     "score":  {
-                                                  "value":  67,
+                                                  "value":  61,
                                                   "status":  "benchmarked",
                                                   "confidence":  "B",
                                                   "benchmarkVersion":  "0.1",
-                                                  "sampleSize":  72,
+                                                  "sampleSize":  108,
                                                   "models":  [
                                                                  "doubao-seedream-4-0-250828",
-                                                                 "doubao-seedream-4-5-251128"
+                                                                 "doubao-seedream-4-5-251128",
+                                                                 "zhipu-cogview-4"
                                                              ],
                                                   "updatedAt":  "2026-08",
                                                   "heuristicValue":  90,
                                                   "measured":  {
-                                                                   "adherence":  78,
-                                                                   "baseline":  28,
-                                                                   "lift":  50
+                                                                   "adherence":  72,
+                                                                   "baseline":  30,
+                                                                   "lift":  43
                                                                }
                                               },
                                     "relations":  {
@@ -3197,21 +3204,22 @@ window.PROMPT_ATLAS = {
                                                                 ]
                                                      },
                                          "score":  {
-                                                       "value":  71,
+                                                       "value":  66,
                                                        "status":  "benchmarked",
                                                        "confidence":  "B",
                                                        "benchmarkVersion":  "0.1",
-                                                       "sampleSize":  72,
+                                                       "sampleSize":  108,
                                                        "models":  [
                                                                       "doubao-seedream-4-0-250828",
-                                                                      "doubao-seedream-4-5-251128"
+                                                                      "doubao-seedream-4-5-251128",
+                                                                      "zhipu-cogview-4"
                                                                   ],
                                                        "updatedAt":  "2026-08",
                                                        "heuristicValue":  82,
                                                        "measured":  {
-                                                                        "adherence":  95,
-                                                                        "baseline":  75,
-                                                                        "lift":  20
+                                                                        "adherence":  91,
+                                                                        "baseline":  76,
+                                                                        "lift":  15
                                                                     }
                                                    },
                                          "relations":  {
@@ -3677,16 +3685,17 @@ window.PROMPT_ATLAS = {
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  92,
                                     "measured":  {
                                                      "adherence":  100,
-                                                     "baseline":  70,
+                                                     "baseline":  69,
                                                      "lift":  31
                                                  }
                                 },
@@ -3866,21 +3875,22 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  86,
+                                    "value":  64,
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  72,
                                     "measured":  {
-                                                     "adherence":  97,
-                                                     "baseline":  36,
-                                                     "lift":  62
+                                                     "adherence":  79,
+                                                     "baseline":  31,
+                                                     "lift":  48
                                                  }
                                 },
                       "relations":  {
@@ -4571,21 +4581,22 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  67,
+                                    "value":  61,
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  90,
                                     "measured":  {
-                                                     "adherence":  78,
-                                                     "baseline":  28,
-                                                     "lift":  50
+                                                     "adherence":  72,
+                                                     "baseline":  30,
+                                                     "lift":  43
                                                  }
                                 },
                       "relations":  {
@@ -4933,20 +4944,21 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  66,
+                                    "value":  57,
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  55,
                                     "measured":  {
-                                                     "adherence":  94,
-                                                     "baseline":  97,
+                                                     "adherence":  85,
+                                                     "baseline":  87,
                                                      "lift":  0
                                                  }
                                 },
@@ -4999,21 +5011,22 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  78,
+                                    "value":  65,
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  80,
                                     "measured":  {
-                                                     "adherence":  81,
-                                                     "baseline":  6,
-                                                     "lift":  75
+                                                     "adherence":  70,
+                                                     "baseline":  4,
+                                                     "lift":  67
                                                  }
                                 },
                       "relations":  {
@@ -5543,21 +5556,22 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  100,
+                                    "value":  82,
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  88,
                                     "measured":  {
-                                                     "adherence":  100,
+                                                     "adherence":  87,
                                                      "baseline":  0,
-                                                     "lift":  100
+                                                     "lift":  87
                                                  }
                                 },
                       "relations":  {
@@ -5867,10 +5881,11 @@ window.PROMPT_ATLAS = {
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  82,
@@ -6831,21 +6846,22 @@ window.PROMPT_ATLAS = {
                                              ]
                                   },
                       "score":  {
-                                    "value":  71,
+                                    "value":  66,
                                     "status":  "benchmarked",
                                     "confidence":  "B",
                                     "benchmarkVersion":  "0.1",
-                                    "sampleSize":  72,
+                                    "sampleSize":  108,
                                     "models":  [
                                                    "doubao-seedream-4-0-250828",
-                                                   "doubao-seedream-4-5-251128"
+                                                   "doubao-seedream-4-5-251128",
+                                                   "zhipu-cogview-4"
                                                ],
                                     "updatedAt":  "2026-08",
                                     "heuristicValue":  82,
                                     "measured":  {
-                                                     "adherence":  95,
-                                                     "baseline":  75,
-                                                     "lift":  20
+                                                     "adherence":  91,
+                                                     "baseline":  76,
+                                                     "lift":  15
                                                  }
                                 },
                       "relations":  {
