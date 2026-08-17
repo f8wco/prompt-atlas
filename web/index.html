@@ -29,6 +29,11 @@
       </div>
       <div class="checker-grid">
         <div class="panel">
+          <div class="mode-row">
+            <span class="mode-label" data-i18n="mode-label">模式</span>
+            <button id="mode-image" class="mode-btn" data-i18n="mode-image">🖼️ 图片</button>
+            <button id="mode-video" class="mode-btn active" data-i18n="mode-video">🎬 视频</button>
+          </div>
           <textarea id="checker-input" rows="7" data-i18n-ph="checker-ph"></textarea>
           <div class="btn-row">
             <button id="checker-run" class="btn primary" data-i18n="checker-run">开始体检</button>
@@ -111,6 +116,7 @@
   </footer>
 
   <script src="core-data.js"></script>
+  <script src="core-lib.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
