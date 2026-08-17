@@ -22,6 +22,9 @@ const slotIds = new Set();
   if (typeof s.order !== 'number') err('slots[' + i + '].order must be a number');
   if (slotIds.has(s.id)) err('duplicate slot id: ' + s.id);
   slotIds.add(s.id);
+  ['freeTextHints', 'timeIrrelevantHints'].forEach(function (f) {
+    if (s[f] !== undefined && !Array.isArray(s[f])) err('slots[' + i + '].' + f + ' must be an array of strings');
+  });
 });
 
 const atoms = core.atoms || [];
@@ -78,6 +81,10 @@ atoms.forEach(function (a) {
   ['hardConflict', 'softTension', 'redundant', 'requires', 'implies', 'expandsTo'].forEach(function (k) {
     if (!Array.isArray(rel[k])) err(where + ': relations.' + k + ' must be an array');
   });
+
+  if (a.freeTextConflicts !== undefined && !Array.isArray(a.freeTextConflicts)) {
+    err(where + ': freeTextConflicts must be an array of strings');
+  }
 
   if (a.type === 'macro') {
     if (!(rel.expandsTo || []).length && !(rel.implies || []).length) {
