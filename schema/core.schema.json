@@ -1,11 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://f8wco.github.io/prompt-atlas/schema/core.schema.json",
-  "title": "Visual Prompt Atlas core dictionary v2",
+  "title": "Visual Prompt Atlas core dictionary v3",
   "type": "object",
   "required": ["version", "name", "nameEn", "slots", "atoms", "meta"],
   "properties": {
-    "version": { "const": 2 },
+    "version": { "const": 3 },
     "name": { "type": "string" },
     "nameEn": { "type": "string" },
     "slots": {
@@ -20,7 +20,9 @@
           "en": { "type": "string" },
           "order": { "type": "number" },
           "desc": { "type": "string" },
-          "descEn": { "type": "string" }
+          "descEn": { "type": "string" },
+          "freeTextHints": { "type": "array", "items": { "type": "string" } },
+          "timeIrrelevantHints": { "type": "array", "items": { "type": "string" } }
         }
       }
     },
@@ -75,7 +77,8 @@
           },
           "desc": { "type": "string" },
           "descEn": { "type": "string" },
-          "example": { "type": "string" }
+          "example": { "type": "string" },
+          "freeTextConflicts": { "type": "array", "items": { "type": "string" } }
         }
       }
     },
