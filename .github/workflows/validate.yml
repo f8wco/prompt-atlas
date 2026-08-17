@@ -10,6 +10,9 @@ on:
       - 'tests/**'
       - 'scripts/**'
       - 'schema/**'
+      - 'README.md'
+      - 'README.en.md'
+      - 'SKILL.md'
       - '.github/workflows/validate.yml'
   pull_request:
     paths:
@@ -20,6 +23,9 @@ on:
       - 'tests/**'
       - 'scripts/**'
       - 'schema/**'
+      - 'README.md'
+      - 'README.en.md'
+      - 'SKILL.md'
       - '.github/workflows/validate.yml'
   workflow_dispatch:
 
@@ -45,6 +51,9 @@ jobs:
 
       - name: Run matcher & optimizer regression tests
         run: node tests/run-tests.js
+
+      - name: Docs consistency check (README/SKILL vs core.json)
+        run: node scripts/check-docs-consistency.js
 
       - name: Semantic sync check (order-insensitive)
         shell: bash
