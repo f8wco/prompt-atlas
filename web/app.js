@@ -53,6 +53,8 @@
       'opt-note-short': '注：{n} 槽疑似已描述',
       'opt-copy': '📋 复制优化版',
       'opt-covered': '✅ 原文含',
+      'opt-zh-title': '中文槽位解读',
+      'opt-prefix-note': '注：新增词条已置于开头作为全局前缀（长提示词尾部权重低）',
       'copy-ok': '已复制到剪贴板 ✓',
       'copy-fail': '复制失败，请手动复制',
       'input-empty': '请先贴入提示词',
@@ -124,6 +126,8 @@
       'opt-note-short': 'Note: {n} slot(s) likely described',
       'opt-copy': '📋 Copy optimized version',
       'opt-covered': '✅ in original',
+      'opt-zh-title': 'Slot breakdown (中文)',
+      'opt-prefix-note': 'Note: additions are placed at the front as global directives (tail weight is low in long prompts)',
       'copy-ok': 'Copied to clipboard ✓',
       'copy-fail': 'Copy failed, please copy manually',
       'input-empty': 'Please paste a prompt first',
@@ -316,7 +320,7 @@
     color: ['配色', '色调', '色彩', '黑金', '冷暖', '饱和度', '影调', '滤镜', 'color', 'palette', 'tone', 'grading'],
     style: ['风格', '质感', '画风', '电影感', '国漫', '日系', '写实', '二次元', '水墨', '院线', 'style', 'look', 'realistic', 'render'],
     mood: ['氛围', '情绪', '史诗', '温馨', '紧张', '神秘', '压抑', '张力', 'mood', 'atmosphere', 'epic', 'tense'],
-    time: ['夜晚', '白天', '清晨', '黄昏', '时代', '古代', '未来', 'night', 'day', 'morning', 'evening'],
+    time: ['夜晚', '白天', '清晨', '黄昏', '时代', '古代', '未来', '隧道', '虚空', '抽象', '星云', '太空', '宇宙', '黑洞', 'night', 'day', 'morning', 'evening', 'space', 'nebula', 'void', 'tunnel'],
     technique: ['特效', '粒子', '景深', '慢镜头', '延时', '一镜到底', '渲染', 'depth of field', 'effect', 'particle', 'render', 'vfx']
   };
 
@@ -484,14 +488,24 @@
       slotNotes.push({ name: slotName(d.slot), text: parts.join('；') || '—' });
     });
     var base = r.text.trim();
-    var en = base + (cleanAdds.length ? ', ' + cleanAdds.map(function (a) { return a.en; }).join(', ') : '');
+    var isLong = base.length > 180;
+    var en;
+    if (cleanAdds.length) {
+      if (isLong) {
+        en = 'Global directives: ' + cleanAdds.map(function (a) { return a.en; }).join(', ') + '\n\n' + base;
+      } else {
+        en = base + ', ' + cleanAdds.map(function (a) { return a.en; }).join(', ');
+      }
+    } else {
+      en = base;
+    }
     var zhLines = [];
     r.covered.forEach(function (s) {
       var names = r.perSlot[s.id].map(atomName).join('、');
       zhLines.push(slotName(s) + '：' + t('opt-covered') + ' ' + names);
     });
     slotNotes.forEach(function (n) { zhLines.push(n.name + '：' + n.text); });
-    return { en: en, zhLines: zhLines, added: cleanAdds.length, skipped: skippedCount, maybe: r.maybeCount };
+    return { en: en, zhLines: zhLines, added: cleanAdds.length, skipped: skippedCount, maybe: r.maybeCount, longPrefix: !!(cleanAdds.length && isLong) };
   }
 
   function renderOptimizedHtml(opt) {
@@ -501,6 +515,7 @@
     html += '<div class="opt-zh">' + opt.zhLines.join('<br>') + '</div>';
     if (opt.maybe) html += '<div class="opt-note">' + t('opt-note').replace('{n}', opt.maybe) + '</div>';
     html += '<div class="opt-stats">' + t('opt-add') + '：' + opt.added + ' · ' + t('opt-skip') + '：' + opt.skipped + '</div>';
+    if (opt.longPrefix) html += '<div class="opt-note">' + t('opt-prefix-note') + '</div>';
     html += '<button class="btn primary" data-optcopy="1">' + t('opt-copy') + '</button>';
     return html;
   }
@@ -509,9 +524,10 @@
     var lines = [];
     lines.push('🎬 ' + t('opt-title'));
     lines.push('EN: ' + opt.en);
-    lines.push(t('out-zh') + '：');
+    lines.push(t('opt-zh-title') + '：');
     opt.zhLines.forEach(function (l) { lines.push('  ' + l); });
     if (opt.maybe) lines.push(t('opt-note').replace('{n}', opt.maybe));
+    if (opt.longPrefix) lines.push(t('opt-prefix-note'));
     lines.push('—— ' + t('brand') + ' Visual Prompt Atlas');
     return lines.join('\n');
   }
