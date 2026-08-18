@@ -94,6 +94,7 @@ prompt-atlas/
 │   └── results/          # 原始观测 + VLM 判定 + summary-*.json
 ├── docs/
 │   ├── SCHEMA.md         # 数据模型规范
+│   ├── IR.md             # Scene IR 中间表示设计（Prompt Compiler 路线）
 │   ├── MIGRATION-v2.md   # 迁移记录
 │   ├── BENCHMARK.md      # 可复现实测协议
 │   ├── ECONOMY.md        # 积分/徽章/悬赏激励体系
