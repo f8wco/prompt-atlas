@@ -119,6 +119,7 @@
       'cp-c': '覆盖',
       'cp-s': '一致性',
       'cp-f': '留白',
+      'ev-note': '实测 {b}/{t} · 最低证据 {f}',
       'card-img-note': '示意图占位 · 接入生图 API 后替换为真实画面',
       'card-empty': '从左侧选择词条，实时生成配方卡',
       'card-slots': '槽位覆盖',
@@ -237,6 +238,7 @@
       'cp-c': 'Coverage',
       'cp-s': 'Consistency',
       'cp-f': 'Freedom',
+      'ev-note': 'Evidence {b}/{t} benchmarked · floor {f}',
       'card-img-note': 'Placeholder — replaced by a real generated frame once an image API is connected',
       'card-empty': 'Pick atoms on the left to build your card',
       'card-slots': 'Slots covered',
@@ -390,6 +392,9 @@
     counts.push(t('sec-tension') + ' ' + r.tensions.length);
     counts.push(t('sec-redundant') + ' ' + r.redundants.length);
     html += '<div class="rep-counts">' + counts.join(' · ') + '</div>';
+    if (r.evidence && r.evidence.total > 0) {
+      html += '<div class="rep-ev">' + t('ev-note').replace('{b}', r.evidence.benchmarked).replace('{t}', r.evidence.total).replace('{f}', r.evidence.confidenceFloor) + '</div>';
+    }
     if (r.maybeCount > 0) {
       html += '<div class="rep-maybe-note">' + t('opt-note-short').replace('{n}', r.maybeCount) + '</div>';
     }
@@ -637,10 +642,14 @@
   }
   function profileLine(p) {
     if (!p) return '—';
-    return t('cp-r') + ' ' + (p.reliability === null ? '—' : p.reliability) +
+    var line = t('cp-r') + ' ' + (p.reliability === null ? '—' : p.reliability) +
       ' · ' + t('cp-c') + ' ' + p.covered.length + '/' + p.applicable.length +
       ' · ' + t('cp-s') + ' ' + p.consistency +
       ' · ' + t('cp-f') + ' ' + p.freedom;
+    if (p.evidence && p.evidence.total > 0) {
+      line += ' · ' + t('ev-note').replace('{b}', p.evidence.benchmarked).replace('{t}', p.evidence.total).replace('{f}', p.evidence.confidenceFloor);
+    }
+    return line;
   }
   function slotOf(a) {
     for (var i = 0; i < SLOTS.length; i++) if (SLOTS[i].id === a.slot) return SLOTS[i];
