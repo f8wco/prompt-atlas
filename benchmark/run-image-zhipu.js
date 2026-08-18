@@ -13,7 +13,11 @@ const https = require('https');
 const env = fs.readFileSync(path.join(__dirname, '.env.local'), 'utf8');
 const API_KEY = (env.match(/ZHIPU_API_KEY=(.+)/) || [])[1].trim();
 
-const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifests', 'image-baseline-003.json'), 'utf8'));
+const args0 = process.argv.slice(2);
+function argVal0(name, fallback) { const i = args0.indexOf(name); return i !== -1 && args0[i + 1] ? args0[i + 1] : fallback; }
+const runIdArg = argVal0('--run', 'image-baseline-003');
+
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifests', runIdArg + '.json'), 'utf8'));
 const MODEL = manifest.models[0];
 const API_MODEL = 'cogview-4';
 const seeds = manifest.seeds;
@@ -22,6 +26,8 @@ const runId = manifest.runId;
 const args = process.argv.slice(2);
 function argVal(name, fallback) { const i = args.indexOf(name); return i !== -1 && args[i + 1] ? args[i + 1] : fallback; }
 const limit = parseInt(argVal('--limit', '999999'), 10);
+// CogView-4 hard cap: max 2^21 px per side pair — downgrade oversize manifests and record honestly
+const API_SIZE = (parseInt(manifest.size.split('x')[0], 10) > 1440) ? '1440x1440' : manifest.size;
 
 const imgDir = path.join(__dirname, 'results', 'images', runId);
 fs.mkdirSync(imgDir, { recursive: true });
@@ -89,7 +95,7 @@ async function main() {
     const imgFile = path.join(imgDir, id + '.jpg');
     if (fs.existsSync(imgFile) && fs.statSync(imgFile).size > 10000) { skipped++; continue; }
     try {
-      const r = await postJson({ model: API_MODEL, prompt: t.prompt, size: manifest.size });
+      const r = await postJson({ model: API_MODEL, prompt: t.prompt, size: API_SIZE });
       if (r.status !== 200 || !r.body.data || !r.body.data[0] || !r.body.data[0].url) {
         failed++;
         const msg = (r.body.error && r.body.error.message) || JSON.stringify(r.body);
@@ -102,7 +108,7 @@ async function main() {
       const rec = {
         benchmarkVersion: manifest.benchmarkVersion, runId: runId, atomId: t.atomId,
         modality: 'image', model: MODEL, sceneTemplate: t.scene.id, condition: t.cond,
-        seed: t.seed, size: manifest.size, prompt: t.prompt,
+        seed: t.seed, size: API_SIZE, prompt: t.prompt,
         imageFile: id + '.jpg', imageSha256: sha,
         requestId: r.body.id || null, createdAt: new Date().toISOString()
       };
