@@ -5,11 +5,9 @@
 const fs = require('fs');
 const path = require('path');
 
-global.window = {};
 const root = path.join(__dirname, '..');
 
-eval(fs.readFileSync(path.join(root, 'web', 'core-data.js'), 'utf8'));
-const ATLAS = window.PROMPT_ATLAS;
+const ATLAS = require(path.join(root, 'web', 'core-data.js'));
 const lib = require(path.join(root, 'web', 'core-lib.js'));
 
 let passed = 0;
