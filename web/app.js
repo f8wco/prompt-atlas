@@ -817,6 +817,14 @@
           t('atom-measured').replace('{a}', mm.adherence).replace('{b}', mm.baseline).replace('{l}', mm.lift) +
           evidenceStats + '</div>';
       }
+      var byModelHtml = '';
+      if (a.score && a.score.byModel) {
+        var SHORT = { 'doubao-seedream-4-0-250828': 'Seedream 4.0', 'doubao-seedream-4-5-251128': 'Seedream 4.5', 'zhipu-cogview-4': 'CogView-4' };
+        var parts = Object.keys(a.score.byModel).map(function (m) {
+          return (SHORT[m] || m) + ' ' + a.score.byModel[m];
+        });
+        byModelHtml = '<div class="atom-bymodel">' + parts.join(' · ') + '</div>';
+      }
       var evidenceHtml = '';
       if (a.evidence && a.evidence.control && a.evidence.treatment) {
         var modelLabel = a.evidence.model.indexOf('zhipu') === 0 ? 'CogView-4'
@@ -836,6 +844,7 @@
         '<div class="atom-desc">' + term({ zh: a.desc, en: a.descEn }) + '</div>' +
         expandHtml +
         measuredHtml +
+        byModelHtml +
         evidenceHtml +
         '<div class="atom-example">' + a.example + '</div>';
       grid.appendChild(card);
