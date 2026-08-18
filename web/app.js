@@ -102,6 +102,13 @@
       'f-scene-ph': 'cyberpunk city street / 赛博朋克城市街头',
       'btn-random': '🎲 随机配方',
       'btn-reset': '重置',
+      'btn-share-card': '📤 分享配方',
+      'share-card-copied': '分享链接已复制 ✓',
+      'share-card-loaded': '已载入分享的配方 ✓',
+      'share-card-bad': '分享链接无效',
+      'evidence-without': '无词对照',
+      'evidence-with': '加词效果',
+      'evidence-note': '实测证据对 · {model} · {scene} 场景 · 判定 {c}→{t}',
       'out-en': 'English Prompt',
       'out-zh': '中文提示词',
       'out-card': '配方卡文本（可分享）',
@@ -209,6 +216,13 @@
       'f-scene-ph': 'cyberpunk city street / 赛博朋克城市街头',
       'btn-random': '🎲 Random recipe',
       'btn-reset': 'Reset',
+      'btn-share-card': '📤 Share recipe',
+      'share-card-copied': 'Share link copied ✓',
+      'share-card-loaded': 'Shared recipe loaded ✓',
+      'share-card-bad': 'Invalid share link',
+      'evidence-without': 'Without term',
+      'evidence-with': 'With term',
+      'evidence-note': 'Measured pair · {model} · scene {scene} · judged {c}→{t}',
       'out-en': 'English Prompt',
       'out-zh': 'Chinese Prompt',
       'out-card': 'Shareable card text',
@@ -701,6 +715,35 @@
     renderPreview();
   }
 
+  /* ---------- recipe share link (URL hash, static-site friendly) ---------- */
+  function buildShareUrl() {
+    var payload = { v: 1, s: recipe.subject, a: recipe.action, sc: recipe.scene, p: recipe.picks, m: recipeMode };
+    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    return location.origin + location.pathname + '#r=' + b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function loadFromHash() {
+    if (location.hash.indexOf('#r=') !== 0) return false;
+    try {
+      var b64 = location.hash.slice(3).replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) b64 += '=';
+      var payload = JSON.parse(decodeURIComponent(escape(atob(b64))));
+      if (!payload || typeof payload !== 'object') return false;
+      recipe.subject = String(payload.s || '').slice(0, 300);
+      recipe.action = String(payload.a || '').slice(0, 300);
+      recipe.scene = String(payload.sc || '').slice(0, 300);
+      recipe.picks = {};
+      var picks = payload.p || {};
+      Object.keys(picks).forEach(function (sid) {
+        if (atomById(picks[sid])) recipe.picks[sid] = picks[sid]; // whitelist: dictionary ids only
+      });
+      if (payload.m === 'image' || payload.m === 'video') recipeMode = payload.m;
+      $('recipe-subject').value = recipe.subject;
+      $('recipe-action').value = recipe.action;
+      $('recipe-scene').value = recipe.scene;
+      return true;
+    } catch (e) { return false; }
+  }
+
   /* ================= Library / 词库 ================= */
   var libState = { slot: 'all', q: '' };
 
@@ -750,12 +793,26 @@
           t('atom-measured').replace('{a}', mm.adherence).replace('{b}', mm.baseline).replace('{l}', mm.lift) +
           '</div>';
       }
+      var evidenceHtml = '';
+      if (a.evidence && a.evidence.control && a.evidence.treatment) {
+        var modelLabel = a.evidence.model.indexOf('zhipu') === 0 ? 'CogView-4'
+          : (a.evidence.model.indexOf('4-0') !== -1 ? 'Seedream 4.0' : 'Seedream 4.5');
+        evidenceHtml = '<div class="atom-evidence">' +
+          '<a href="' + a.evidence.control + '" target="_blank" rel="noopener" title="' + t('evidence-without') + '">' +
+          '<img src="' + a.evidence.control + '" alt="control" loading="lazy"><span>' + t('evidence-without') + '</span></a>' +
+          '<a href="' + a.evidence.treatment + '" target="_blank" rel="noopener" title="' + t('evidence-with') + '">' +
+          '<img src="' + a.evidence.treatment + '" alt="treatment" loading="lazy"><span>' + t('evidence-with') + '</span></a>' +
+          '<em>' + t('evidence-note').replace('{model}', modelLabel).replace('{scene}', a.evidence.scene)
+            .replace('{c}', a.evidence.judged ? a.evidence.judged.control : '-').replace('{t}', a.evidence.judged ? a.evidence.judged.treatment : '-') + '</em>' +
+          '</div>';
+      }
       card.innerHTML =
         '<div class="atom-head"><span class="atom-zh">' + a.zh + meta + '</span>' + scoreBadgeHtml(a) + '</div>' +
         '<div class="atom-en">' + a.en + '</div>' +
         '<div class="atom-desc">' + term({ zh: a.desc, en: a.descEn }) + '</div>' +
         expandHtml +
         measuredHtml +
+        evidenceHtml +
         '<div class="atom-example">' + a.example + '</div>';
       grid.appendChild(card);
     });
@@ -799,6 +856,10 @@
     $('checker-example').addEventListener('click', function () { $('checker-input').value = EXAMPLES.good; runCheck(); });
     $('checker-example-bad').addEventListener('click', function () { $('checker-input').value = EXAMPLES.bad; runCheck(); });
     $('recipe-random').addEventListener('click', randomRecipe);
+    $('recipe-share').addEventListener('click', function () {
+      history.replaceState(null, '', buildShareUrl());
+      copyText(buildShareUrl());
+    });
     var rModeImage = $('recipe-mode-image');
     var rModeVideo = $('recipe-mode-video');
     function setRecipeMode(mode) {
@@ -829,4 +890,11 @@
 
   renderAll();
   wire();
+  var sharedLoaded = loadFromHash();
+  if (sharedLoaded) {
+    renderPickers();
+    renderPreview();
+    switchTab('recipe');
+    toast(t('share-card-loaded'));
+  }
 })();
