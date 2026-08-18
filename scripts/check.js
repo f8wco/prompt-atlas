@@ -26,6 +26,9 @@ console.log('Coverage:     ' + r.covered.length + '/' + r.applicable.length);
 console.log('Consistency:  ' + r.consistency + '/100');
 console.log('Freedom:      ' + r.freedom + '/' + r.applicable.length);
 console.log('ControlLevel: ' + r.controlLevel);
+if (r.evidence && r.evidence.total > 0) {
+  console.log('Evidence:     ' + r.evidence.benchmarked + '/' + r.evidence.total + ' benchmarked · floor ' + r.evidence.confidenceFloor);
+}
 console.log('counts: macros=' + r.macroCount + ' hardConflicts=' + r.hardConflicts.length + ' softTensions=' + r.tensions.length + ' redundant=' + r.redundants.length);
 
 console.log('\n== SLOTS ==');
