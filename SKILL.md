@@ -133,6 +133,7 @@ EN: a young woman walking in the rain in a cyberpunk city street, neon glow,
    ```
    node scripts/storyboard.js --total 60 --seg 15
    ```
+   或使用网页版（可分享链接）：`web/storyboard.html`（https://f8wco.github.io/prompt-atlas/storyboard.html）——贴入剧本自动拆段拆拍 + 每段 9 槽位选词 + 冲突检查 + Control Profile。
    输出 N 段 × 每段拍点骨架（如 [0-2s][2-4s][4-7s]...），长提示词的**时间戳结构是硬约束**，不要改动拍点边界
 3. 把剧本内容分配到拍点（叙事三段式：建立→发展→高潮/收尾），每拍写清：主体 + 动作 + 场景
 4. 为每段选 9 槽位词条（同工作流 A 的规则：每槽 1 个、hardConflict 禁止同选、运镜槽只对视频有效）
