@@ -32,7 +32,6 @@
       'mode-image': '🖼️ 图片',
       'mode-video': '🎬 视频',
       'report-empty': '等待输入…',
-      'report-score': '确定性得分',
       'profile-title': '提示词控制画像',
       'dim-reliability': '可靠性',
       'dim-coverage': '覆盖率',
@@ -115,7 +114,11 @@
       'out-card': '配方卡文本（可分享）',
       'btn-copy': '复制',
       'card-brand': '视觉配方卡 · Visual Prompt Atlas',
-      'card-score': '配方确定性',
+      'card-score': '配方卡 · Control Profile',
+      'cp-r': '可靠性',
+      'cp-c': '覆盖',
+      'cp-s': '一致性',
+      'cp-f': '留白',
       'card-img-note': '示意图占位 · 接入生图 API 后替换为真实画面',
       'card-empty': '从左侧选择词条，实时生成配方卡',
       'card-slots': '槽位覆盖',
@@ -147,7 +150,6 @@
       'mode-image': '🖼️ Image',
       'mode-video': '🎬 Video',
       'report-empty': 'Waiting for input…',
-      'report-score': 'Determinism Score',
       'profile-title': 'Prompt Control Profile',
       'dim-reliability': 'Reliability',
       'dim-coverage': 'Coverage',
@@ -230,7 +232,11 @@
       'out-card': 'Shareable card text',
       'btn-copy': 'Copy',
       'card-brand': 'VISUAL RECIPE CARD · PROMPT ATLAS',
-      'card-score': 'Recipe determinism',
+      'card-score': 'Recipe Card · Control Profile',
+      'cp-r': 'Reliability',
+      'cp-c': 'Coverage',
+      'cp-s': 'Consistency',
+      'cp-f': 'Freedom',
       'card-img-note': 'Placeholder — replaced by a real generated frame once an image API is connected',
       'card-empty': 'Pick atoms on the left to build your card',
       'card-slots': 'Slots covered',
@@ -622,15 +628,19 @@
   }
 
   function assemble() {
-    var baseEn = [recipe.subject, recipe.action, recipe.scene].filter(Boolean).join(' ');
-    var partsEn = pickedAtoms().map(function (a) { return a.en; });
-    var en = (baseEn ? baseEn + ', ' : '') + partsEn.join(', ');
+    var rp = LIB.recipeProfile(ATLAS, { subject: recipe.subject, action: recipe.action, scene: recipe.scene, picks: recipe.picks, mode: recipeMode });
+    var atoms = rp.atoms;
     var baseZh = recipe.subject + (recipe.action || '') + (recipe.scene ? '，' + recipe.scene : '');
-    var partsZh = pickedAtoms().map(function (a) { return slotName(slotOf(a)) + '：' + a.zh; });
+    var partsZh = atoms.map(function (a) { return slotName(slotOf(a)) + '：' + a.zh; });
     var zh = (baseZh ? baseZh + '。' : '') + partsZh.join('，') + (partsZh.length ? '。' : '');
-    var atoms = pickedAtoms();
-    var score = atoms.length ? Math.round(atoms.reduce(function (s, a) { return s + readScore(a); }, 0) / atoms.length) : 0;
-    return { en: en || '—', zh: zh || '—', score: score, atoms: atoms };
+    return { en: rp.en || '—', zh: zh || '—', atoms: atoms, profile: rp.profile };
+  }
+  function profileLine(p) {
+    if (!p) return '—';
+    return t('cp-r') + ' ' + (p.reliability === null ? '—' : p.reliability) +
+      ' · ' + t('cp-c') + ' ' + p.covered.length + '/' + p.applicable.length +
+      ' · ' + t('cp-s') + ' ' + p.consistency +
+      ' · ' + t('cp-f') + ' ' + p.freedom;
   }
   function slotOf(a) {
     for (var i = 0; i < SLOTS.length; i++) if (SLOTS[i].id === a.slot) return SLOTS[i];
@@ -644,7 +654,7 @@
     if (recipe.action) lines.push(t('f-action') + '：' + recipe.action);
     if (recipe.scene) lines.push(t('f-scene') + '：' + recipe.scene);
     a.atoms.forEach(function (x) { lines.push(slotName(slotOf(x)) + '：' + atomName(x) + '（' + x.en + '）'); });
-    lines.push(t('card-score') + '：' + a.score + '/100 · ' + t('card-slots') + '：' + a.atoms.length + '/' + SLOTS.length);
+    lines.push('Control Profile · ' + profileLine(a.profile) + ' · ' + t('card-slots') + '：' + a.atoms.length + '/' + SLOTS.length);
     lines.push('—— ' + t('brand') + ' Visual Prompt Atlas');
     return lines.join('\n');
   }
@@ -678,13 +688,13 @@
       box.innerHTML =
         '<div class="card-stage ' + gradClass() + '">' +
         '<div class="card-top"><span class="card-brand">' + t('card-brand') + '</span>' +
-        '<span class="card-scorepill">' + a.score + '/100</span></div>' +
+        '<span class="card-scorepill">R ' + (a.profile.reliability === null ? '—' : a.profile.reliability) + '</span></div>' +
         '<div class="card-mid"><div class="card-main">' + midMain +
-        '<small>' + t('card-score') + ': ' + a.score + '/100 · ' + t('card-slots') + ': ' + a.atoms.length + '/' + SLOTS.length + '</small></div>' +
+        '<small>' + profileLine(a.profile) + ' · ' + t('card-slots') + ': ' + a.atoms.length + '/' + SLOTS.length + '</small></div>' +
         '<span class="card-img-note">' + t('card-img-note') + '</span></div>' +
         '<div class="card-chips">' + chipsHtml + '</div>' +
         '</div>' +
-        '<div class="card-foot"><span>' + t('card-score') + '</span><b>' + a.score + '/100</b></div>';
+        '<div class="card-foot"><span>Control Profile</span><b>' + profileLine(a.profile) + '</b></div>';
     }
     $('prompt-en').textContent = a.en;
     $('prompt-zh').textContent = a.zh;
@@ -791,9 +801,12 @@
       var measuredHtml = '';
       if (a.score && a.score.status === 'benchmarked' && a.score.measured) {
         var mm = a.score.measured;
+        var evidenceStats = a.score.sampleSize
+          ? ' · ' + Math.round(a.score.sampleSize / 2) + ' 对 · ' + (a.score.models ? a.score.models.length : 0) + ' 家族'
+          : '';
         measuredHtml = '<div class="atom-measured">' +
           t('atom-measured').replace('{a}', mm.adherence).replace('{b}', mm.baseline).replace('{l}', mm.lift) +
-          '</div>';
+          evidenceStats + '</div>';
       }
       var evidenceHtml = '';
       if (a.evidence && a.evidence.control && a.evidence.treatment) {
