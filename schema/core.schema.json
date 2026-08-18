@@ -86,6 +86,19 @@
           "desc": { "type": "string" },
           "descEn": { "type": "string" },
           "example": { "type": "string" },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "control": { "type": "string" },
+              "treatment": { "type": "string" },
+              "model": { "type": "string" },
+              "scene": { "type": "string" },
+              "seed": { "type": "number" },
+              "source": { "type": "string" },
+              "selection": { "type": "string" },
+              "judged": { "type": "object" }
+            }
+          },
           "freeTextConflicts": { "type": "array", "items": { "type": "string" } }
         }
       }
