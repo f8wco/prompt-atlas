@@ -89,19 +89,21 @@ EN: a young woman walking in the rain in a cyberpunk city street, neon glow,
 **步骤 / Steps**：
 1. 先判断模态与意图（image/video）：**静态图片默认运镜槽位 = N/A**；适用槽位之外的留白是 Freedom 不是错误
 2. 逐槽扫描（Matcher 2.0）：最长词优先 + span 去重（extreme close-up 不再同时命中 close-up）+ 别名归一（close up/closeup）+ 英文边界；蕴含关系计覆盖不重复计分（rainy-night ⟹ night）
-3. 输出「9 槽位报告」，槽位状态为以下之一：
+3. 输出「9 槽位报告」，槽位状态为以下四态之一：
    - ✅ SPECIFIED 已指定（列出词条 + 分数）
    - ⚠️ FREE_TEXT 疑似已描述（原文含相关自由文本，标注人工确认）
    - ◻️ UNSPECIFIED 未指定（不是错误，是留给模型的决定）
-   - ➖ NOT_APPLICABLE 不适用（如静态图片的运镜）
-   - 🚫 CONFLICT 冲突（relations.hardConflict 或自由文本冲突提示）
+   - ➖ NOT_APPLICABLE 不适用（如静态图片的运镜；抽象空间场景的时间维度）
+   - 另有**独立冲突清单**（relations.hardConflict 或自由文本冲突）与**模态不符警告**（image 提示词中的 video-only 词条）
    - ⚠️ 不确定源：所有 heuristic 低分（<60）词条，逐个给出替换/补强建议；Macro（复合词）建议「拆解并增强」
-4. 计算得分（v0.2 公式，分母 = 适用槽位数）：
+4. 输出四维 Control Profile（v3，已废除单一总分；确定性命令行入口 `node scripts/check.js "<提示词>" [image|video]`）：
    ```
-   覆盖率 = 已覆盖槽位数 / 适用槽位数
-   确定性得分 = round(覆盖率 × (40 + 0.6 × 已识别词条平均分))
+   Reliability  可靠性   = 已识别词条平均分（macro 不计入），无词条时为 —
+   Coverage     覆盖率   = 已覆盖适用槽位 / 适用槽位总数
+   Consistency  一致性   = 100 − 硬冲突×30 − 软张力×10
+   Freedom      留白     = 未指定槽位数（不是错误，是创作自由）
+   ControlLevel 定性档位 = high / medium / low / conflict
    ```
-   分级：≥80 高 · 60–79 中 · 40–59 低 · <40 大量留白；如存在 FREE_TEXT 槽位，注明实际确定性可能高于得分
 5. 输出「优化版提示词」（Optimizer 2.0）：
    - **每槽最多新增 1 个词条**；候选必须与原文 + 已选词条**两两冲突检查**（relations.hardConflict）
    - 无合适候选时输出 **NO_SUGGESTION（保留自由）**——「不改」是正常结果
@@ -121,14 +123,40 @@ EN: a young woman walking in the rain in a cyberpunk city street, neon glow,
 - 提交前本地跑：`node scripts/validate-core.js` + `pwsh -File build.ps1` + `node tests/run-tests.js`（三者 CI 都会强制跑）
 - 扩充来源见 `docs/LAUNCH.md` 的 4 条管道（批量自生成 / CC0 素材匹配 / 悬赏认领 / 一词成名周赛）
 
-## 6. 边界与红线 / Boundaries
+## 6. 工作流 D：剧本 → 分镜提示词 / Workflow D — Script to Storyboard
+
+**触发**：用户给出一个剧本/故事/文案，要求按固定时长（如每段 15 秒）拆成多段视频提示词。
+
+**步骤 / Steps**：
+1. 问清三件事（缺才问）：**总时长与分段长度**（默认每段 15 秒）、**目标平台**（即梦/可灵/Sora 等）、**统一风格基调**（如「顶级国漫院线质感」）
+2. 生成时间骨架（确定性工具，非手算）：
+   ```
+   node scripts/storyboard.js --total 60 --seg 15
+   ```
+   输出 N 段 × 每段拍点骨架（如 [0-2s][2-4s][4-7s]...），长提示词的**时间戳结构是硬约束**，不要改动拍点边界
+3. 把剧本内容分配到拍点（叙事三段式：建立→发展→高潮/收尾），每拍写清：主体 + 动作 + 场景
+4. 为每段选 9 槽位词条（同工作流 A 的规则：每槽 1 个、hardConflict 禁止同选、运镜槽只对视频有效）
+5. 输出格式（与主流分镜模型兼容的时间戳格式）：
+   ```
+   【统一风格】<风格基调>，<全段共用的风格词条>
+   【第 1 段 / 15s】
+   [0-2s] <主体+动作+场景>, <光线>, <景别>, ...
+   [2-4s] ...
+   ...
+   【第 2 段 / 15s】 ...
+   ```
+6. 收尾必做：对每段跑一次 `node scripts/check.js "<该段提示词>" video`，报告冲突/漏槽；对整体给一句「控制 vs 自由」评价（分镜稿通常覆盖率高是正常的——它是高定制场景）
+
+**红线**：拍点边界、总段数由骨架工具确定；词条仍只从 core.json 选；每段运镜必须前后衔接（如第 1 段以特写收尾，第 2 段就不应突然全景开場，除非剧本要求）。
+
+## 7. 边界与红线 / Boundaries
 
 - 版权：真实电影片段只作参考描述，绝不直接复制受版权保护的作品描述；CC0 素材需标注来源
 - 诚实：确定性分数必须给依据，不编造「测试过」的结论
 - 语言：中英双语能力，跟随用户语言输出；词条引用同时给出 zh + en
 - 词库外概念：先标注「未收录（自拟）」再使用，并建议提交扩充
 
-## 7. 相关文档 / Related Docs
+## 8. 相关文档 / Related Docs
 
 - `README.md` — 项目总纲 / overview（中文）· `README.en.md`（English）
 - `docs/ECONOMY.md` — 积分/徽章/悬赏激励体系 / incentive system
