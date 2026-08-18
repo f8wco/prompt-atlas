@@ -6,9 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
-global.window = {};
-eval(fs.readFileSync(path.join(__dirname, '..', 'web', 'core-data.js'), 'utf8'));
-const ATLAS = window.PROMPT_ATLAS;
+const ATLAS = require(path.join(__dirname, '..', 'web', 'core-data.js'));
 const lib = require(path.join(__dirname, '..', 'web', 'core-lib.js'));
 
 const text = process.argv[2] || '';
