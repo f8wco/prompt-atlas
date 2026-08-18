@@ -4,26 +4,30 @@
     "image-baseline-002",
     "image-baseline-003"
   ],
-  "generatedAt": "2026-08-18T02:59:06.367Z",
+  "generatedAt": "2026-08-18T03:20:24.291Z",
   "categories": {
-    "deadWeight": [
-      {
-        "atom": "golden hour",
-        "adherence": 100,
-        "baseline": 69,
-        "lift": 31
-      },
-      {
-        "atom": "shallow depth of field",
-        "adherence": 91,
-        "baseline": 76,
-        "lift": 15
-      },
+    "redundant": [
       {
         "atom": "rule of thirds",
         "adherence": 85,
         "baseline": 87,
         "lift": -2
+      }
+    ],
+    "marginal": [
+      {
+        "atom": "shallow depth of field",
+        "adherence": 91,
+        "baseline": 76,
+        "lift": 15
+      }
+    ],
+    "usefulHighBaseline": [
+      {
+        "atom": "golden hour",
+        "adherence": 100,
+        "baseline": 69,
+        "lift": 31
       }
     ],
     "strongSwitch": [
