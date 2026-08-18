@@ -8,12 +8,18 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
-const summary = JSON.parse(fs.readFileSync(path.join(__dirname, 'results', 'summary-image-baseline-001+image-baseline-002.json'), 'utf8'));
+const summaryFile = process.argv[2] || 'summary-image-baseline-001+image-baseline-002.json';
+const summary = JSON.parse(fs.readFileSync(path.join(__dirname, 'results', summaryFile), 'utf8'));
 
 const ID_MAP = {
   'close-up': 'close-up', 'monochrome': 'monochrome', 'golden hour': 'golden-hour',
   'symmetrical composition': 'symmetry', 'shallow depth of field': 'shallow-dof',
-  'anime style': 'anime', 'volumetric light': 'volumetric', 'rule of thirds': 'rule-of-thirds'
+  'anime style': 'anime', 'volumetric light': 'volumetric', 'rule of thirds': 'rule-of-thirds',
+  // run 004 (12 targeted atoms, manifest names = core `en` values)
+  'macro': 'macro', 'telephoto compression': 'telephoto', 'fisheye lens': 'fisheye',
+  'rim light': 'rim', 'backlit silhouette': 'backlit', 'neon glow': 'neon',
+  'teal and orange': 'teal-orange', 'film grain': 'film-grain', 'pastel colors': 'pastel',
+  'ink wash painting': 'ink-wash', 'blue hour': 'blue-hour', 'negative space': 'negative-space'
 };
 
 const core = JSON.parse(fs.readFileSync(path.join(root, 'core.json'), 'utf8'));
