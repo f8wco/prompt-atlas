@@ -3014,5 +3014,7 @@
       "confidence": "B",
       "note": "8 atoms measured across 3 model families (Seedream 4.0/4.5 + Zhipu CogView-4): 54 paired observations each (Confidence B). Protocol & raw data: docs/BENCHMARK.md + benchmark/results/."
     }
-  }
+  },
+  "license": "CC-BY-4.0 (dictionary & benchmark data); code: MIT",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
 }
