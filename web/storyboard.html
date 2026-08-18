@@ -24,15 +24,17 @@
 
     <div class="panel sb-input">
       <label class="field">
-        <span>剧本 / 故事 / 文案</span>
-        <textarea id="sb-script" rows="6" placeholder="例：深夜的东京街头下着雨。一位穿风衣的女子独自走过霓虹灯下的十字路口，脚步溅起水花。她在便利店门口停下，望向橱窗里的自己。镜头缓缓推近她的侧脸，雨滴滑落，她转身消失在人群中……"></textarea>
+        <span>剧本 / 故事 / 文案（建议贴画面描述；小说原文可先点「🪄 改写指令」让任意 AI 转成画面文案）</span>
+        <textarea id="sb-script" rows="6" placeholder="例：雨夜的东京街头，霓虹灯牌在湿漉漉的柏油路上投下彩色的光。一位穿黑色风衣的女子撑伞走过十字路口……"></textarea>
       </label>
       <div class="sb-row">
         <label class="field"><span>总时长（秒）</span><input id="sb-total" type="number" value="30" min="5" max="600" step="1"></label>
         <label class="field"><span>每段时长（秒）</span><input id="sb-seg" type="number" value="15" min="5" max="60" step="1"></label>
-        <button id="sb-generate" class="btn primary">⚙️ 生成分镜骨架</button>
+        <button id="sb-generate" class="btn primary">⚙️ 生成分镜</button>
+        <button id="sb-example" class="btn ghost">🧪 试一试示例</button>
+        <button id="sb-rewrite" class="btn ghost">🪄 小说→画面 改写指令</button>
       </div>
-      <label class="field"><span>统一风格（全段共用）</span><input id="sb-style" placeholder="例：顶级国漫院线电影质感，8K超清"></label>
+      <label class="field"><span>统一风格（全段共用）</span><input id="sb-style" placeholder="例：电影质感，teal and orange 青橙调色"></label>
     </div>
 
     <div id="sb-segments"></div>
@@ -40,12 +42,15 @@
     <div class="panel sb-output" id="sb-output" style="display:none">
       <h3>生成结果</h3>
       <div class="sb-actions">
-        <button id="sb-copy-zh" class="btn primary">📋 复制中文分镜稿</button>
-        <button id="sb-copy-en" class="btn">📋 Copy EN Prompts</button>
-        <button id="sb-share" class="btn">📤 分享本分镜</button>
+        <button id="sb-copy-video" class="btn primary">🎬 复制视频提示词（每段一条）</button>
+        <button id="sb-copy-zh" class="btn">📋 复制分镜稿</button>
+        <button id="sb-copy-timeline" class="btn ghost">📋 时间轴大纲</button>
+        <button id="sb-share" class="btn ghost">📤 分享</button>
       </div>
+      <div class="sb-label">视频提示词 · 直接粘贴到即梦 / 可灵 / Sora</div>
+      <pre id="sb-video" class="sb-pre"></pre>
+      <div class="sb-label">分镜稿 · 给自己或团队看</div>
       <pre id="sb-zh" class="sb-pre"></pre>
-      <pre id="sb-en" class="sb-pre"></pre>
       <div id="sb-profile"></div>
     </div>
   </main>
