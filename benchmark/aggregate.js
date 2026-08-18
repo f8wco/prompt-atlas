@@ -38,6 +38,7 @@ for (const runId of runIds) {
 if (!totalObs) { console.error('no observations'); process.exit(2); }
 
 const manifest0 = manifests[runIds[0]];
+const allAtomNames = [...new Set(runIds.flatMap(r => manifests[r].atoms))]; // union across runs
 const allModels = [...new Set(runIds.flatMap(r => manifests[r].models))];
 const allScenes = [...new Set(runIds.flatMap(r => manifests[r].scenes.map(s => s.id)))];
 const allSeeds = [...new Set(runIds.flatMap(r => (manifests[r].seeds && manifests[r].seeds.length) ? manifests[r].seeds : [1]))];
@@ -54,7 +55,7 @@ const summary = {
   atoms: {}
 };
 
-manifest0.atoms.forEach(function (atomId) {
+allAtomNames.forEach(function (atomId) {
   const atom = { atomId: atomId };
   let pairs = 0, images = 0;
   allModels.forEach(function (model) {
