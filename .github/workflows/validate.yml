@@ -43,8 +43,7 @@ jobs:
         run: node scripts/validate-schema.js
 
       - name: Rebuild core-data.js from core.json
-        shell: pwsh
-        run: ./build.ps1
+        run: node scripts/build.js
 
       - name: Validate core schema & references
         run: node scripts/validate-core.js
@@ -62,8 +61,8 @@ jobs:
           node <<'EOF'
           const fs = require('fs');
           function extract(text) {
-            const m = text.match(/window\.PROMPT_ATLAS\s*=\s*([\s\S]*?);\s*$/);
-            if (!m) throw new Error('window.PROMPT_ATLAS payload not found');
+            const m = text.match(/var PROMPT_ATLAS_DATA\s*=\s*([\s\S]*?);\s*\nif \(typeof module/);
+            if (!m) throw new Error('PROMPT_ATLAS_DATA payload not found');
             return JSON.parse(m[1]);
           }
           function canon(v) {
