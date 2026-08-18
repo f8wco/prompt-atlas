@@ -593,3 +593,8 @@ footer code { background: #f0effe; border-radius: 5px; padding: 1px 6px; font-si
 .sb-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0; }
 .sb-pre { background: #f8fafc; border: 1px solid #e9ebf3; border-radius: 10px; padding: 12px; font-size: 12.5px; white-space: pre-wrap; word-break: break-word; max-height: 260px; overflow: auto; }
 .sb-prof { font-size: 12.5px; color: #374151; padding: 3px 0; border-bottom: 1px dashed #e9ebf3; }
+
+/* ---------- Storyboard tab in main page ---------- */
+#view-storyboard { max-width: 980px; margin: 0 auto; }
+#view-storyboard > * + * { margin-top: 16px; }
+#view-storyboard .sb-input textarea, #view-storyboard .sb-input input { width: 100%; box-sizing: border-box; }
