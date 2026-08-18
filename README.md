@@ -142,8 +142,21 @@ prompt-atlas/
 
 ## 📄 许可证 / License
 
-[MIT](LICENSE) · 词库数据（core.json）同样以 MIT 开放，欢迎 fork 与贡献。
+**代码 MIT**（`LICENSE`）· **数据 CC BY 4.0**（`DATA-LICENSE.md`）：`core.json` 与 `benchmark/` 数据可商用与再分发，**须署名**「Visual Prompt Atlas (f8wco/prompt-atlas)」并附链接；Agent 技能安装、CLI 调用、fork 代码等使用行为不受数据许可约束。
+
+## 📖 引用 / Citation
+
+数据和工具对你有帮助的话，请这样引用（CC BY 4.0 的署名要求即视为满足）：
+
+```bibtex
+@software{prompt-atlas,
+  author = {f8w},
+  title = {Visual Prompt Atlas: 9-slot prompt control system with cross-family benchmark evidence},
+  year = {2026},
+  url = {https://atlas.f8w.com}
+}
+```
 
 ## 🙏 贡献 / Contributing
 
-新增词条请按 `SKILL.md` 工作流 C 的规范提交 PR：修改 `core.json` 后运行 `node scripts/build.js`（或 `npm run build`），并附带打分依据。
+新增词条请按 `SKILL.md` 工作流 C 的规范提交 PR：修改 `core.json` 后运行 `node scripts/build.js`（或 `npm run build`），并附带打分依据。提交词条或实测数据即表示同意以 CC BY 4.0 授权收录（代码贡献仍为 MIT）。
