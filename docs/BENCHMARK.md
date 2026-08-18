@@ -5,6 +5,15 @@
 > 汇总：`benchmark/results/summary-image-baseline-001+image-baseline-002+image-baseline-003+image-baseline-004.json`；异常挖掘：`node benchmark/analyze-anomalies.js`；免费再分析：`node benchmark/analyze-baseline.js --run image-baseline-001`。
 > 与 §4.1 规划的差异：Seedream 家族内 2 模型 + CogView 家族 1 模型补齐第三家族；CogView-4 不支持 2048²（上限 2²¹ px），用 1440²；run 004 的 3 次生成失败为内容过滤假阳性（重试通过，失败记录见 `failures-*.jsonl`）；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
 
+### 跨裁判一致性 / Cross-Judge Agreement（2026-08-18）
+
+为量化「生成方=Seedream、裁判=豆包（同厂）」的 judge bias 风险，用**智谱 GLM-4V-Flash**（独立厂商）对 run 004 抽样 100 张重新判定：
+
+- **独立裁判一致率：81%**（81/100 agree，0 errors）——高于 B 级评测一致性门槛（≥0.75）
+- 19 处分歧分布：macro 4、film grain 4（最难判定的模糊词），其余分散在 rim/backlit/pastel/negative-space 等弱控制词
+- 结论：豆包裁判**不存在系统性同厂偏好**；分歧集中在语义边界模糊的词条上，与预期一致
+- 原始数据：`benchmark/results/cross-judge-image-baseline-004.json`；复跑：`node benchmark/cross-judge.js --run image-baseline-004 --sample 100`
+
 实测结果（heuristic 估计 → C 级 12 对 → B 级 36 对（Seedream×2）→ B 级 54 对（3 家族））：
 
 | 词条 | heuristic | C（12 对） | B 36 对 | **B 54 对（3 家族）** |
