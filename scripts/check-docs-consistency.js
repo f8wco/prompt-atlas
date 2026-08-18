@@ -36,6 +36,16 @@ if (bench.length) need('SKILL.md', '当前 ' + bench.length + ' 个词条，Conf
 if (read('SKILL.md').indexOf('40 + 0.6') !== -1) {
   errors.push('SKILL.md: stale v0.2 single-score formula (40 + 0.6) — engine is v3 Control Profile');
 }
+// recipe single-score drift guard: the whole product speaks Control Profile only
+['SKILL.md', 'web/app.js'].forEach(p => {
+  const t = read(p);
+  if (t.indexOf('配方确定性') !== -1 || t.indexOf('Recipe determinism') !== -1) {
+    errors.push(p + ': stale recipe single-score language (配方确定性 / Recipe determinism) — use Control Profile');
+  }
+});
+if (read('web/core-lib.js').indexOf('recipeProfile') === -1) {
+  errors.push('web/core-lib.js: recipeProfile missing — recipe scoring must go through the shared engine');
+}
 
 if (errors.length) {
   console.error('✗ docs out of sync with core.json:');
