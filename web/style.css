@@ -605,3 +605,5 @@ footer code { background: #f0effe; border-radius: 5px; padding: 1px 6px; font-si
 .btn.mini { padding: 3px 10px; font-size: 12px; }
 .sb-hint { color: #9ca3af; }
 .sb-label { font-size: 12px; color: #6b7280; margin: 10px 0 4px; font-weight: 600; }
+
+.rep-ev { font-size: 11.5px; color: #6b7280; margin-top: 3px; }
