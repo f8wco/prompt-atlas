@@ -32,10 +32,10 @@
     "beats": [
       { "time": [0, 2], "role": "establish", "action": "门窗细缝漏进喧闹" }
     ],
-    "controls": {                              // 9 槽位，值为 atom id
-      "lighting": "golden-hour",
-      "shot": "close-up",
-      "camera": null
+    "controls": {                              // 9 槽位；每槽 = atoms[] + freeText
+      "lighting": { "atoms": ["rim-light", "volumetric-light"], "freeText": null },
+      "shot": { "atoms": ["close-up"], "freeText": null },
+      "camera": { "atoms": [], "freeText": "缓慢推近" }   // 词库外意图不丢失
     }
   }],
   "continuity": {                              // v0.5：跨段一致性（评审点名的真痛点）
@@ -44,6 +44,10 @@
   }
 }
 ```
+
+**controls 设计纪律**：UI（配方卡/分镜页）可以限制每槽推荐一个，但 **IR 层每槽允许任意多个 atom + 自由文本**——
+rim light + volumetric light 同槽共存、handheld + tracking 组合都是真实需求。这样 lint 才能检测同槽冲突、
+adapter 才能决定合并策略、relations 图才能发挥作用，Agent 不会因 IR 限制丢失用户意图。
 
 ## 3. 分层映射
 
