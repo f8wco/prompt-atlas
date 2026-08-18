@@ -30,15 +30,15 @@
 别人的 prompt 库是「收藏大全」；这个项目是**方法论 + 词库 + 工具**：
 
 - **9 槽位结构化检查（Lint）**：贴入提示词 → 告诉你写了什么、把什么留给了模型、哪里冲突、哪些词模糊
-- **确定性分数（经验估计）**：每个词条带 0–100 分数，当前全部为 `heuristic` 经验估计（诚实标注，不冒充实测）；实测分数将通过 Benchmark 管道发布
-- **可复现的规则引擎**：Matcher/Optimizer 是纯函数（`web/core-lib.js`），带 84 项回归测试，行为可离线复现
+- **确定性分数（诚实分级）**：每个词条带 0–100 分数——8 个核心词已跨 3 个模型家族实测（`benchmarked`，Confidence B），其余 52 个明确标注为 `heuristic` 经验估计，从不冒充实测概率
+- **可复现的规则引擎**：Matcher/Optimizer 是纯函数（`web/core-lib.js`），带 100+ 项回归测试，行为可离线复现
 - **配方卡生成器**：按槽位选词拼装 → 中英文提示词一键复制
 
 ## ✨ 三大能力 / Features
 
 | 能力 | 说明 |
 |---|---|
-| 🔍 **提示词体检仪（Linter）** | 贴入提示词 → 逐槽扫描 → 五态报告（已指定/疑似已描述/未指定/不适用/冲突）+ 确定性得分 + 图片/视频模式 + 一键生成优化版 |
+| 🔍 **提示词体检仪（Linter）** | 贴入提示词 → 逐槽扫描 → 四态报告（已指定/疑似已描述/未指定/不适用）+ 独立冲突检测 + 四维 Control Profile + 图片/视频模式 + 一键生成优化版 |
 | 🧪 **视觉配方卡** | 9 槽位选词拼装 → 实时预览卡片 → 中/英文提示词一键复制 |
 | 📚 **原子词库** | 60 个词条 × 9 槽位（含 3 个复合词 Macro），双语（zh/en）+ 别名 + 关系图 + 分数状态标注 |
 | 🧪 **回归测试与 CI** | Matcher/Optimizer 纯函数 + 84 项 fixtures；schema/引用/别名/关系/同步全量自动校验 |
@@ -73,14 +73,15 @@ git clone https://github.com/f8wco/prompt-atlas.git ~/.codex/skills/prompt-atlas
 prompt-atlas/
 ├── SKILL.md              # 技能入口（AI 读取的主文件，双语）
 ├── README.md / .en.md    # 项目说明（中/英）
-├── core.json             # 词库源数据 v2（唯一权威，Atom/Macro + 关系图 + score 对象）
-├── build.ps1             # 同步脚本：core.json → web/core-data.js
+├── core.json             # 词库源数据（唯一权威，Atom/Macro + 关系图 + score 对象）
+├── scripts/build.js      # 跨平台构建：core.json → web/core-data.js（build.ps1 为兼容入口）
 ├── schema/
 │   └── core.schema.json  # JSON Schema 契约
 ├── scripts/
 │   ├── validate-schema.js # JSON Schema 结构校验（ajv，CI 强制）
 │   ├── validate-core.js   # 语义校验（引用/别名/关系/对称性）
 │   ├── check.js           # CLI：命令行体检（Agent 工作流 B 的确定性入口）
+│   ├── storyboard.js      # 剧本→分镜骨架生成器（工作流 D：时长硬约束）
 │   └── migrate-v2.js 等   # 一次性迁移脚本（审计留档）
 ├── tests/
 │   ├── run-tests.js      # 回归测试运行器（Matcher/Optimizer fixtures）
@@ -141,4 +142,4 @@ prompt-atlas/
 
 ## 🙏 贡献 / Contributing
 
-新增词条请按 `SKILL.md` 工作流 C 的规范提交 PR：修改 `core.json` 后运行 `build.ps1`，并附带打分依据。
+新增词条请按 `SKILL.md` 工作流 C 的规范提交 PR：修改 `core.json` 后运行 `node scripts/build.js`（或 `npm run build`），并附带打分依据。
