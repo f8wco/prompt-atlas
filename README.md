@@ -25,6 +25,8 @@
 
 ## ❓ 为什么需要它 / Why
 
+> ⚡ **我们实测发现（2160 张 A/B 图）**：`macro 微距` 写了模型也不拍微距——依从率仅 4%，Seedream 4.0 直接 0 分，三家模型家族集体无视这个词。**「听起来专业」的提示词可能完全是无效指令**：[看 20 词实测数据](#-确定性分数--determinism-score)
+
 同一句「a girl in a city, cinematic」写 10 次能出 10 个样——因为提示词里有太多**「说了白说」**的词，和太多**「压根没说」**的槽位。
 
 别人的 prompt 库是「收藏大全」；这个项目是**方法论 + 词库 + 工具**：
@@ -117,6 +119,8 @@ prompt-atlas/
 ## 📊 确定性分数 / Determinism Score
 
 **诚实声明：60 个词条中 20 个已实测（`benchmarked`，Confidence B），其余 40 个为 `heuristic`（经验估计）。** 实测共四轮（`image-baseline-001~004`）：**3 个独立模型家族**（Seedream 4.0 / Seedream 4.5 / 智谱 CogView-4）× 6 场景 × 3 seeds × Control/Treatment A/B，每词 54 对观测、累计 **2160 张**（协议与原始数据见 `docs/BENCHMARK.md`、`benchmark/results/`）。
+
+> ⚠️ **证据范围**：以上分数仅在这 3 个图像模型家族上实测。Midjourney / Flux / SDXL / Sora / Kling 等未实测，分数**不可直接外推**——分模型差异请看词条的 `byModel` 明细（词库页已展示）。
 
 | 分数 | 含义 | 例子（全部实测 B） |
 |---|---|---|
