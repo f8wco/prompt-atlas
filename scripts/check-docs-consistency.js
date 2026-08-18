@@ -31,8 +31,10 @@ function need(p, needle, desc) {
     }
   }
 });
-need('SKILL.md', '当前 ' + heuristic + ' 个词条', 'heuristic count');
-if (bench.length) need('SKILL.md', '当前 ' + bench.length + ' 个词条，Confidence ' + conf, 'benchmarked count + confidence');
+need('SKILL.md', '以 `core.json` 为准', 'dynamic stats rule (no hardcoded counts)');
+if (/当前 \d+ 个词条/.test(read('SKILL.md'))) {
+  errors.push('SKILL.md: hardcoded atom counts (当前 N 个词条) — counts must be read from core.json at runtime');
+}
 if (read('SKILL.md').indexOf('40 + 0.6') !== -1) {
   errors.push('SKILL.md: stale v0.2 single-score formula (40 + 0.6) — engine is v3 Control Profile');
 }
