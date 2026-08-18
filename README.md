@@ -39,7 +39,8 @@
 | 能力 | 说明 |
 |---|---|
 | 🔍 **提示词体检仪（Linter）** | 贴入提示词 → 逐槽扫描 → 四态报告（已指定/疑似已描述/未指定/不适用）+ 独立冲突检测 + 四维 Control Profile + 图片/视频模式 + 一键生成优化版 |
-| 🧪 **视觉配方卡** | 9 槽位选词拼装 → 实时预览卡片 → 中/英文提示词一键复制 |
+| 🧪 **视觉配方卡** | 9 槽位选词拼装 → 实时预览卡片 → 中/英文提示词一键复制 + **分享链接** |
+| 🎞️ **剧本→分镜（新）** | 贴入剧本 → 按时长自动拆段拆拍、内容自动分配 → 每段选词 + 冲突检查 + Control Profile → [storyboard.html](https://f8wco.github.io/prompt-atlas/storyboard.html)，可嵌入任何网站 |
 | 📚 **原子词库** | 60 个词条 × 9 槽位（含 3 个复合词 Macro），双语（zh/en）+ 别名 + 关系图 + 分数状态标注 |
 | 🧪 **回归测试与 CI** | Matcher/Optimizer 纯函数 + 84 项 fixtures；schema/引用/别名/关系/同步全量自动校验 |
 
@@ -65,7 +66,7 @@ git clone https://github.com/f8wco/prompt-atlas.git ~/.codex/skills/prompt-atlas
 
 ### 网页演示（在线）
 
-在线演示由 GitHub Actions 自动部署（`.github/workflows/deploy-pages.yml`）。仓库 Settings → Pages 的 Source 设为 **GitHub Actions** 即可，之后每次更新 `web/` 自动上线。访问 <https://f8wco.github.io/prompt-atlas/>。
+在线演示由 GitHub Actions 自动部署（`.github/workflows/deploy-pages.yml`）。仓库 Settings → Pages 的 Source 设为 **GitHub Actions** 即可，之后每次更新 `web/` 自动上线。访问 <https://f8wco.github.io/prompt-atlas/>。剧本→分镜独立页：<https://f8wco.github.io/prompt-atlas/storyboard.html>（嵌入其他网站：`<iframe src="https://f8wco.github.io/prompt-atlas/storyboard.html" style="width:100%;height:900px;border:0"></iframe>`）。
 
 ## 📁 项目结构 / Structure
 
