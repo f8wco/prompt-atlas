@@ -298,9 +298,10 @@
         return;
       }
       var r = LIB.analyze(ATLAS, segVideoPrompt(seg, ''), 'video');
+      var ev = (r.evidence && r.evidence.total > 0) ? ' · 实测 ' + r.evidence.benchmarked + '/' + r.evidence.total : '';
       prof += '<div class="sb-prof">第 ' + (i + 1) + ' 段 · 可靠性 ' + (r.reliability === null ? '—' : r.reliability) +
         ' · 覆盖 ' + r.covered.length + '/' + r.applicable.length +
-        ' · 冲突 ' + r.hardConflicts.length + ' · ' + (r.controlLevel === 'high' ? '🟢 控制强' : r.controlLevel === 'medium' ? '🟡 适中' : r.controlLevel === 'conflict' ? '🔴 有冲突' : '🔵 留白多') + '</div>';
+        ' · 冲突 ' + r.hardConflicts.length + ' · ' + (r.controlLevel === 'high' ? '🟢 控制强' : r.controlLevel === 'medium' ? '🟡 适中' : r.controlLevel === 'conflict' ? '🔴 有冲突' : '🔵 留白多') + ev + '</div>';
     });
     $('sb-profile').innerHTML = prof;
   }
