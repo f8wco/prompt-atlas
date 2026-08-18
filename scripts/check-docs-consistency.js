@@ -24,9 +24,18 @@ function need(p, needle, desc) {
 ['README.md', 'README.en.md'].forEach(p => {
   need(p, 'Atoms-' + total + '-', 'Atoms badge count');
   if (bench.length) need(p, 'Benchmark-' + bench.length + '%20benchmarked%20(' + conf + ')', 'Benchmark badge');
+  if (bench.length) {
+    const t = read(p);
+    if (t.indexOf('全部为 `heuristic`') !== -1 || t.indexOf('all current scores are `heuristic`') !== -1) {
+      errors.push(p + ': stale claim "all heuristic" but ' + bench.length + ' atoms are benchmarked');
+    }
+  }
 });
 need('SKILL.md', '当前 ' + heuristic + ' 个词条', 'heuristic count');
 if (bench.length) need('SKILL.md', '当前 ' + bench.length + ' 个词条，Confidence ' + conf, 'benchmarked count + confidence');
+if (read('SKILL.md').indexOf('40 + 0.6') !== -1) {
+  errors.push('SKILL.md: stale v0.2 single-score formula (40 + 0.6) — engine is v3 Control Profile');
+}
 
 if (errors.length) {
   console.error('✗ docs out of sync with core.json:');
