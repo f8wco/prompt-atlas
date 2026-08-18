@@ -64,7 +64,7 @@ Double-click `web/index.html` — no server needed. Includes a **🌐 中/EN lan
 
 ### Web demo (online)
 
-The live demo is deployed automatically by GitHub Actions (`.github/workflows/deploy-pages.yml`). In repo Settings → Pages, set the Source to **GitHub Actions**; every `web/` update then ships automatically. Visit <https://f8wco.github.io/prompt-atlas/>.
+The live demo is deployed automatically by GitHub Actions (`.github/workflows/deploy-pages.yml`). In repo Settings → Pages, set the Source to **GitHub Actions**; every `web/` update then ships automatically. Visit <https://atlas.f8w.com/>.
 
 ## 📁 Structure / 项目结构
 
