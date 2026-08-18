@@ -31,9 +31,12 @@ description: >-
 | 镜头技术 | Lens & Technique | 什么光学质感 |
 
 **确定性分数（Determinism Score，0–100）** —— 词条控制力的量化估计：
-- **status = heuristic（当前 40 个词条）**：编辑经验估计，**不是实测概率**，不得表述为「稳定还原概率 X%」或「跨模型已验证」
-- **status = benchmarked（当前 20 个词条，Confidence B）**：经 `docs/BENCHMARK.md` 管道实测（image-baseline-001~004：**3 个独立模型家族**（Seedream 4.0/4.5 + 智谱 CogView-4）× 6 场景 × 3 seeds A/B，每词 54 对观测，累计 2160 张），附样本量、模型、置信度（A/B/C）、方法版本
+- **status = heuristic**：编辑经验估计，**不是实测概率**，不得表述为「稳定还原概率 X%」或「跨模型已验证」
+- **status = benchmarked**：经 `docs/BENCHMARK.md` 管道实测（多轮 image-baseline 运行：**3 个独立模型家族** × 6 场景 × 3 seeds A/B，每词 54 对观测），附样本量、模型、置信度（A/B/C）、方法版本与分模型分数（`score.byModel`）
+- **数量统计以 `core.json` 为准**（每词自带 status 字段）——引用 benchmarked/heuristic 数量时先读数据，**不要硬编码数字**；`node scripts/check.js "<提示词>" [image|video]` 的输出即实时口径
 - 分级：≥ 80 高 · 60–79 中 · < 60 低；低分 = 常「说了白说」，建议替换/补强
+
+**证据范围声明（Evidence Scope）**：当前实测仅覆盖**图像模态的 3 个模型家族**（Seedream 4.0 / Seedream 4.5 / 智谱 CogView-4）。Midjourney / Flux / SDXL / Sora / Kling / Runway / Seedance 等均**未实测**——分数**不可跨模型外推**（自家数据：ink wash 在 Seedream 两代均 100，CogView 仅 33）。面向未实测模型时，把分数当「同量级参考」并向用户说明该局限；涉及分模型结论时优先引用 `score.byModel`。
 
 核心理念：**未指定的槽位不是错误，是留给模型的自由。** Unspecified slots are creative freedom handed to the model, not mistakes.
 
