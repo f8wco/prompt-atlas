@@ -61,6 +61,10 @@
               "sampleSize": { "type": "number" },
               "models": { "type": "array", "items": { "type": "string" } },
               "updatedAt": { "type": "string" },
+              "byModel": {
+                "type": "object",
+                "additionalProperties": { "type": "number", "minimum": 0, "maximum": 100 }
+              },
               "measured": {
                 "type": "object",
                 "properties": {
