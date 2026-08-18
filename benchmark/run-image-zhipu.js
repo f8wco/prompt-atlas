@@ -18,7 +18,10 @@ function argVal0(name, fallback) { const i = args0.indexOf(name); return i !== -
 const runIdArg = argVal0('--run', 'image-baseline-003');
 
 const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifests', runIdArg + '.json'), 'utf8'));
-const MODEL = manifest.models[0];
+// the zhipu runner ALWAYS generates with CogView-4; the labeled model must be the
+// zhipu entry of the manifest — never manifest.models[0] (multi-family manifests put seedream first)
+const MODEL = manifest.models.filter(function (m) { return m.indexOf('zhipu') === 0; })[0];
+if (!MODEL) { console.error('manifest ' + runIdArg + ' has no zhipu-* model entry'); process.exit(2); }
 const API_MODEL = 'cogview-4';
 const seeds = manifest.seeds;
 const runId = manifest.runId;
