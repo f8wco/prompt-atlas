@@ -598,3 +598,10 @@ footer code { background: #f0effe; border-radius: 5px; padding: 1px 6px; font-si
 #view-storyboard { max-width: 980px; margin: 0 auto; }
 #view-storyboard > * + * { margin-top: 16px; }
 #view-storyboard .sb-input textarea, #view-storyboard .sb-input input { width: 100%; box-sizing: border-box; }
+
+/* ---------- Storyboard v2 ---------- */
+.sb-seg-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sb-seg-btns { margin-left: auto; display: flex; gap: 6px; }
+.btn.mini { padding: 3px 10px; font-size: 12px; }
+.sb-hint { color: #9ca3af; }
+.sb-label { font-size: 12px; color: #6b7280; margin: 10px 0 4px; font-weight: 600; }
