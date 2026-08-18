@@ -29,6 +29,13 @@ console.log('ControlLevel: ' + r.controlLevel);
 if (r.evidence && r.evidence.total > 0) {
   console.log('Evidence:     ' + r.evidence.benchmarked + '/' + r.evidence.total + ' benchmarked · floor ' + r.evidence.confidenceFloor);
 }
+const SHORT = { 'doubao-seedream-4-0-250828': 'Seedream4.0', 'doubao-seedream-4-5-251128': 'Seedream4.5', 'zhipu-cogview-4': 'CogView' };
+r.found.forEach(function (a) {
+  if (a.score && a.score.byModel && Object.keys(a.score.byModel).length) {
+    const per = Object.keys(a.score.byModel).map(m => (SHORT[m] || m) + ':' + a.score.byModel[m]).join(' ');
+    console.log('  per-model   ' + a.en + ' -> ' + per);
+  }
+});
 console.log('counts: macros=' + r.macroCount + ' hardConflicts=' + r.hardConflicts.length + ' softTensions=' + r.tensions.length + ' redundant=' + r.redundants.length);
 
 console.log('\n== SLOTS ==');
