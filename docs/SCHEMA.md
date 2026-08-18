@@ -74,7 +74,9 @@
 
 - alias 只负责匹配（Matcher 的 canonical 归一），不参与关系图；
 - 同一语言内，一个 alias 只能映射到一个 canonical id（CI 校验）；
-- 常见差异（`close up`/`closeup`/`close-up`、`time lapse`/`timelapse`）用 alias 归一，而不是造新词条。
+- 常见差异（`close up`/`closeup`/`close-up`、`time lapse`/`timelapse`、`dolly in`/`push in`）用 alias 归一，而不是造新词条；
+- `freeTextConflicts` 是子串启发式，**不处理否定语义**（如「not colorful」会被判为与 monochrome 冲突）——已知局限，改进需语义匹配。
+- `measured` 是跨模型**展示用聚合值**；`value` 是 Atlas Score（`0.8×mean + 0.2×min`，逐模型算分后聚合），**不能由 measured 直接还原**（公式见 `docs/BENCHMARK.md`）。
 
 ## 6. v3 新增：自由文本规则入数据 / Free-text Rules in Data (v3)
 
