@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>剧本→分镜提示词 · Visual Prompt Atlas</title>
+  <meta name="description" content="贴入剧本，按时长自动拆成多段视频提示词（时间拍点 + 9 槽位词条 + 冲突检查 + Control Profile）。Visual Prompt Atlas 剧本编译器网页版。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="logo-badge">🎞️</span><span>剧本 → 分镜提示词</span> <span class="tag">Prompt Compiler</span></div>
+    <div class="header-right">
+      <a class="lang-btn" href="index.html" title="体检仪 / 配方卡 / 词库">🎬 主工具</a>
+      <a class="lang-btn" href="https://github.com/f8wco/prompt-atlas" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </header>
+
+  <main class="sb-main">
+    <section class="hero">
+      <h1>把剧本编译成视频提示词</h1>
+      <p>贴入剧本 → 设定每段时长（默认 15 秒）→ 自动拆拍点、自动分配内容 → 每段选 9 槽位词条（实测分数 + 冲突自动检查）→ 一键复制 / 分享</p>
+    </section>
+
+    <div class="panel sb-input">
+      <label class="field">
+        <span>剧本 / 故事 / 文案</span>
+        <textarea id="sb-script" rows="6" placeholder="例：深夜的东京街头下着雨。一位穿风衣的女子独自走过霓虹灯下的十字路口，脚步溅起水花。她在便利店门口停下，望向橱窗里的自己。镜头缓缓推近她的侧脸，雨滴滑落，她转身消失在人群中……"></textarea>
+      </label>
+      <div class="sb-row">
+        <label class="field"><span>总时长（秒）</span><input id="sb-total" type="number" value="30" min="5" max="600" step="1"></label>
+        <label class="field"><span>每段时长（秒）</span><input id="sb-seg" type="number" value="15" min="5" max="60" step="1"></label>
+        <button id="sb-generate" class="btn primary">⚙️ 生成分镜骨架</button>
+      </div>
+      <label class="field"><span>统一风格（全段共用）</span><input id="sb-style" placeholder="例：顶级国漫院线电影质感，8K超清"></label>
+    </div>
+
+    <div id="sb-segments"></div>
+
+    <div class="panel sb-output" id="sb-output" style="display:none">
+      <h3>生成结果</h3>
+      <div class="sb-actions">
+        <button id="sb-copy-zh" class="btn primary">📋 复制中文分镜稿</button>
+        <button id="sb-copy-en" class="btn">📋 Copy EN Prompts</button>
+        <button id="sb-share" class="btn">📤 分享本分镜</button>
+      </div>
+      <pre id="sb-zh" class="sb-pre"></pre>
+      <pre id="sb-en" class="sb-pre"></pre>
+      <div id="sb-profile"></div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Visual Prompt Atlas · 剧本→分镜网页版 · 词条分数来自 3 模型家族实测（<a href="index.html" >详见主工具</a>）</span><br>
+    <a href="https://www.f8w.com" target="_blank" rel="noopener">by f8w.com · Future AI World</a> ·
+    <a href="https://github.com/f8wco/prompt-atlas" target="_blank" rel="noopener">github.com/f8wco/prompt-atlas</a>
+  </footer>
+
+  <script src="core-data.js"></script>
+  <script src="core-lib.js"></script>
+  <script src="storyboard-app.js"></script>
+</body>
+</html>
