@@ -102,5 +102,161 @@
       "control": 0,
       "treatment": 1
     }
+  },
+  "macro": {
+    "control": "assets/evidence/macro-control.jpg",
+    "treatment": "assets/evidence/macro-treatment.jpg",
+    "model": "doubao-seedream-4-5-251128",
+    "scene": "environment",
+    "seed": 3,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "telephoto compression": {
+    "control": "assets/evidence/telephoto-compression-control.jpg",
+    "treatment": "assets/evidence/telephoto-compression-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "architecture",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "fisheye lens": {
+    "control": "assets/evidence/fisheye-lens-control.jpg",
+    "treatment": "assets/evidence/fisheye-lens-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 2,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "rim light": {
+    "control": "assets/evidence/rim-light-control.jpg",
+    "treatment": "assets/evidence/rim-light-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "product",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "backlit silhouette": {
+    "control": "assets/evidence/backlit-silhouette-control.jpg",
+    "treatment": "assets/evidence/backlit-silhouette-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "product",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "neon glow": {
+    "control": "assets/evidence/neon-glow-control.jpg",
+    "treatment": "assets/evidence/neon-glow-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "teal and orange": {
+    "control": "assets/evidence/teal-and-orange-control.jpg",
+    "treatment": "assets/evidence/teal-and-orange-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "film grain": {
+    "control": "assets/evidence/film-grain-control.jpg",
+    "treatment": "assets/evidence/film-grain-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "street",
+    "seed": 3,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "pastel colors": {
+    "control": "assets/evidence/pastel-colors-control.jpg",
+    "treatment": "assets/evidence/pastel-colors-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "street",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "ink wash painting": {
+    "control": "assets/evidence/ink-wash-painting-control.jpg",
+    "treatment": "assets/evidence/ink-wash-painting-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "blue hour": {
+    "control": "assets/evidence/blue-hour-control.jpg",
+    "treatment": "assets/evidence/blue-hour-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "negative space": {
+    "control": "assets/evidence/negative-space-control.jpg",
+    "treatment": "assets/evidence/negative-space-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-004",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
   }
 }
