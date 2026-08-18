@@ -132,9 +132,11 @@ prompt-atlas/
 - [x] Control Profile 四维报告（Reliability/Coverage/Consistency/Freedom 分离，废单一总分）
 - [x] v0.3b（图像）Benchmark 实测：**3 个模型家族** × 6 场景 × 3 seeds = 864 张 A/B，8 词条 Confidence B（`benchmark/results/summary-*.json`）
 - [ ] v0.3b（视频）4 词条 smoke：协议已就绪，待视频 API 资源
-- [ ] Benchmark 扩容：覆盖其余 52 词条；升 A 需每词 72 对观测（3 家族 × 4 seeds，见 `docs/BENCHMARK.md`）
-- [ ] 图库扩充至 200 词条（4 管道，见 `docs/LAUNCH.md`）
-- [ ] 积分系统与悬赏榜（需要后端，接口已在 `docs/ECONOMY.md` 定义）
+- [x] v0.4（部分）Show, Don't Tell：词条证据对照（Before/After 实测图对，16 张入库）+ 配方卡分享链接（URL hash，免后端）
+- [ ] v0.4 剩余：Recipe Card 视觉重设计 + 10–20 个精选配方 + Benchmark 画廊页 + 首页 30 秒理解
+- [ ] v0.5 Prompt Compiler：剧本→分镜完善 + Content/Visual/Temporal 分层 IR + 时序冲突检查
+- [ ] v0.6 Model Adapter：Atom×Model 定向实测（优先级 = 使用频率 × 不确定性 × 模型方差；升 A 需 72 对/词）+ 模型专属提示词转换
+- [ ] 图库扩充与积分悬赏（见 `docs/LAUNCH.md`、`docs/ECONOMY.md`）
 
 ## 📄 许可证 / License
 
