@@ -30,15 +30,15 @@ Write "a girl in a city, cinematic" ten times and you get ten different results 
 Other prompt libraries are collections. This project is a **methodology + dictionary + tool**:
 
 - **9-slot structured linting**: paste a prompt → see what you specified, what you left to the model, what conflicts, and which words are vague
-- **Determinism scores (honest estimates)**: every term carries 0–100; all current scores are `heuristic` editorial estimates — never presented as measured probabilities. Measured scores ship through the benchmark pipeline only
-- **Reproducible rule engine**: Matcher/Optimizer are pure functions (`web/core-lib.js`) covered by 84 regression fixtures
+- **Determinism scores (honestly tiered)**: every term carries 0–100 — 8 core terms are measured across 3 model families (`benchmarked`, Confidence B), the other 52 are explicitly labeled `heuristic` editorial estimates, never presented as measured probabilities
+- **Reproducible rule engine**: Matcher/Optimizer are pure functions (`web/core-lib.js`) covered by 100+ regression fixtures
 - **Recipe Card builder**: pick terms slot by slot → one-click copy of EN/中文 prompts
 
 ## ✨ Features / 三大能力
 
 | Feature | Description |
 |---|---|
-| 🔍 **Prompt Checker** | Paste a prompt → slot-by-slot scan → coverage report + determinism score + **conflict detection** (suggestions contradicting your text are auto-disabled) + **one-click optimized version** + shareable report |
+| 🔍 **Prompt Checker** | Paste a prompt → slot-by-slot scan → four-state report (specified / likely-described / unspecified / N/A) + separate conflict detection + four-dimension Control Profile + image/video mode + **one-click optimized version** + shareable report |
 | 🧪 **Visual Recipe Card** | Pick terms across 9 slots → live card preview → one-click copy of EN/中文 prompts |
 | 📚 **Atom Dictionary** | 60 terms × 9 slots, bilingual (zh/en), with scores, effect notes and examples |
 
@@ -73,7 +73,7 @@ prompt-atlas/
 ├── SKILL.md              # Skill entry point (bilingual, read by AI agents)
 ├── README.md / .en.md    # Overview (中文 / English)
 ├── core.json             # Dictionary source of truth (bilingual fields)
-├── build.ps1             # Sync script: core.json → web/core-data.js
+├── scripts/build.js      # Cross-platform build: core.json → web/core-data.js (build.ps1 kept as a wrapper)
 ├── schema/core.schema.json  # JSON Schema contract (enforced by ajv in CI)
 ├── scripts/                 # validate-schema / validate-core / check.js CLI / migrations
 ├── tests/                   # Matcher & Optimizer regression fixtures
@@ -127,4 +127,4 @@ Two lessons: **with small samples, even a "measurement" can be luck** (12→36 p
 
 ## 🙏 Contributing / 贡献
 
-New terms follow Workflow C in `SKILL.md`: edit `core.json`, run `build.ps1`, and include your scoring rationale in the PR.
+New terms follow Workflow C in `SKILL.md`: edit `core.json`, run `node scripts/build.js` (or `npm run build`), and include your scoring rationale in the PR.
