@@ -1,0 +1,27 @@
+{
+  "benchmarkVersion": "0.1",
+  "runId": "video-smoke-001",
+  "modality": "video",
+  "targetConfidence": "smoke",
+  "note": "Protocol validation run (NOT a score run): can a frame-sequence evaluator distinguish real temporal phenomena from VLM 'looks like' judgments? 4 motion atoms x 2 model families x 2 scenes x 2 conditions = 32 clips, 5s each. Red line per docs/BENCHMARK.md 4.2: video terms must be judged on CONTINUOUS FRAMES, never a single mid-frame. dolly zoom requires BOTH subject-scale stability AND background perspective change.",
+  "atoms": ["tracking shot", "handheld", "dolly zoom", "long take"],
+  "models": ["doubao-seedance-2-0-mini-260615", "doubao-seedance-2-0-fast-260128"],
+  "scenes": [
+    { "id": "street", "prompt": "a street scene with a cyclist passing by" },
+    { "id": "portrait", "prompt": "a woman walking through a park" }
+  ],
+  "conditions": ["control", "treatment"],
+  "duration": 5,
+  "fps": 24,
+  "resolution": "720p",
+  "evaluator": {
+    "type": "frame-sequence-vlm+human-audit",
+    "framesPerClip": 6,
+    "questions": {
+      "tracking shot": "These 6 frames are sampled in order from one 5-second video (control: no camera term / treatment: with 'tracking shot'). Based on the FRAME SEQUENCE, does the camera clearly track the moving subject — i.e., subject apparent size stays roughly stable while the background shifts consistently with camera following? A static camera with a moving subject = NO. Answer YES or NO only.",
+      "handheld": "These 6 frames are sampled in order from one 5-second video (control / treatment: with 'handheld'). Based on the FRAME SEQUENCE, does the footage show non-regular, non-mechanical handheld-style camera micro-jitter — framing shifts unevenly between frames (horizon tilt/offset varies irregularly)? Smooth gimbal/steadicam or perfectly static framing = NO. Answer YES or NO only.",
+      "dolly zoom": "These 6 frames are sampled in order from one 5-second video (control / treatment: with 'dolly zoom'). Based on the FRAME SEQUENCE, does the video show a dolly zoom (vertigo effect): the main subject's apparent size stays roughly STABLE while the background perspective/field-of-view clearly CHANGES (background appears to warp/stretch)? BOTH conditions required — subject stable AND background perspective changing. Either one alone = NO. Answer YES or NO only.",
+      "long take": "These 6 frames are sampled in order from one 5-second video (control / treatment: with 'long take'). Based on the FRAME SEQUENCE, is this a continuous single take — no shot boundary, no sudden scene/discontinuity jump between consecutive frames? Any clear cut = NO. Answer YES or NO only."
+    }
+  }
+}
