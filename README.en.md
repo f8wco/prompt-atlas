@@ -14,7 +14,7 @@
   <p align="center">
     <img src="https://img.shields.io/badge/Skill-Agent%20Skill-7c5cff" alt="Agent Skill">
     <img src="https://img.shields.io/badge/Atoms-60-fb923c" alt="60 atoms">
-    <img src="https://img.shields.io/badge/Benchmark-8%20benchmarked%20(B)-16a34a" alt="8 atoms benchmarked">
+    <img src="https://img.shields.io/badge/Benchmark-20%20benchmarked%20(B)-16a34a" alt="20 atoms benchmarked">
     <img src="https://img.shields.io/badge/Slots-9-22d3ee" alt="9 slots">
     <img src="https://img.shields.io/badge/Language-Bilingual%20(zh%2Fen)-d74a3a" alt="bilingual">
     <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT">
@@ -99,15 +99,15 @@ A complete prompt = Subject/Action/Scene (free text) + 9 slots (dictionary terms
 
 ## 📊 Determinism Score / 确定性分数
 
-**Honest disclosure: 8 of 60 terms are now `benchmarked` (Confidence B); the other 52 remain `heuristic` editorial estimates.** Three runs (`image-baseline-001/002/003`): **3 independent model families** (Seedream 4.0 / Seedream 4.5 / Zhipu CogView-4) × 6 scenes × 3 seeds × Control/Treatment A/B, 54 paired observations per term (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
+**Honest disclosure: 20 of 60 terms are now `benchmarked` (Confidence B); the other 40 remain `heuristic` editorial estimates.** Four runs (`image-baseline-001~004`): **3 independent model families** (Seedream 4.0 / Seedream 4.5 / Zhipu CogView-4) × 6 scenes × 3 seeds × Control/Treatment A/B, 54 paired observations per term, **2160 images total** (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
 
-| Score | Meaning | Examples |
+| Score | Meaning | Examples (all benchmarked B) |
 |---|---|---|
-| ≥ 80 high | Strong physical / style controls | anime style (**100, perfect on all 3 families**), monochrome (**82, B**) |
-| 60–79 mid | Common styles/techniques; varies between models | golden hour (**79**), shallow dof (**66**), symmetry (**65**), volumetric light (**64**), close-up (**61, B**) |
-| < 60 low | Abstract, compound, drift-prone concepts | rule of thirds (**57, B**), cinematic (55, Macro, estimate) |
+| ≥ 80 high | Strong switches | anime (**100**), fisheye (**89**), teal-orange (**88**), blue hour (**86**), neon (**82**), monochrome (**82**), pastel (**84**) |
+| 60–79 mid | Effective but baseline/family-dependent | golden hour (79), backlit (77), film grain (71), ink wash (69), rim light (65), symmetry (65), volumetric (64) |
+| < 60 low | Weak control / dead weight | close-up (61), telephoto (59), rule of thirds (57), negative space (**42**), **macro (3)** |
 
-Two lessons: **with small samples, even a "measurement" can be luck** (12→36 pairs pulled close-up from 80 to 67); **two generations of one vendor ≠ independent evidence** (adding the third family moved monochrome 100→82 and volumetric light 86→64 — they score only 61/38 on CogView-4. Cross-family variance dwarfs seed variance).
+Three lessons: **with small samples, even a "measurement" can be luck** (close-up read 80 at 12 pairs, 61 at 54); **two generations of one vendor ≠ independent evidence** (third family moved monochrome 100→82; ink wash is 100/100 on Seedream but 33 on CogView); **even "physical fact" words can fail everywhere — `macro` measures 3/100** (4% adherence; Seedream 4.0 scores 0). Describe the shot instead of writing "macro".
 
 ## 🗺️ Roadmap / 路线图
 
@@ -115,7 +115,7 @@ Two lessons: **with small samples, even a "measurement" can be luck** (12→36 p
 - [x] v0.2 Checker upgrade: conflict detection + likely-described hints + optimized version (≤1 term/slot + NO_SUGGESTION)
 - [x] v0.3a Schema v2: Atom/Macro + relations + score.status + JSON Schema + regression fixtures + full CI
 - [x] Control Profile 4-dimension report (Reliability/Coverage/Consistency/Freedom; single score retired)
-- [x] v0.3b (image) benchmark: **3 model families** × 6 scenes × 3 seeds = 864 A/B images, 8 terms at Confidence B (`benchmark/results/summary-*.json`)
+- [x] v0.3b (image) benchmark: **3 model families** × 6 scenes × 3 seeds = **2160 A/B images, 20 terms at Confidence B** (`benchmark/results/summary-*.json`; Dataset Release 0.2)
 - [ ] v0.3b (video) 4-term smoke: protocol ready, awaiting video API resources
 - [x] v0.4 (partial) Show, Don't Tell: per-term Before/After evidence pairs (16 measured images in-repo) + Recipe Card share link (URL hash, no backend)
 - [ ] v0.4 remaining: Recipe Card visual redesign + 10–20 curated recipes + Benchmark gallery + 30-second homepage
