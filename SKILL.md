@@ -67,8 +67,9 @@ description: >-
 4. 输出「配方卡」：
    - 英文提示词（English prompt）
    - 中文逐槽解读（slot-by-slot Chinese breakdown）
-   - 配方确定性 = 所选词条平均分；覆盖率 = 已填槽位数/适用槽位数
-   - 提示：确定性 < 60 的词条给出替代建议
+   - **四维 Control Profile**（与体检仪同一语言，`core-lib.recipeProfile` / 网页配方卡一致）：Reliability 可靠性 = 所选词条平均分（macro 不计入）、Coverage 覆盖 = 已填槽位/适用槽位、Consistency 一致性、Freedom 留白
+   - 提示：词条分数 < 60 的给出替代建议
+5. **不输出 Prompt 级单一总分**——平均分/XX分这类聚合分数已在 v3 废除，全产品只有 Control Profile 一种评分语言。
 
 **示例输出模板 / Output template**：
 ```
@@ -79,7 +80,7 @@ EN: a young woman walking in the rain in a cyberpunk city street, neon glow,
     anime style, suspenseful, rainy night, shallow depth of field, slow motion
 中文解读：光线-霓虹光；运镜-跟拍；景别-特写；构图-对称；调色-青橙；风格-日系动漫；
          氛围-悬疑；时间-雨夜；技术-浅景深+慢动作
-确定性：80/100（高）· 覆盖率 9/9
+确定性：Control Profile —— Reliability 80 · Coverage 9/9 · Consistency 100 · Freedom 0
 ```
 
 ## 4. 工作流 B：体检分析 / Workflow B — Check a Prompt
