@@ -270,7 +270,20 @@ var PROMPT_ATLAS_DATA = {
         "dark room",
         "blue hour",
         "蓝调时刻"
-      ]
+      ],
+      "evidence": {
+        "control": "assets/evidence/golden-hour-control.jpg",
+        "treatment": "assets/evidence/golden-hour-treatment.jpg",
+        "model": "doubao-seedream-4-0-250828",
+        "scene": "environment",
+        "seed": 1,
+        "source": "image-baseline-001",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "overcast",
@@ -402,7 +415,20 @@ var PROMPT_ATLAS_DATA = {
       "desc": "可见光束（丁达尔效应），氛围感强但强度易失控",
       "descEn": "Visible light beams (Tyndall effect); atmospheric but the intensity can get out of control",
       "example": "volumetric light rays through window",
-      "freeTextConflicts": []
+      "freeTextConflicts": [],
+      "evidence": {
+        "control": "assets/evidence/volumetric-light-control.jpg",
+        "treatment": "assets/evidence/volumetric-light-treatment.jpg",
+        "model": "doubao-seedream-4-0-250828",
+        "scene": "street",
+        "seed": 1,
+        "source": "image-baseline-001",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "rembrandt",
@@ -923,7 +949,20 @@ var PROMPT_ATLAS_DATA = {
         "全身",
         "full body",
         "extreme wide"
-      ]
+      ],
+      "evidence": {
+        "control": "assets/evidence/close-up-control.jpg",
+        "treatment": "assets/evidence/close-up-treatment.jpg",
+        "model": "doubao-seedream-4-0-250828",
+        "scene": "street",
+        "seed": 1,
+        "source": "image-baseline-001",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "extreme-close-up",
@@ -1182,7 +1221,20 @@ var PROMPT_ATLAS_DATA = {
         "symmetrical",
         "居中",
         "centered"
-      ]
+      ],
+      "evidence": {
+        "control": "assets/evidence/rule-of-thirds-control.jpg",
+        "treatment": "assets/evidence/rule-of-thirds-treatment.jpg",
+        "model": "zhipu-cogview-4",
+        "scene": "street",
+        "seed": 1,
+        "source": "image-baseline-003",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "symmetry",
@@ -1235,7 +1287,20 @@ var PROMPT_ATLAS_DATA = {
         "rule of thirds",
         "不对称",
         "asymmetric"
-      ]
+      ],
+      "evidence": {
+        "control": "assets/evidence/symmetrical-composition-control.jpg",
+        "treatment": "assets/evidence/symmetrical-composition-treatment.jpg",
+        "model": "doubao-seedream-4-0-250828",
+        "scene": "portrait",
+        "seed": 1,
+        "source": "image-baseline-001",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "leading-lines",
@@ -1640,7 +1705,20 @@ var PROMPT_ATLAS_DATA = {
         "青橙",
         "teal and orange",
         "鲜艳"
-      ]
+      ],
+      "evidence": {
+        "control": "assets/evidence/monochrome-control.jpg",
+        "treatment": "assets/evidence/monochrome-treatment.jpg",
+        "model": "doubao-seedream-4-0-250828",
+        "scene": "portrait",
+        "seed": 1,
+        "source": "image-baseline-001",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "pastel",
@@ -1881,7 +1959,20 @@ var PROMPT_ATLAS_DATA = {
         "cinematic realism",
         "8k超清",
         "实拍"
-      ]
+      ],
+      "evidence": {
+        "control": "assets/evidence/anime-style-control.jpg",
+        "treatment": "assets/evidence/anime-style-treatment.jpg",
+        "model": "doubao-seedream-4-0-250828",
+        "scene": "portrait",
+        "seed": 1,
+        "source": "image-baseline-001",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "cyberpunk-style",
@@ -2588,7 +2679,20 @@ var PROMPT_ATLAS_DATA = {
         "deep focus",
         "大景深",
         "全部清晰"
-      ]
+      ],
+      "evidence": {
+        "control": "assets/evidence/shallow-depth-of-field-control.jpg",
+        "treatment": "assets/evidence/shallow-depth-of-field-treatment.jpg",
+        "model": "doubao-seedream-4-0-250828",
+        "scene": "street",
+        "seed": 1,
+        "source": "image-baseline-001",
+        "selection": "contrast",
+        "judged": {
+          "control": 0,
+          "treatment": 1
+        }
+      }
     },
     {
       "id": "telephoto",
@@ -2935,7 +3039,20 @@ var PROMPT_ATLAS_DATA = {
           "dark room",
           "blue hour",
           "蓝调时刻"
-        ]
+        ],
+        "evidence": {
+          "control": "assets/evidence/golden-hour-control.jpg",
+          "treatment": "assets/evidence/golden-hour-treatment.jpg",
+          "model": "doubao-seedream-4-0-250828",
+          "scene": "environment",
+          "seed": 1,
+          "source": "image-baseline-001",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "overcast",
@@ -3067,7 +3184,20 @@ var PROMPT_ATLAS_DATA = {
         "desc": "可见光束（丁达尔效应），氛围感强但强度易失控",
         "descEn": "Visible light beams (Tyndall effect); atmospheric but the intensity can get out of control",
         "example": "volumetric light rays through window",
-        "freeTextConflicts": []
+        "freeTextConflicts": [],
+        "evidence": {
+          "control": "assets/evidence/volumetric-light-control.jpg",
+          "treatment": "assets/evidence/volumetric-light-treatment.jpg",
+          "model": "doubao-seedream-4-0-250828",
+          "scene": "street",
+          "seed": 1,
+          "source": "image-baseline-001",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "rembrandt",
@@ -3592,7 +3722,20 @@ var PROMPT_ATLAS_DATA = {
           "全身",
           "full body",
           "extreme wide"
-        ]
+        ],
+        "evidence": {
+          "control": "assets/evidence/close-up-control.jpg",
+          "treatment": "assets/evidence/close-up-treatment.jpg",
+          "model": "doubao-seedream-4-0-250828",
+          "scene": "street",
+          "seed": 1,
+          "source": "image-baseline-001",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "extreme-close-up",
@@ -3853,7 +3996,20 @@ var PROMPT_ATLAS_DATA = {
           "symmetrical",
           "居中",
           "centered"
-        ]
+        ],
+        "evidence": {
+          "control": "assets/evidence/rule-of-thirds-control.jpg",
+          "treatment": "assets/evidence/rule-of-thirds-treatment.jpg",
+          "model": "zhipu-cogview-4",
+          "scene": "street",
+          "seed": 1,
+          "source": "image-baseline-003",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "symmetry",
@@ -3906,7 +4062,20 @@ var PROMPT_ATLAS_DATA = {
           "rule of thirds",
           "不对称",
           "asymmetric"
-        ]
+        ],
+        "evidence": {
+          "control": "assets/evidence/symmetrical-composition-control.jpg",
+          "treatment": "assets/evidence/symmetrical-composition-treatment.jpg",
+          "model": "doubao-seedream-4-0-250828",
+          "scene": "portrait",
+          "seed": 1,
+          "source": "image-baseline-001",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "leading-lines",
@@ -4313,7 +4482,20 @@ var PROMPT_ATLAS_DATA = {
           "青橙",
           "teal and orange",
           "鲜艳"
-        ]
+        ],
+        "evidence": {
+          "control": "assets/evidence/monochrome-control.jpg",
+          "treatment": "assets/evidence/monochrome-treatment.jpg",
+          "model": "doubao-seedream-4-0-250828",
+          "scene": "portrait",
+          "seed": 1,
+          "source": "image-baseline-001",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "pastel",
@@ -4556,7 +4738,20 @@ var PROMPT_ATLAS_DATA = {
           "cinematic realism",
           "8k超清",
           "实拍"
-        ]
+        ],
+        "evidence": {
+          "control": "assets/evidence/anime-style-control.jpg",
+          "treatment": "assets/evidence/anime-style-treatment.jpg",
+          "model": "doubao-seedream-4-0-250828",
+          "scene": "portrait",
+          "seed": 1,
+          "source": "image-baseline-001",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "cyberpunk-style",
@@ -5269,7 +5464,20 @@ var PROMPT_ATLAS_DATA = {
           "deep focus",
           "大景深",
           "全部清晰"
-        ]
+        ],
+        "evidence": {
+          "control": "assets/evidence/shallow-depth-of-field-control.jpg",
+          "treatment": "assets/evidence/shallow-depth-of-field-treatment.jpg",
+          "model": "doubao-seedream-4-0-250828",
+          "scene": "street",
+          "seed": 1,
+          "source": "image-baseline-001",
+          "selection": "contrast",
+          "judged": {
+            "control": 0,
+            "treatment": 1
+          }
+        }
       },
       {
         "id": "telephoto",
