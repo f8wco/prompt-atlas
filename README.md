@@ -137,7 +137,7 @@ prompt-atlas/
 - [x] v0.3a Schema v2：Atom/Macro + 关系图 + score.status + JSON Schema + 回归测试 + CI 全量校验
 - [x] Control Profile 四维报告（Reliability/Coverage/Consistency/Freedom 分离，废单一总分）
 - [x] v0.3b（图像）Benchmark 实测：**3 个模型家族** × 6 场景 × 3 seeds = **2160 张 A/B，20 词条 Confidence B**（`benchmark/results/summary-*.json`；Dataset Release 0.2）
-- [ ] v0.3b（视频）4 词条 smoke：协议已就绪，待视频 API 资源
+- [x] v0.3b（视频）Smoke 001：4 运镜词 × 2 模型 × 2 场景 = 30 条 5s，帧序列评测协议验证通过（dolly zoom 双条件可区分，见 `docs/BENCHMARK.md`）
 - [x] v0.4（部分）Show, Don't Tell：词条证据对照（Before/After 实测图对，16 张入库）+ 配方卡分享链接（URL hash，免后端）
 - [ ] v0.4 剩余：Recipe Card 视觉重设计 + 10–20 个精选配方 + Benchmark 画廊页 + 首页 30 秒理解
 - [ ] v0.5 Prompt Compiler：剧本→分镜完善 + Content/Visual/Temporal 分层 IR + 时序冲突检查
