@@ -1,9 +1,9 @@
 # BENCHMARK · 可复现实测协议 / Reproducible Benchmark Protocol
 
-> **状态（2026-08-17）：图像基准三轮已执行并完成聚合，8 词条升至 Confidence B（3 个独立模型家族）。** run 001（seed 1，192 张，2×Seedream）+ run 002（seeds 2–3，384 张，2×Seedream）+ run 003（seeds 1–3，288 张，智谱 CogView-4 @1440×1440）：3 家族 × 6 场景 × 3 seeds × Control/Treatment，每词 54 对观测。
-> 评测 = 豆包 VLM YES/NO adherence，每图独立两轮 + 矛盾人工裁决（三轮共裁决 4+12+11 处，逐张核对图片，注记见 evaluations 文件的 `evaluator.auditResolved` 字段）。
-> 汇总：`benchmark/results/summary-image-baseline-001+image-baseline-002+image-baseline-003.json`；免费再分析：`node benchmark/analyze-baseline.js --run image-baseline-001`。
-> 与 §4.1 规划的差异：Seedream 家族内 2 模型 + CogView 家族 1 模型补齐第三家族；CogView-4 不支持 2048²（上限 2²¹ px），用 1440²；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
+> **状态（2026-08-18 · Dataset Release 0.2）：图像基准四轮已执行并完成聚合，20 词条升至 Confidence B（3 个独立模型家族，2160 张）。** run 001（seed 1，192 张，2×Seedream）+ run 002（seeds 2–3，384 张，2×Seedream）+ run 003（seeds 1–3，288 张，智谱 CogView-4 @1440×1440）+ run 004（12 个定向词条，seeds 1–3，1296 张，3 家族）：3 家族 × 6 场景 × 3 seeds × Control/Treatment，每词 54 对观测。
+> 评测 = 豆包 VLM YES/NO adherence，每图独立两轮 + 矛盾人工裁决（四轮共裁决 4+12+11+38 = **65 处**，逐张核对图片，注记见 evaluations 文件的 `evaluator.auditResolved` 字段）。
+> 汇总：`benchmark/results/summary-image-baseline-001+image-baseline-002+image-baseline-003+image-baseline-004.json`；异常挖掘：`node benchmark/analyze-anomalies.js`；免费再分析：`node benchmark/analyze-baseline.js --run image-baseline-001`。
+> 与 §4.1 规划的差异：Seedream 家族内 2 模型 + CogView 家族 1 模型补齐第三家族；CogView-4 不支持 2048²（上限 2²¹ px），用 1440²；run 004 的 3 次生成失败为内容过滤假阳性（重试通过，失败记录见 `failures-*.jsonl`）；§4.2 视频 smoke 尚未执行，仍待视频 API 资源。
 
 实测结果（heuristic 估计 → C 级 12 对 → B 级 36 对（Seedream×2）→ B 级 54 对（3 家族））：
 
@@ -17,8 +17,22 @@
 | shallow depth of field 浅景深 | 82 | 77 | 71 | **66** |
 | close-up 特写 | 90 | 80 | 67 | **61** |
 | rule of thirds 三分法 | 55 | 63 | 66 | **57** |
+| macro 微距（run 004） | 85 | — | — | **3** |
+| telephoto compression 长焦压缩 | 70 | — | — | **59** |
+| fisheye lens 鱼眼 | 80 | — | — | **89** |
+| rim light 轮廓光 | 84 | — | — | **65** |
+| backlit silhouette 逆光剪影 | 78 | — | — | **77** |
+| neon glow 霓虹光 | 85 | — | — | **82** |
+| teal and orange 青橙调色 | 88 | — | — | **88** |
+| film grain 胶片颗粒 | 75 | — | — | **71** |
+| pastel colors 粉彩色 | 78 | — | — | **84** |
+| ink wash painting 水墨画 | 70 | — | — | **69** |
+| blue hour 蓝调时刻 | 88 | — | — | **86** |
+| negative space 负空间 | 68 | — | — | **42** |
 
-**家族偏差 > 种子方差**：CogView-4 单家族 modelScore 与 Seedream 差距巨大——monochrome 100/100 vs **61**、volumetric light 83/90 vs **38**、anime 100/100/100（唯一跨家族满分）。这实证了 §Confidence v0.2 的判断：同厂两代模型的一致不能外推为跨模型结论，第三独立家族的信息增量远大于追加 seed。
+**家族偏差 > 种子方差**：CogView-4 单家族 modelScore 与 Seedream 差距巨大——monochrome 100/100 vs **61**、volumetric light 83/90 vs **38**、ink wash painting 100/100 vs **33**、negative space 73/67 vs **11**、anime 100/100/100（唯一跨家族满分）。这实证了 §Confidence v0.2 的判断：同厂两代模型的一致不能外推为跨模型结论，第三独立家族的信息增量远大于追加 seed。
+
+**run 004 最大意外——macro 实测仅 3 分**（依从率 4%，Seedream 4.0 为 0）：连「物理事实」类词汇也可能全家族失效。「写 macro 就出微距」是当前所有测试模型的共同盲区，提示词里应改用画面描述（如 extreme close-up of ...）。**这一发现本身就是 20 词实测最大的单点价值。**
 
 ### 深度发现 / Findings（run 001，复用已付费数据的免费再分析）
 
