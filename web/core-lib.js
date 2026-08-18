@@ -255,6 +255,23 @@
       return { slot: s, maybe: maybe, suggs: suggs };
     });
 
+    // Evidence provenance footnote: how much of Reliability is actually measured.
+    // NOT a fifth score — Reliability answers "how reliable are these words",
+    // evidence answers "how much of that reliability is real measurement".
+    var benchFound = found.filter(function (a) { return a.score && a.score.status === 'benchmarked'; });
+    var tierRank = { heuristic: 0, C: 1, B: 2, A: 3 };
+    var confidenceFloor = null;
+    found.forEach(function (a) {
+      var tier = (a.score && a.score.status === 'benchmarked') ? (a.score.confidence || 'C') : 'heuristic';
+      if (confidenceFloor === null || (tierRank[tier] || 0) < (tierRank[confidenceFloor] || 0)) confidenceFloor = tier;
+    });
+    var evidence = {
+      benchmarked: benchFound.length,
+      total: found.length,
+      coverage: found.length ? Math.round(100 * benchFound.length / found.length) : null,
+      confidenceFloor: confidenceFloor
+    };
+
     return {
       text: text, mode: mode,
       found: found, allFound: allFound,
@@ -268,6 +285,7 @@
       hardConflicts: hardConflicts, tensions: tensions, redundants: redundants,
       reliability: reliability, coverage: coverage, consistency: consistency,
       freedom: freedom, controlLevel: controlLevel,
+      evidence: evidence,
       uncertain: uncertain
     };
   }
