@@ -88,5 +88,23 @@ optCases.forEach(function (c, i) {
   }
 });
 
+/* ---------- Recipe Profile (no single score, ever) ---------- */
+console.log('== RecipeProfile ==');
+(function () {
+  const rp = lib.recipeProfile(ATLAS, {
+    subject: 'a young woman', action: 'walking in the rain', scene: 'a cyberpunk city street',
+    picks: { lighting: 'neon', shot: 'close-up', color: 'teal-orange' }, mode: 'video'
+  });
+  const foundIds = rp.profile.found.map(a => a.id);
+  check(foundIds.indexOf('neon') !== -1, 'recipeProfile should find neon in assembled prompt');
+  check(foundIds.indexOf('close-up') !== -1, 'recipeProfile should find close-up');
+  check(foundIds.indexOf('cyberpunk-style') !== -1, 'recipeProfile should pick up "cyberpunk" from free scene text');
+  check(rp.profile.covered.length === 4, 'recipeProfile coverage should be 4 slots (3 picks + style from scene, got ' + rp.profile.covered.length + ')');
+  check(rp.profile.reliability !== null && typeof rp.profile.reliability === 'number', 'recipeProfile reliability should be a number');
+  check(rp.profile.consistency === 100, 'recipeProfile consistency should be 100 without conflicts');
+  check(rp.en.indexOf('neon glow') !== -1, 'recipeProfile EN prompt should contain neon glow');
+  check(!('score' in rp) && !('score' in rp.profile), 'recipeProfile must NOT return a single score');
+})();
+
 console.log('\n' + passed + ' passed, ' + failures + ' failed');
 process.exit(failures ? 1 : 0);
