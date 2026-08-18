@@ -1,0 +1,67 @@
+video smoke: 32 clips (limit 999)
+SUBMIT mini260615__tracking-shot__street__control
+OK mini260615__tracking-shot__street__control (3.4 MB)
+SUBMIT mini260615__tracking-shot__street__treatment
+OK mini260615__tracking-shot__street__treatment (3.7 MB)
+SUBMIT mini260615__tracking-shot__portrait__control
+OK mini260615__tracking-shot__portrait__control (3.5 MB)
+SUBMIT mini260615__tracking-shot__portrait__treatment
+OK mini260615__tracking-shot__portrait__treatment (3.4 MB)
+SUBMIT mini260615__handheld__street__control
+OK mini260615__handheld__street__control (3.5 MB)
+SUBMIT mini260615__handheld__street__treatment
+OK mini260615__handheld__street__treatment (4.2 MB)
+SUBMIT mini260615__handheld__portrait__control
+OK mini260615__handheld__portrait__control (2.4 MB)
+SUBMIT mini260615__handheld__portrait__treatment
+OK mini260615__handheld__portrait__treatment (2.9 MB)
+SUBMIT mini260615__dolly-zoom__street__control
+OK mini260615__dolly-zoom__street__control (3.9 MB)
+SUBMIT mini260615__dolly-zoom__street__treatment
+OK mini260615__dolly-zoom__street__treatment (2.9 MB)
+SUBMIT mini260615__dolly-zoom__portrait__control
+OK mini260615__dolly-zoom__portrait__control (3.1 MB)
+SUBMIT mini260615__dolly-zoom__portrait__treatment
+OK mini260615__dolly-zoom__portrait__treatment (3.0 MB)
+SUBMIT mini260615__long-take__street__control
+OK mini260615__long-take__street__control (4.7 MB)
+SUBMIT mini260615__long-take__street__treatment
+OK mini260615__long-take__street__treatment (3.1 MB)
+SUBMIT mini260615__long-take__portrait__control
+OK mini260615__long-take__portrait__control (3.1 MB)
+SUBMIT mini260615__long-take__portrait__treatment
+OK mini260615__long-take__portrait__treatment (3.2 MB)
+SUBMIT fast260128__tracking-shot__street__control
+OK fast260128__tracking-shot__street__control (3.0 MB)
+SUBMIT fast260128__tracking-shot__street__treatment
+OK fast260128__tracking-shot__street__treatment (4.1 MB)
+SUBMIT fast260128__tracking-shot__portrait__control
+OK fast260128__tracking-shot__portrait__control (2.3 MB)
+SUBMIT fast260128__tracking-shot__portrait__treatment
+OK fast260128__tracking-shot__portrait__treatment (2.3 MB)
+SUBMIT fast260128__handheld__street__control
+OK fast260128__handheld__street__control (3.7 MB)
+SUBMIT fast260128__handheld__street__treatment
+OK fast260128__handheld__street__treatment (6.4 MB)
+SUBMIT fast260128__handheld__portrait__control
+OK fast260128__handheld__portrait__control (2.4 MB)
+SUBMIT fast260128__handheld__portrait__treatment
+OK fast260128__handheld__portrait__treatment (2.9 MB)
+SUBMIT fast260128__dolly-zoom__street__control
+OK fast260128__dolly-zoom__street__control (3.6 MB)
+SUBMIT fast260128__dolly-zoom__street__treatment
+OK fast260128__dolly-zoom__street__treatment (2.5 MB)
+SUBMIT fast260128__dolly-zoom__portrait__control
+OK fast260128__dolly-zoom__portrait__control (2.6 MB)
+SUBMIT fast260128__dolly-zoom__portrait__treatment
+OK fast260128__dolly-zoom__portrait__treatment (2.1 MB)
+SUBMIT fast260128__long-take__street__control
+OK fast260128__long-take__street__control (4.1 MB)
+SUBMIT fast260128__long-take__street__treatment
+OK fast260128__long-take__street__treatment (4.0 MB)
+SUBMIT fast260128__long-take__portrait__control
+FAIL fast260128__long-take__portrait__control -> task failed: {"code":"OutputVideoSensitiveContentDetected.PolicyViolation","message":"The request failed because the output video may be related to copyright restrictions. Request id: 02178705342840200000000000000
+SUBMIT fast260128__long-take__portrait__treatment
+FAIL fast260128__long-take__portrait__treatment -> submit 403 The request failed because your account has an overdue balance. Request id: 021787053518257ff228b459645a66c98f2a46916338f8e57dea5
+STOPPING: balance
+DONE ok=30 skipped=0 failed=2
