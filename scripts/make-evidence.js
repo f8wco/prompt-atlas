@@ -93,4 +93,5 @@ for (const atom of ATOMS) {
     'judged ' + pick.control.judgment + '->' + pick.treatment.judgment);
 }
 fs.writeFileSync(path.join(base, 'results', 'evidence.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8');
-console.log('manifest: benchmark/results/evidence.json | images: web/assets/evidence/ (originals, resize next)');
+console.log('manifest: benchmark/results/evidence.json | images: web/assets/evidence/ (originals)');
+console.log('NEXT: stamp + downscale via  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-evidence.ps1');
