@@ -1,0 +1,88 @@
+{
+  "runs": [
+    "image-baseline-001",
+    "image-baseline-002",
+    "image-baseline-003"
+  ],
+  "generatedAt": "2026-08-18T02:59:06.367Z",
+  "categories": {
+    "deadWeight": [
+      {
+        "atom": "golden hour",
+        "adherence": 100,
+        "baseline": 69,
+        "lift": 31
+      },
+      {
+        "atom": "shallow depth of field",
+        "adherence": 91,
+        "baseline": 76,
+        "lift": 15
+      },
+      {
+        "atom": "rule of thirds",
+        "adherence": 85,
+        "baseline": 87,
+        "lift": -2
+      }
+    ],
+    "strongSwitch": [
+      {
+        "atom": "monochrome",
+        "adherence": 87,
+        "baseline": 0,
+        "lift": 87
+      },
+      {
+        "atom": "anime style",
+        "adherence": 100,
+        "baseline": 0,
+        "lift": 100
+      }
+    ],
+    "familySplit": [
+      {
+        "atom": "close-up",
+        "spread": 30,
+        "perModel": "250828:58 251128:81 4:51"
+      },
+      {
+        "atom": "monochrome",
+        "spread": 39,
+        "perModel": "250828:100 251128:100 4:61"
+      },
+      {
+        "atom": "symmetrical composition",
+        "spread": 32,
+        "perModel": "250828:82 251128:76 4:50"
+      },
+      {
+        "atom": "volumetric light",
+        "spread": 52,
+        "perModel": "250828:83 251128:90 4:38"
+      }
+    ],
+    "sceneDependent": [
+      {
+        "atom": "close-up",
+        "scenes": "portrait:44 street:67 product:44 environment:22 animal:78 architecture:0"
+      },
+      {
+        "atom": "golden hour",
+        "scenes": "portrait:0 street:22 product:0 environment:78 animal:0 architecture:89"
+      },
+      {
+        "atom": "symmetrical composition",
+        "scenes": "portrait:100 street:78 product:11 environment:100 animal:56 architecture:56"
+      },
+      {
+        "atom": "shallow depth of field",
+        "scenes": "portrait:0 street:22 product:0 environment:0 animal:0 architecture:67"
+      },
+      {
+        "atom": "volumetric light",
+        "scenes": "portrait:44 street:44 product:56 environment:0 animal:78 architecture:67"
+      }
+    ]
+  }
+}
