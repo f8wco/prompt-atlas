@@ -100,6 +100,11 @@ async function main() {
         failed++;
         const msg = (r.body.error && r.body.error.message) || JSON.stringify(r.body);
         console.error('FAIL ' + id + ' -> ' + r.status + ' ' + msg);
+        fs.appendFileSync(path.join(__dirname, 'results', 'failures-' + runId + '.jsonl'), JSON.stringify({
+          runId: runId, atomId: t.atomId, model: MODEL, sceneTemplate: t.scene.id, condition: t.cond, seed: t.seed,
+          generationStatus: (/敏感|sensitive|filter|moderation|content/i.test(msg) ? 'provider_filter' : 'provider_error'),
+          httpStatus: r.status, message: String(msg).slice(0, 300), loggedAt: new Date().toISOString()
+        }) + '\n');
         if (/balance|quota|limit|insufficient/i.test(String(msg))) { console.error('STOPPING: balance/quota'); break; }
         await sleep(3000); continue;
       }
