@@ -1,0 +1,128 @@
+{
+  "crossJudge": "glm-4v-flash",
+  "runId": "image-baseline-004",
+  "sampleSize": 100,
+  "judged": 100,
+  "agree": 81,
+  "disagree": 19,
+  "errors": 0,
+  "agreement": 81,
+  "disagreements": [
+    {
+      "key": "backlit silhouette__doubao-seedream-4-0-250828__product__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "backlit silhouette__doubao-seedream-4-5-251128__animal__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "blue hour__zhipu-cogview-4__environment__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "film grain__doubao-seedream-4-0-250828__environment__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "film grain__doubao-seedream-4-0-250828__product__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "film grain__doubao-seedream-4-5-251128__animal__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "film grain__doubao-seedream-4-5-251128__environment__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "macro__doubao-seedream-4-0-250828__product__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "macro__doubao-seedream-4-5-251128__animal__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "macro__doubao-seedream-4-5-251128__product__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "macro__zhipu-cogview-4__animal__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "negative space__doubao-seedream-4-0-250828__animal__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "negative space__zhipu-cogview-4__animal__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "pastel colors__doubao-seedream-4-0-250828__product__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "pastel colors__doubao-seedream-4-5-251128__animal__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    },
+    {
+      "key": "rim light__doubao-seedream-4-0-250828__product__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "rim light__zhipu-cogview-4__product__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "teal and orange__zhipu-cogview-4__environment__control",
+      "doubao": 0,
+      "glm": 1,
+      "glmRaw": "YES."
+    },
+    {
+      "key": "telephoto compression__doubao-seedream-4-0-250828__animal__control",
+      "doubao": 1,
+      "glm": 0,
+      "glmRaw": "NO."
+    }
+  ],
+  "generatedAt": "2026-08-18T10:46:22.459Z",
+  "note": "Independent-vendor judge (Zhipu GLM-4V) vs final doubao judgments (post dual-pass + human audit). Quantifies same-vendor judge-bias risk."
+}
