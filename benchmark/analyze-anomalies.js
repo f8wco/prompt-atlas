@@ -1,11 +1,13 @@
 'use strict';
-/* Anomaly mining over aggregated benchmark data (per advisor review):
-   A) dead weight    adherence>=80 & baseline>=50  — "写不写都一样"
-   B) strong switch  adherence>=80 & baseline<30   — 真正的强控制词
-   C) family split   max-min modelScore >= 25      — Model Adapter 的数据来源，不许平均掉
-   D) scene dep.     per-scene lift spread (max-min >= 1.0 with >=2 nonzero-diff scenes)
-   Usage: node benchmark/analyze-anomalies.js --runs image-baseline-001,image-baseline-002,image-baseline-003[,004]
-   Output: results/anomalies-<label>.json + console tables */
+/* Anomaly mining over aggregated benchmark data (per advisor reviews).
+   Categories (names deliberately MORE conservative than thresholds):
+   A1 redundant           adherence>=80 & baseline>=50 & lift<=10   — 写了基本白写
+   A2 marginal            adherence>=80 & baseline>=50 & lift 11-30 — 高基线、弱边际控制
+   A3 usefulHighBaseline  adherence>=80 & baseline>=50 & lift>30    — 高基线、仍有真实控制价值
+   B  strongSwitch        adherence>=80 & baseline<30               — 真正的强控制开关
+   C  familySplit         max-min modelScore >= 25                  — Model Adapter 数据来源
+   D  sceneDependent      per-scene lift spread >= 0.5 (>=3 scenes)
+   Usage: node benchmark/analyze-anomalies.js --runs image-baseline-001,...  */
 
 const fs = require('fs');
 const path = require('path');
@@ -32,18 +34,24 @@ for (const run of runIds) {
   });
 }
 
-const out = { runs: runIds, generatedAt: new Date().toISOString(), categories: { deadWeight: [], strongSwitch: [], familySplit: [], sceneDependent: [] } };
+const out = { runs: runIds, generatedAt: new Date().toISOString(), categories: { redundant: [], marginal: [], usefulHighBaseline: [], strongSwitch: [], familySplit: [], sceneDependent: [] } };
 
 Object.keys(summary.atoms).forEach(name => {
   const a = summary.atoms[name];
   if (typeof a.atlasScore !== 'number') return;
   const meanA = Object.values(a.models).reduce((t, m) => t + m.A, 0) / Object.keys(a.models).length;
   const meanB = Object.values(a.models).reduce((t, m) => t + m.B, 0) / Object.keys(a.models).length;
+  const liftPp = Math.round((meanA - meanB) * 100);
   const scores = Object.values(a.models).map(m => m.modelScore);
   const spread = Math.max(...scores) - Math.min(...scores);
+  const base = { atom: name, adherence: Math.round(meanA * 100), baseline: Math.round(meanB * 100), lift: liftPp };
 
-  if (meanA >= 0.8 && meanB >= 0.5) out.categories.deadWeight.push({ atom: name, adherence: Math.round(meanA * 100), baseline: Math.round(meanB * 100), lift: Math.round((meanA - meanB) * 100) });
-  if (meanA >= 0.8 && meanB < 0.3) out.categories.strongSwitch.push({ atom: name, adherence: Math.round(meanA * 100), baseline: Math.round(meanB * 100), lift: Math.round((meanA - meanB) * 100) });
+  if (meanA >= 0.8 && meanB >= 0.5) {
+    if (liftPp <= 10) out.categories.redundant.push(base);
+    else if (liftPp <= 30) out.categories.marginal.push(base);
+    else out.categories.usefulHighBaseline.push(base);
+  }
+  if (meanA >= 0.8 && meanB < 0.3) out.categories.strongSwitch.push(base);
   if (spread >= 25) out.categories.familySplit.push({
     atom: name, spread,
     perModel: Object.keys(a.models).map(m => m.split('-').slice(-1)[0] + ':' + a.models[m].modelScore).join(' ')
@@ -69,7 +77,9 @@ const show = (title, arr, fmt) => {
   arr.forEach(x => console.log('  ' + fmt(x)));
 };
 console.log('anomalies written: ' + path.basename(outFile));
-show('A 死重词（写了白写）', out.categories.deadWeight, x => x.atom.padEnd(24) + 'adherence ' + x.adherence + '% baseline ' + x.baseline + '% lift +' + x.lift);
+show('A1 冗余指令（写了基本白写，lift ≤10pp）', out.categories.redundant, x => x.atom.padEnd(24) + 'adherence ' + x.adherence + '% baseline ' + x.baseline + '% lift ' + x.lift);
+show('A2 高基线·弱边际（lift 11-30pp）', out.categories.marginal, x => x.atom.padEnd(24) + 'adherence ' + x.adherence + '% baseline ' + x.baseline + '% lift +' + x.lift);
+show('A3 高基线·仍有效（lift >30pp）', out.categories.usefulHighBaseline, x => x.atom.padEnd(24) + 'adherence ' + x.adherence + '% baseline ' + x.baseline + '% lift +' + x.lift);
 show('B 强控制开关', out.categories.strongSwitch, x => x.atom.padEnd(24) + 'adherence ' + x.adherence + '% baseline ' + x.baseline + '% lift +' + x.lift);
 show('C 家族分裂（Model Adapter 数据）', out.categories.familySplit, x => x.atom.padEnd(24) + 'spread ' + x.spread + ' | ' + x.perModel);
 show('D 场景依赖', out.categories.sceneDependent, x => x.atom.padEnd(24) + x.scenes);
