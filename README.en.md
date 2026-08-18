@@ -125,8 +125,21 @@ Two lessons: **with small samples, even a "measurement" can be luck** (12→36 p
 
 ## 📄 License / 许可证
 
-[MIT](LICENSE) · Dictionary data (core.json) is also MIT — fork and contribute freely.
+**Code: MIT** (`LICENSE`) · **Data: CC BY 4.0** (`DATA-LICENSE.md`) — `core.json` and `benchmark/` data may be used commercially and redistributed, **with attribution** "Visual Prompt Atlas (f8wco/prompt-atlas)" plus a link. Installing the agent skill, calling the CLI, or forking the code is NOT restricted by the data license.
+
+## 📖 Citation / 引用
+
+If the data or tool helps you, cite it (this also satisfies the CC BY 4.0 attribution requirement):
+
+```bibtex
+@software{prompt-atlas,
+  author = {f8w},
+  title = {Visual Prompt Atlas: 9-slot prompt control system with cross-family benchmark evidence},
+  year = {2026},
+  url = {https://atlas.f8w.com}
+}
+```
 
 ## 🙏 Contributing / 贡献
 
-New terms follow Workflow C in `SKILL.md`: edit `core.json`, run `node scripts/build.js` (or `npm run build`), and include your scoring rationale in the PR.
+New terms follow Workflow C in `SKILL.md`: edit `core.json`, run `node scripts/build.js` (or `npm run build`), and include your scoring rationale in the PR. Submitting dictionary terms or benchmark data means agreeing to release them under CC BY 4.0 (code contributions remain MIT).
