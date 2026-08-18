@@ -46,7 +46,14 @@
     "implies": [],               // 蕴含：计入覆盖，但可靠性只按 canonical 计一次
     "expandsTo": []              // Macro 拆解目标
   },
-  "desc": "", "descEn": "", "example": ""
+  "desc": "", "descEn": "", "example": "",
+  "evidence": {               // 仅 benchmarked：Before/After 证据对（scripts/make-evidence.js 从实测数据确定性挑选）
+    "control": "assets/evidence/x-control.jpg",    // 无词对照组图（web/ 相对路径）
+    "treatment": "assets/evidence/x-treatment.jpg",// 加词实验组图
+    "model": "", "scene": "", "seed": 1, "source": "image-baseline-001",
+    "selection": "contrast",   // contrast=判定 0→1 的最大反差对；diff=有差异；any=任意对
+    "judged": { "control": 0, "treatment": 1 }
+  }
 }
 ```
 
