@@ -16,6 +16,7 @@
         <button data-tab="checker" class="active" data-i18n="tab-checker">🔍 提示词体检仪</button>
         <button data-tab="recipe" data-i18n="tab-recipe">🧪 视觉配方卡</button>
         <button data-tab="library" data-i18n="tab-library">📚 词库浏览</button>
+        <button data-tab="storyboard" data-i18n="tab-storyboard">🎞️ 剧本→分镜</button>
       </nav>
     </div>
   </header>
@@ -114,6 +115,38 @@
       </div>
       <div id="lib-grid"></div>
     </section>
+
+    <!-- ============ Storyboard / 剧本→分镜 ============ -->
+    <section id="view-storyboard" class="view">
+      <div class="hero">
+        <h1>剧本 → 分镜提示词</h1>
+        <p>贴入剧本 → 按时长自动拆段拆拍、内容自动分配 → 每段选 9 槽位词条 → 冲突检查 + Control Profile → 一键复制 / 分享</p>
+      </div>
+      <div class="panel sb-input">
+        <label class="field">
+          <span>剧本 / 故事 / 文案</span>
+          <textarea id="sb-script" rows="6" placeholder="例：深夜的东京街头下着雨。一位穿风衣的女子独自走过霓虹灯下的十字路口，脚步溅起水花。她在便利店门口停下，望向橱窗里的自己。镜头缓缓推近她的侧脸，雨滴滑落，她转身消失在人群中……"></textarea>
+        </label>
+        <div class="sb-row">
+          <label class="field"><span>总时长（秒）</span><input id="sb-total" type="number" value="30" min="5" max="600" step="1"></label>
+          <label class="field"><span>每段时长（秒）</span><input id="sb-seg" type="number" value="15" min="5" max="60" step="1"></label>
+          <button id="sb-generate" class="btn primary">⚙️ 生成分镜骨架</button>
+        </div>
+        <label class="field"><span>统一风格（全段共用）</span><input id="sb-style" placeholder="例：顶级国漫院线电影质感，8K超清"></label>
+      </div>
+      <div id="sb-segments"></div>
+      <div class="panel sb-output" id="sb-output" style="display:none">
+        <h3>生成结果</h3>
+        <div class="sb-actions">
+          <button id="sb-copy-zh" class="btn primary">📋 复制中文分镜稿</button>
+          <button id="sb-copy-en" class="btn">📋 Copy EN Prompts</button>
+          <button id="sb-share" class="btn">📤 分享本分镜</button>
+        </div>
+        <pre id="sb-zh" class="sb-pre"></pre>
+        <pre id="sb-en" class="sb-pre"></pre>
+        <div id="sb-profile"></div>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -123,6 +156,7 @@
 
   <script src="core-data.js"></script>
   <script src="core-lib.js"></script>
+  <script src="storyboard-app.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
