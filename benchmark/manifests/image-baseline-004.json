@@ -1,0 +1,81 @@
+{
+  "benchmarkVersion": "0.1",
+  "runId": "image-baseline-004",
+  "extends": "image-baseline-001",
+  "modality": "image",
+  "targetConfidence": "B",
+  "note": "Targeted benchmark round 2 (v0.6 strategy): 12 priority atoms straight to Confidence B. 3 families x 6 scenes x 3 seeds x 2 conditions = 108 images per atom, 1296 total. Atom names use core.json `en` display values.",
+  "atoms": [
+    "macro",
+    "telephoto compression",
+    "fisheye lens",
+    "rim light",
+    "backlit silhouette",
+    "neon glow",
+    "teal and orange",
+    "film grain",
+    "pastel colors",
+    "ink wash painting",
+    "blue hour",
+    "negative space"
+  ],
+  "models": [
+    "doubao-seedream-4-0-250828",
+    "doubao-seedream-4-5-251128",
+    "zhipu-cogview-4"
+  ],
+  "scenes": [
+    {
+      "id": "portrait",
+      "prompt": "portrait of a woman standing by a window"
+    },
+    {
+      "id": "street",
+      "prompt": "a street scene with a cyclist passing by"
+    },
+    {
+      "id": "product",
+      "prompt": "a ceramic mug on a wooden table"
+    },
+    {
+      "id": "environment",
+      "prompt": "a misty forest clearing"
+    },
+    {
+      "id": "animal",
+      "prompt": "a cat sitting on a windowsill"
+    },
+    {
+      "id": "architecture",
+      "prompt": "a modern building facade seen from below"
+    }
+  ],
+  "conditions": [
+    "control",
+    "treatment"
+  ],
+  "size": "2048x2048",
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "evaluator": {
+    "type": "vlm+human-audit",
+    "vlm": "doubao vision (Volcano Ark chat completions)",
+    "questions": {
+      "macro": "Is this a macro shot where a very small subject fills the frame with extreme close-up detail? Answer YES or NO only.",
+      "telephoto compression": "Does the image show strong telephoto-lens characteristics (flattened/compressed perspective, isolated subject, heavily blurred busy background)? Answer YES or NO only.",
+      "fisheye lens": "Does the image show clear fisheye-lens distortion (strong barrel curvature of straight lines, warped wide frame)? Answer YES or NO only.",
+      "rim light": "Does the subject have a clear rim light (bright edge/outline light separating it from the background)? Answer YES or NO only.",
+      "backlit silhouette": "Is the main subject backlit (light source behind the subject creating a silhouette or bright glowing outline)? Answer YES or NO only.",
+      "neon glow": "Are colorful neon lights a dominant visual element in the image? Answer YES or NO only.",
+      "teal and orange": "Does the color grading show the teal-and-orange look (cool teal/blue-green shadows paired with warm orange highlights)? Answer YES or NO only.",
+      "film grain": "Does the image visibly show analog film-grain texture (fine grain/noise structure rather than digital smoothness)? Answer YES or NO only.",
+      "pastel colors": "Is the color palette dominantly pastel (soft, pale, low-saturation tones)? Answer YES or NO only.",
+      "ink wash painting": "Is the image in Chinese ink-wash painting style (black ink brush strokes, paper texture, minimal color)? Answer YES or NO only.",
+      "blue hour": "Does the image show blue-hour lighting (deep blue twilight sky/ambient tones)? Answer YES or NO only.",
+      "negative space": "Is the composition dominated by large empty negative space with a small isolated subject? Answer YES or NO only."
+    }
+  }
+}
