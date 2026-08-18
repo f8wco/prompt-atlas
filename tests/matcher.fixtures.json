@@ -18,5 +18,7 @@
   { "text": "anime style, photorealistic portrait", "expectFound": ["anime", "photoreal"], "expectTensions": ["anime↔photoreal"], "expectConsistency": 90 },
   { "text": "rainy night street, at night", "expectFound": ["rainy-night", "night"], "expectRedundants": ["rainy-night↔night"] },
   { "text": "monochrome portrait, vivid colors", "expectFound": ["monochrome", "high-sat"], "expectConsistency": 70 },
-  { "text": "深邃隧道中的金色粒子", "expectNotApplicable": ["time"] }
+  { "text": "深邃隧道中的金色粒子", "expectNotApplicable": ["time"] },
+  { "text": "a slow dolly in shot", "expectFound": ["dolly-in"], "expectNot": ["dolly-out"] },
+  { "text": "镜头缓缓拉远", "expectFound": ["dolly-out"], "expectNot": ["dolly-in"] }
 ]
