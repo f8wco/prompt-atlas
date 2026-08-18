@@ -326,6 +326,23 @@
     };
   }
 
+  /* ---------------- Recipe Profile (v3: no single score) ----------------
+     Assembles a recipe prompt from picks and returns the four-dimension
+     Control Profile — the ONLY scoring language across checker/recipe/storyboard. */
+  function recipeProfile(data, opts) {
+    var atoms = [];
+    (data.slots || []).forEach(function (s) {
+      var id = opts.picks && opts.picks[s.id];
+      if (!id) return;
+      var a = atomById(data, id);
+      if (a) atoms.push(a);
+    });
+    var baseEn = [opts.subject, opts.action, opts.scene].filter(Boolean).join(' ');
+    var en = (baseEn ? baseEn + ', ' : '') + atoms.map(function (a) { return a.en; }).join(', ');
+    var r = analyze(data, en, opts.mode || 'video');
+    return { en: en, atoms: atoms, profile: r };
+  }
+
   return {
     SUGGESTION_MIN_SCORE: SUGGESTION_MIN_SCORE,
     HARD_PENALTY: HARD_PENALTY,
@@ -336,6 +353,7 @@
     atomAppliesToMode: atomAppliesToMode,
     analyze: analyze,
     buildOptimized: buildOptimized,
+    recipeProfile: recipeProfile,
     hasFreeTextConflict: hasFreeTextConflict,
     pairConflict: pairConflict,
     readScore: readScore,
