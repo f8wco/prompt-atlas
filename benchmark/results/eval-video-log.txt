@@ -1,0 +1,68 @@
+clips to evaluate: 30
+EVAL mini260615__tracking-shot__street__control
+OK tracking shot__doubao-seedance-2-0-mini-260615__street__control => 1 (YES)
+EVAL mini260615__tracking-shot__street__treatment
+OK tracking shot__doubao-seedance-2-0-mini-260615__street__treatment => 1 (YES)
+EVAL mini260615__tracking-shot__portrait__control
+OK tracking shot__doubao-seedance-2-0-mini-260615__portrait__control => 1 (YES)
+EVAL mini260615__tracking-shot__portrait__treatment
+OK tracking shot__doubao-seedance-2-0-mini-260615__portrait__treatment => 1 (YES)
+EVAL mini260615__handheld__street__control
+OK handheld__doubao-seedance-2-0-mini-260615__street__control => 0 (NO)
+EVAL mini260615__handheld__street__treatment
+OK handheld__doubao-seedance-2-0-mini-260615__street__treatment => 0 (NO)
+EVAL mini260615__handheld__portrait__control
+OK handheld__doubao-seedance-2-0-mini-260615__portrait__control => 1 (YES)
+EVAL mini260615__handheld__portrait__treatment
+OK handheld__doubao-seedance-2-0-mini-260615__portrait__treatment => 1 (YES)
+EVAL mini260615__dolly-zoom__street__control
+OK dolly zoom__doubao-seedance-2-0-mini-260615__street__control => 0 (NO)
+EVAL mini260615__dolly-zoom__street__treatment
+OK dolly zoom__doubao-seedance-2-0-mini-260615__street__treatment => 0 (NO)
+EVAL mini260615__dolly-zoom__portrait__control
+OK dolly zoom__doubao-seedance-2-0-mini-260615__portrait__control => 0 (NO)
+EVAL mini260615__dolly-zoom__portrait__treatment
+OK dolly zoom__doubao-seedance-2-0-mini-260615__portrait__treatment => 1 (YES)
+EVAL mini260615__long-take__street__control
+OK long take__doubao-seedance-2-0-mini-260615__street__control => 1 (YES)
+EVAL mini260615__long-take__street__treatment
+OK long take__doubao-seedance-2-0-mini-260615__street__treatment => 1 (YES)
+EVAL mini260615__long-take__portrait__control
+OK long take__doubao-seedance-2-0-mini-260615__portrait__control => 1 (YES)
+EVAL mini260615__long-take__portrait__treatment
+OK long take__doubao-seedance-2-0-mini-260615__portrait__treatment => 1 (YES)
+EVAL fast260128__tracking-shot__street__control
+OK tracking shot__doubao-seedance-2-0-fast-260128__street__control => 1 (YES)
+EVAL fast260128__tracking-shot__street__treatment
+OK tracking shot__doubao-seedance-2-0-fast-260128__street__treatment => 1 (YES)
+EVAL fast260128__tracking-shot__portrait__control
+OK tracking shot__doubao-seedance-2-0-fast-260128__portrait__control => 1 (YES)
+EVAL fast260128__tracking-shot__portrait__treatment
+OK tracking shot__doubao-seedance-2-0-fast-260128__portrait__treatment => 1 (YES)
+EVAL fast260128__handheld__street__control
+OK handheld__doubao-seedance-2-0-fast-260128__street__control => 1 (YES)
+EVAL fast260128__handheld__street__treatment
+OK handheld__doubao-seedance-2-0-fast-260128__street__treatment => 1 (YES)
+EVAL fast260128__handheld__portrait__control
+OK handheld__doubao-seedance-2-0-fast-260128__portrait__control => 0 (NO)
+EVAL fast260128__handheld__portrait__treatment
+OK handheld__doubao-seedance-2-0-fast-260128__portrait__treatment => 1 (YES)
+EVAL fast260128__dolly-zoom__street__control
+OK dolly zoom__doubao-seedance-2-0-fast-260128__street__control => 0 (NO)
+EVAL fast260128__dolly-zoom__street__treatment
+OK dolly zoom__doubao-seedance-2-0-fast-260128__street__treatment => 0 (NO)
+EVAL fast260128__dolly-zoom__portrait__control
+OK dolly zoom__doubao-seedance-2-0-fast-260128__portrait__control => 1 (YES)
+EVAL fast260128__dolly-zoom__portrait__treatment
+OK dolly zoom__doubao-seedance-2-0-fast-260128__portrait__treatment => 1 (YES)
+EVAL fast260128__long-take__street__control
+OK long take__doubao-seedance-2-0-fast-260128__street__control => 1 (YES)
+EVAL fast260128__long-take__street__treatment
+OK long take__doubao-seedance-2-0-fast-260128__street__treatment => 1 (YES)
+DONE evaluated=30 failed=0
+
+=== VIDEO SMOKE SUMMARY ===
+dolly zoom       adherence=50% baseline=25% lift=+25
+handheld         adherence=75% baseline=50% lift=+25
+long take        adherence=100% baseline=100% lift=+0
+tracking shot    adherence=100% baseline=100% lift=+0
