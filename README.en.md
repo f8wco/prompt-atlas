@@ -25,12 +25,14 @@
 
 ## ❓ Why / 为什么需要它
 
+> ⚡ **We measured it (2160 A/B images)**: writing `macro` does NOT make models shoot macro — 4% adherence, Seedream 4.0 scores literally 0, all three families ignore the word. **"Professional-sounding" terms can be dead instructions**: [see the 20 measured terms](#-determinism-score--确定性分数)
+
 Write "a girl in a city, cinematic" ten times and you get ten different results — because prompts are full of words that **don't do anything** and slots that were **never written**.
 
 Other prompt libraries are collections. This project is a **methodology + dictionary + tool**:
 
 - **9-slot structured linting**: paste a prompt → see what you specified, what you left to the model, what conflicts, and which words are vague
-- **Determinism scores (honestly tiered)**: every term carries 0–100 — 8 core terms are measured across 3 model families (`benchmarked`, Confidence B), the other 52 are explicitly labeled `heuristic` editorial estimates, never presented as measured probabilities
+- **Determinism scores (honestly tiered)**: every term carries 0–100 — **20 terms are measured across 3 model families** (`benchmarked`, Confidence B), the rest are explicitly labeled `heuristic` editorial estimates, never presented as measured probabilities
 - **Reproducible rule engine**: Matcher/Optimizer are pure functions (`web/core-lib.js`) covered by 100+ regression fixtures
 - **Recipe Card builder**: pick terms slot by slot → one-click copy of EN/中文 prompts
 
@@ -100,6 +102,8 @@ A complete prompt = Subject/Action/Scene (free text) + 9 slots (dictionary terms
 ## 📊 Determinism Score / 确定性分数
 
 **Honest disclosure: 20 of 60 terms are now `benchmarked` (Confidence B); the other 40 remain `heuristic` editorial estimates.** Four runs (`image-baseline-001~004`): **3 independent model families** (Seedream 4.0 / Seedream 4.5 / Zhipu CogView-4) × 6 scenes × 3 seeds × Control/Treatment A/B, 54 paired observations per term, **2160 images total** (protocol & raw data: `docs/BENCHMARK.md`, `benchmark/results/`).
+
+> ⚠️ **Evidence scope**: scores are measured on these 3 image-model families only. Midjourney / Flux / SDXL / Sora / Kling etc. are NOT measured — do not extrapolate. Per-model differences are shown in each term's `byModel` detail (visible in the Library page).
 
 | Score | Meaning | Examples (all benchmarked B) |
 |---|---|---|
