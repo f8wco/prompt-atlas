@@ -10,9 +10,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const RUNS = ['image-baseline-001', 'image-baseline-002', 'image-baseline-003'];
+const RUNS = ['image-baseline-001', 'image-baseline-002', 'image-baseline-003', 'image-baseline-004'];
 const ATOMS = ['close-up', 'monochrome', 'golden hour', 'symmetrical composition',
-  'shallow depth of field', 'anime style', 'volumetric light', 'rule of thirds'];
+  'shallow depth of field', 'anime style', 'volumetric light', 'rule of thirds',
+  // run 004 targeted atoms
+  'macro', 'telephoto compression', 'fisheye lens', 'rim light', 'backlit silhouette',
+  'neon glow', 'teal and orange', 'film grain', 'pastel colors', 'ink wash painting',
+  'blue hour', 'negative space'];
 
 const base = path.join(__dirname, '..', 'benchmark');
 const outDir = path.join(__dirname, '..', 'web', 'assets', 'evidence');
