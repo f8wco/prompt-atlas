@@ -247,6 +247,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 100,
           "baseline": 69,
           "lift": 31
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 80,
+          "doubao-seedream-4-5-251128": 78,
+          "zhipu-cogview-4": 80
         }
       },
       "relations": {
@@ -359,6 +364,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 85,
           "baseline": 2,
           "lift": 83
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 89,
+          "doubao-seedream-4-5-251128": 94,
+          "zhipu-cogview-4": 71
         }
       },
       "relations": {
@@ -412,6 +422,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 79,
           "baseline": 31,
           "lift": 48
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 83,
+          "doubao-seedream-4-5-251128": 90,
+          "zhipu-cogview-4": 38
         }
       },
       "relations": {
@@ -510,6 +525,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 91,
           "baseline": 79,
           "lift": 11
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 66,
+          "doubao-seedream-4-5-251128": 75,
+          "zhipu-cogview-4": 59
         }
       },
       "relations": {
@@ -556,6 +576,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 98,
           "baseline": 67,
           "lift": 32
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 75,
+          "doubao-seedream-4-5-251128": 74,
+          "zhipu-cogview-4": 85
         }
       },
       "relations": {
@@ -957,6 +982,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 72,
           "baseline": 30,
           "lift": 43
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 58,
+          "doubao-seedream-4-5-251128": 81,
+          "zhipu-cogview-4": 51
         }
       },
       "relations": {
@@ -1231,6 +1261,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 85,
           "baseline": 87,
           "lift": 0
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 66,
+          "doubao-seedream-4-5-251128": 66,
+          "zhipu-cogview-4": 47
         }
       },
       "relations": {
@@ -1297,6 +1332,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 70,
           "baseline": 4,
           "lift": 67
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 82,
+          "doubao-seedream-4-5-251128": 76,
+          "zhipu-cogview-4": 50
         }
       },
       "relations": {
@@ -1435,6 +1475,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 54,
           "baseline": 11,
           "lift": 43
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 73,
+          "doubao-seedream-4-5-251128": 67,
+          "zhipu-cogview-4": 11
         }
       },
       "relations": {
@@ -1485,6 +1530,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 100,
           "baseline": 35,
           "lift": 65
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 93,
+          "doubao-seedream-4-5-251128": 92,
+          "zhipu-cogview-4": 83
         }
       },
       "relations": {
@@ -1545,6 +1595,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 89,
           "baseline": 55,
           "lift": 34
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 78,
+          "doubao-seedream-4-5-251128": 72,
+          "zhipu-cogview-4": 67
         }
       },
       "relations": {
@@ -1737,6 +1792,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 87,
           "baseline": 0,
           "lift": 87
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 100,
+          "doubao-seedream-4-5-251128": 100,
+          "zhipu-cogview-4": 61
         }
       },
       "relations": {
@@ -1811,6 +1871,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 100,
           "baseline": 50,
           "lift": 50
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 85,
+          "doubao-seedream-4-5-251128": 80,
+          "zhipu-cogview-4": 90
         }
       },
       "relations": {
@@ -2005,6 +2070,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 100,
           "baseline": 0,
           "lift": 100
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 100,
+          "doubao-seedream-4-5-251128": 100,
+          "zhipu-cogview-4": 100
         }
       },
       "relations": {
@@ -2125,6 +2195,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 78,
           "baseline": 0,
           "lift": 78
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 100,
+          "doubao-seedream-4-5-251128": 100,
+          "zhipu-cogview-4": 33
         }
       },
       "relations": {
@@ -2565,6 +2640,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 94,
           "baseline": 17,
           "lift": 78
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 98,
+          "doubao-seedream-4-5-251128": 95,
+          "zhipu-cogview-4": 75
         }
       },
       "relations": {
@@ -2751,6 +2831,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 91,
           "baseline": 76,
           "lift": 15
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 66,
+          "doubao-seedream-4-5-251128": 78,
+          "zhipu-cogview-4": 60
         }
       },
       "relations": {
@@ -2815,6 +2900,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 83,
           "baseline": 78,
           "lift": 8
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 64,
+          "doubao-seedream-4-5-251128": 67,
+          "zhipu-cogview-4": 51
         }
       },
       "relations": {
@@ -2861,6 +2951,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 4,
           "baseline": 0,
           "lift": 4
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 0,
+          "doubao-seedream-4-5-251128": 6,
+          "zhipu-cogview-4": 6
         }
       },
       "relations": {
@@ -3043,6 +3138,11 @@ var PROMPT_ATLAS_DATA = {
           "adherence": 91,
           "baseline": 2,
           "lift": 89
+        },
+        "byModel": {
+          "doubao-seedream-4-0-250828": 89,
+          "doubao-seedream-4-5-251128": 100,
+          "zhipu-cogview-4": 82
         }
       },
       "relations": {
@@ -3136,6 +3236,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 100,
             "baseline": 69,
             "lift": 31
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 80,
+            "doubao-seedream-4-5-251128": 78,
+            "zhipu-cogview-4": 80
           }
         },
         "relations": {
@@ -3248,6 +3353,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 85,
             "baseline": 2,
             "lift": 83
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 89,
+            "doubao-seedream-4-5-251128": 94,
+            "zhipu-cogview-4": 71
           }
         },
         "relations": {
@@ -3301,6 +3411,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 79,
             "baseline": 31,
             "lift": 48
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 83,
+            "doubao-seedream-4-5-251128": 90,
+            "zhipu-cogview-4": 38
           }
         },
         "relations": {
@@ -3399,6 +3514,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 91,
             "baseline": 79,
             "lift": 11
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 66,
+            "doubao-seedream-4-5-251128": 75,
+            "zhipu-cogview-4": 59
           }
         },
         "relations": {
@@ -3445,6 +3565,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 98,
             "baseline": 67,
             "lift": 32
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 75,
+            "doubao-seedream-4-5-251128": 74,
+            "zhipu-cogview-4": 85
           }
         },
         "relations": {
@@ -3850,6 +3975,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 72,
             "baseline": 30,
             "lift": 43
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 58,
+            "doubao-seedream-4-5-251128": 81,
+            "zhipu-cogview-4": 51
           }
         },
         "relations": {
@@ -4126,6 +4256,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 85,
             "baseline": 87,
             "lift": 0
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 66,
+            "doubao-seedream-4-5-251128": 66,
+            "zhipu-cogview-4": 47
           }
         },
         "relations": {
@@ -4192,6 +4327,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 70,
             "baseline": 4,
             "lift": 67
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 82,
+            "doubao-seedream-4-5-251128": 76,
+            "zhipu-cogview-4": 50
           }
         },
         "relations": {
@@ -4330,6 +4470,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 54,
             "baseline": 11,
             "lift": 43
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 73,
+            "doubao-seedream-4-5-251128": 67,
+            "zhipu-cogview-4": 11
           }
         },
         "relations": {
@@ -4382,6 +4527,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 100,
             "baseline": 35,
             "lift": 65
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 93,
+            "doubao-seedream-4-5-251128": 92,
+            "zhipu-cogview-4": 83
           }
         },
         "relations": {
@@ -4442,6 +4592,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 89,
             "baseline": 55,
             "lift": 34
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 78,
+            "doubao-seedream-4-5-251128": 72,
+            "zhipu-cogview-4": 67
           }
         },
         "relations": {
@@ -4634,6 +4789,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 87,
             "baseline": 0,
             "lift": 87
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 100,
+            "doubao-seedream-4-5-251128": 100,
+            "zhipu-cogview-4": 61
           }
         },
         "relations": {
@@ -4708,6 +4868,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 100,
             "baseline": 50,
             "lift": 50
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 85,
+            "doubao-seedream-4-5-251128": 80,
+            "zhipu-cogview-4": 90
           }
         },
         "relations": {
@@ -4904,6 +5069,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 100,
             "baseline": 0,
             "lift": 100
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 100,
+            "doubao-seedream-4-5-251128": 100,
+            "zhipu-cogview-4": 100
           }
         },
         "relations": {
@@ -5024,6 +5194,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 78,
             "baseline": 0,
             "lift": 78
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 100,
+            "doubao-seedream-4-5-251128": 100,
+            "zhipu-cogview-4": 33
           }
         },
         "relations": {
@@ -5468,6 +5643,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 94,
             "baseline": 17,
             "lift": 78
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 98,
+            "doubao-seedream-4-5-251128": 95,
+            "zhipu-cogview-4": 75
           }
         },
         "relations": {
@@ -5656,6 +5836,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 91,
             "baseline": 76,
             "lift": 15
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 66,
+            "doubao-seedream-4-5-251128": 78,
+            "zhipu-cogview-4": 60
           }
         },
         "relations": {
@@ -5720,6 +5905,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 83,
             "baseline": 78,
             "lift": 8
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 64,
+            "doubao-seedream-4-5-251128": 67,
+            "zhipu-cogview-4": 51
           }
         },
         "relations": {
@@ -5766,6 +5956,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 4,
             "baseline": 0,
             "lift": 4
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 0,
+            "doubao-seedream-4-5-251128": 6,
+            "zhipu-cogview-4": 6
           }
         },
         "relations": {
@@ -5948,6 +6143,11 @@ var PROMPT_ATLAS_DATA = {
             "adherence": 91,
             "baseline": 2,
             "lift": 89
+          },
+          "byModel": {
+            "doubao-seedream-4-0-250828": 89,
+            "doubao-seedream-4-5-251128": 100,
+            "zhipu-cogview-4": 82
           }
         },
         "relations": {
