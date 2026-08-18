@@ -343,13 +343,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 85,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 82,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 85,
+        "measured": {
+          "adherence": 85,
+          "baseline": 2,
+          "lift": 83
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -484,13 +494,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 84,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 65,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 84,
+        "measured": {
+          "adherence": 91,
+          "baseline": 79,
+          "lift": 11
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -520,13 +540,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 78,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 77,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 78,
+        "measured": {
+          "adherence": 98,
+          "baseline": 67,
+          "lift": 32
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -1389,13 +1419,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 68,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 42,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 68,
+        "measured": {
+          "adherence": 54,
+          "baseline": 11,
+          "lift": 43
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -1430,12 +1470,22 @@ var PROMPT_ATLAS_DATA = {
       },
       "score": {
         "value": 88,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 88,
+        "measured": {
+          "adherence": 100,
+          "baseline": 35,
+          "lift": 65
+        }
       },
       "relations": {
         "hardConflict": [
@@ -1479,13 +1529,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 75,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 71,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 75,
+        "measured": {
+          "adherence": 89,
+          "baseline": 55,
+          "lift": 34
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -1735,13 +1795,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 78,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 84,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 78,
+        "measured": {
+          "adherence": 100,
+          "baseline": 50,
+          "lift": 50
+        }
       },
       "relations": {
         "hardConflict": [
@@ -2039,13 +2109,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 70,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 69,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 70,
+        "measured": {
+          "adherence": 78,
+          "baseline": 0,
+          "lift": 78
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -2469,13 +2549,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 88,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 86,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 88,
+        "measured": {
+          "adherence": 94,
+          "baseline": 17,
+          "lift": 78
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -2709,13 +2799,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 70,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 59,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 70,
+        "measured": {
+          "adherence": 83,
+          "baseline": 78,
+          "lift": 8
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -2745,13 +2845,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 85,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 3,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 85,
+        "measured": {
+          "adherence": 4,
+          "baseline": 0,
+          "lift": 4
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -2917,13 +3027,23 @@ var PROMPT_ATLAS_DATA = {
         "en": []
       },
       "score": {
-        "value": 80,
-        "status": "heuristic",
-        "confidence": null,
-        "benchmarkVersion": null,
-        "sampleSize": 0,
-        "models": [],
-        "updatedAt": "2026-08"
+        "value": 89,
+        "status": "benchmarked",
+        "confidence": "B",
+        "benchmarkVersion": "0.1",
+        "sampleSize": 108,
+        "models": [
+          "doubao-seedream-4-0-250828",
+          "doubao-seedream-4-5-251128",
+          "zhipu-cogview-4"
+        ],
+        "updatedAt": "2026-08",
+        "heuristicValue": 80,
+        "measured": {
+          "adherence": 91,
+          "baseline": 2,
+          "lift": 89
+        }
       },
       "relations": {
         "hardConflict": [],
@@ -3112,13 +3232,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 85,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 82,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 85,
+          "measured": {
+            "adherence": 85,
+            "baseline": 2,
+            "lift": 83
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -3253,13 +3383,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 84,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 65,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 84,
+          "measured": {
+            "adherence": 91,
+            "baseline": 79,
+            "lift": 11
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -3289,13 +3429,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 78,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 77,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 78,
+          "measured": {
+            "adherence": 98,
+            "baseline": 67,
+            "lift": 32
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -4164,13 +4314,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 68,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 42,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 68,
+          "measured": {
+            "adherence": 54,
+            "baseline": 11,
+            "lift": 43
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -4207,12 +4367,22 @@ var PROMPT_ATLAS_DATA = {
         },
         "score": {
           "value": 88,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 88,
+          "measured": {
+            "adherence": 100,
+            "baseline": 35,
+            "lift": 65
+          }
         },
         "relations": {
           "hardConflict": [
@@ -4256,13 +4426,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 75,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 71,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 75,
+          "measured": {
+            "adherence": 89,
+            "baseline": 55,
+            "lift": 34
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -4512,13 +4692,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 78,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 84,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 78,
+          "measured": {
+            "adherence": 100,
+            "baseline": 50,
+            "lift": 50
+          }
         },
         "relations": {
           "hardConflict": [
@@ -4818,13 +5008,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 70,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 69,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 70,
+          "measured": {
+            "adherence": 78,
+            "baseline": 0,
+            "lift": 78
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -5252,13 +5452,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 88,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 86,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 88,
+          "measured": {
+            "adherence": 94,
+            "baseline": 17,
+            "lift": 78
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -5494,13 +5704,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 70,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 59,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 70,
+          "measured": {
+            "adherence": 83,
+            "baseline": 78,
+            "lift": 8
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -5530,13 +5750,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 85,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 3,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 85,
+          "measured": {
+            "adherence": 4,
+            "baseline": 0,
+            "lift": 4
+          }
         },
         "relations": {
           "hardConflict": [],
@@ -5702,13 +5932,23 @@ var PROMPT_ATLAS_DATA = {
           "en": []
         },
         "score": {
-          "value": 80,
-          "status": "heuristic",
-          "confidence": null,
-          "benchmarkVersion": null,
-          "sampleSize": 0,
-          "models": [],
-          "updatedAt": "2026-08"
+          "value": 89,
+          "status": "benchmarked",
+          "confidence": "B",
+          "benchmarkVersion": "0.1",
+          "sampleSize": 108,
+          "models": [
+            "doubao-seedream-4-0-250828",
+            "doubao-seedream-4-5-251128",
+            "zhipu-cogview-4"
+          ],
+          "updatedAt": "2026-08",
+          "heuristicValue": 80,
+          "measured": {
+            "adherence": 91,
+            "baseline": 2,
+            "lift": 89
+          }
         },
         "relations": {
           "hardConflict": [],
