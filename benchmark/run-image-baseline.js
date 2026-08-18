@@ -126,6 +126,12 @@ async function main() {
         failed++;
         const msg = (r.body.error && r.body.error.message) || JSON.stringify(r.body);
         console.error('FAIL ' + id + ' -> ' + r.status + ' ' + msg);
+        fs.appendFileSync(path.join(__dirname, 'results', 'failures-' + runId + '.jsonl'), JSON.stringify({
+          runId: runId, atomId: t.atomId, model: model, sceneTemplate: t.scene.id, condition: t.cond, seed: t.seed,
+          generationStatus: (/sensitive|filter|moderation|content/i.test(msg) ? 'provider_filter'
+            : (r.status >= 500 || r.status === 429 ? 'provider_error' : 'provider_error')),
+          httpStatus: r.status, message: String(msg).slice(0, 300), loggedAt: new Date().toISOString()
+        }) + '\n');
         if (r.status === 429 || /balance|quota|limit/i.test(msg)) {
           console.error('STOPPING: likely rate/balance limit reached');
           break;
