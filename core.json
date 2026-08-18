@@ -530,8 +530,15 @@
       "zh": "推镜头",
       "en": "dolly in",
       "aliases": {
-        "zh": [],
-        "en": []
+        "zh": [
+          "推镜头",
+          "推近",
+          "镜头推近"
+        ],
+        "en": [
+          "dolly in",
+          "push in"
+        ]
       },
       "score": {
         "value": 85,
@@ -571,8 +578,15 @@
       "zh": "拉镜头",
       "en": "dolly out",
       "aliases": {
-        "zh": [],
-        "en": []
+        "zh": [
+          "拉镜头",
+          "拉远",
+          "镜头拉远"
+        ],
+        "en": [
+          "dolly out",
+          "pull back"
+        ]
       },
       "score": {
         "value": 80,
