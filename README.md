@@ -14,7 +14,7 @@
   <p align="center">
     <img src="https://img.shields.io/badge/Skill-Agent%20Skill-7c5cff" alt="Agent Skill">
     <img src="https://img.shields.io/badge/Atoms-60-fb923c" alt="60 atoms">
-    <img src="https://img.shields.io/badge/Benchmark-8%20benchmarked%20(B)-16a34a" alt="8 atoms benchmarked">
+    <img src="https://img.shields.io/badge/Benchmark-20%20benchmarked%20(B)-16a34a" alt="20 atoms benchmarked">
     <img src="https://img.shields.io/badge/Slots-9-22d3ee" alt="9 slots">
     <img src="https://img.shields.io/badge/Language-中英双语-d74a3a" alt="bilingual">
     <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT">
@@ -116,15 +116,15 @@ prompt-atlas/
 
 ## 📊 确定性分数 / Determinism Score
 
-**诚实声明：60 个词条中 8 个已实测（`benchmarked`，Confidence B），其余 52 个为 `heuristic`（经验估计）。** 实测共三轮（`image-baseline-001/002/003`）：**3 个独立模型家族**（Seedream 4.0 / Seedream 4.5 / 智谱 CogView-4）× 6 场景 × 3 seeds × Control/Treatment A/B，每词 54 对观测（协议与原始数据见 `docs/BENCHMARK.md`、`benchmark/results/`）。
+**诚实声明：60 个词条中 20 个已实测（`benchmarked`，Confidence B），其余 40 个为 `heuristic`（经验估计）。** 实测共四轮（`image-baseline-001~004`）：**3 个独立模型家族**（Seedream 4.0 / Seedream 4.5 / 智谱 CogView-4）× 6 场景 × 3 seeds × Control/Treatment A/B，每词 54 对观测、累计 **2160 张**（协议与原始数据见 `docs/BENCHMARK.md`、`benchmark/results/`）。
 
-| 分数 | 含义 | 例子 |
+| 分数 | 含义 | 例子（全部实测 B） |
 |---|---|---|
-| ≥ 80 高 | 强控制的物理事实/风格开关 | anime style 动漫（**100，三家族全满**）、monochrome 黑白（**82，实测 B**） |
-| 60–79 中 | 常见风格/技法，模型间有差异 | golden hour 黄金时刻（**79**）、shallow dof 浅景深（**66**）、symmetry 对称（**65**）、volumetric light 体积光（**64**）、close-up 特写（**61，实测 B**） |
-| < 60 低 | 抽象、复合、易漂移的概念 | rule of thirds 三分法（**57，实测 B**）、cinematic 电影感（55，Macro 复合词，估计） |
+| ≥ 80 高 | 强控制开关 | anime 动漫（**100**）、fisheye 鱼眼（**89**）、teal-orange 青橙（**88**）、blue hour 蓝调（**86**）、neon 霓虹（**82**）、monochrome 黑白（**82**）、pastel 粉彩（**84**） |
+| 60–79 中 | 有效但有基线/家族差异 | golden hour（79）、backlit（77）、film grain（71）、ink wash 水墨（69）、rim light（65）、symmetry（65）、volumetric（64） |
+| < 60 低 | 弱控制/白写 | close-up（61）、telephoto（59）、rule of thirds（57）、negative space（**42**）、**macro 微距（3）** |
 
-两个教训：**样本量不够时，连「实测」都可能是巧合**（12 对 → 36 对，close-up 从 80 掉到 67）；**同厂两代 ≠ 独立证据**（加入第三家族后 monochrome 100→82、volumetric light 86→64——CogView-4 上分别只有 61/38。跨家族方差远大于种子方差）。
+三个教训：**样本量不够时连「实测」都可能是巧合**（12→36 对，close-up 80→67）；**同厂两代 ≠ 独立证据**（加第三家族后 monochrome 100→82、ink wash 在 CogView 上只有 33）；**连「物理事实」类词汇也可能全家族失效**——`macro` 实测仅 3 分（依从率 4%：写了模型也不拍微距），这是 004 轮最大的意外。
 
 ## 🗺️ 路线图 / Roadmap
 
@@ -132,7 +132,7 @@ prompt-atlas/
 - [x] v0.2 Checker 升级：冲突检测 + 疑似已描述 + 一键优化版（每槽最多 1 词 + NO_SUGGESTION）
 - [x] v0.3a Schema v2：Atom/Macro + 关系图 + score.status + JSON Schema + 回归测试 + CI 全量校验
 - [x] Control Profile 四维报告（Reliability/Coverage/Consistency/Freedom 分离，废单一总分）
-- [x] v0.3b（图像）Benchmark 实测：**3 个模型家族** × 6 场景 × 3 seeds = 864 张 A/B，8 词条 Confidence B（`benchmark/results/summary-*.json`）
+- [x] v0.3b（图像）Benchmark 实测：**3 个模型家族** × 6 场景 × 3 seeds = **2160 张 A/B，20 词条 Confidence B**（`benchmark/results/summary-*.json`；Dataset Release 0.2）
 - [ ] v0.3b（视频）4 词条 smoke：协议已就绪，待视频 API 资源
 - [x] v0.4（部分）Show, Don't Tell：词条证据对照（Before/After 实测图对，16 张入库）+ 配方卡分享链接（URL hash，免后端）
 - [ ] v0.4 剩余：Recipe Card 视觉重设计 + 10–20 个精选配方 + Benchmark 画廊页 + 首页 30 秒理解
