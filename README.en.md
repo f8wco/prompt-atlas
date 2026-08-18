@@ -117,9 +117,11 @@ Two lessons: **with small samples, even a "measurement" can be luck** (12→36 p
 - [x] Control Profile 4-dimension report (Reliability/Coverage/Consistency/Freedom; single score retired)
 - [x] v0.3b (image) benchmark: **3 model families** × 6 scenes × 3 seeds = 864 A/B images, 8 terms at Confidence B (`benchmark/results/summary-*.json`)
 - [ ] v0.3b (video) 4-term smoke: protocol ready, awaiting video API resources
-- [ ] Benchmark scale-up: cover the remaining 52 terms; Confidence A requires 72 paired obs/term (3 families × 4 seeds — see `docs/BENCHMARK.md`)
-- [ ] Grow to 200 terms (4 pipelines — see `docs/LAUNCH.md`)
-- [ ] Points system & bounty board (needs a backend; interfaces in `docs/ECONOMY.md`)
+- [x] v0.4 (partial) Show, Don't Tell: per-term Before/After evidence pairs (16 measured images in-repo) + Recipe Card share link (URL hash, no backend)
+- [ ] v0.4 remaining: Recipe Card visual redesign + 10–20 curated recipes + Benchmark gallery + 30-second homepage
+- [ ] v0.5 Prompt Compiler: script→storybook polish + Content/Visual/Temporal layered IR + temporal conflict checks
+- [ ] v0.6 Model Adapter: targeted Atom×Model benchmarking (priority = usage × uncertainty × model variance; Confidence A needs 72 pairs/term) + model-specific prompt translation
+- [ ] Gallery growth & bounty economy (see `docs/LAUNCH.md`, `docs/ECONOMY.md`)
 
 ## 📄 License / 许可证
 
