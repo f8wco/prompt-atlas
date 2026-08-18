@@ -1,0 +1,106 @@
+{
+  "close-up": {
+    "control": "assets/evidence/close-up-control.jpg",
+    "treatment": "assets/evidence/close-up-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "street",
+    "seed": 1,
+    "source": "image-baseline-001",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "monochrome": {
+    "control": "assets/evidence/monochrome-control.jpg",
+    "treatment": "assets/evidence/monochrome-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-001",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "golden hour": {
+    "control": "assets/evidence/golden-hour-control.jpg",
+    "treatment": "assets/evidence/golden-hour-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "environment",
+    "seed": 1,
+    "source": "image-baseline-001",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "symmetrical composition": {
+    "control": "assets/evidence/symmetrical-composition-control.jpg",
+    "treatment": "assets/evidence/symmetrical-composition-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-001",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "shallow depth of field": {
+    "control": "assets/evidence/shallow-depth-of-field-control.jpg",
+    "treatment": "assets/evidence/shallow-depth-of-field-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "street",
+    "seed": 1,
+    "source": "image-baseline-001",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "anime style": {
+    "control": "assets/evidence/anime-style-control.jpg",
+    "treatment": "assets/evidence/anime-style-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "portrait",
+    "seed": 1,
+    "source": "image-baseline-001",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "volumetric light": {
+    "control": "assets/evidence/volumetric-light-control.jpg",
+    "treatment": "assets/evidence/volumetric-light-treatment.jpg",
+    "model": "doubao-seedream-4-0-250828",
+    "scene": "street",
+    "seed": 1,
+    "source": "image-baseline-001",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  },
+  "rule of thirds": {
+    "control": "assets/evidence/rule-of-thirds-control.jpg",
+    "treatment": "assets/evidence/rule-of-thirds-treatment.jpg",
+    "model": "zhipu-cogview-4",
+    "scene": "street",
+    "seed": 1,
+    "source": "image-baseline-003",
+    "selection": "contrast",
+    "judged": {
+      "control": 0,
+      "treatment": 1
+    }
+  }
+}
