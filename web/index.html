@@ -35,6 +35,12 @@
             <button id="mode-image" class="mode-btn" data-i18n="mode-image">🖼️ 图片</button>
             <button id="mode-video" class="mode-btn active" data-i18n="mode-video">🎬 视频</button>
           </div>
+          <div class="ctx-row" id="check-ctx">
+            <span class="ctx-label" data-i18n="ctx-model">目标模型</span>
+            <select id="check-ctx-model"></select>
+            <span class="ctx-label" data-i18n="ctx-scene">画面类型</span>
+            <select id="check-ctx-scene"></select>
+          </div>
           <textarea id="checker-input" rows="7" data-i18n-ph="checker-ph"></textarea>
           <div class="btn-row">
             <button id="checker-run" class="btn primary" data-i18n="checker-run">开始体检</button>
@@ -63,6 +69,12 @@
             <button id="recipe-mode-image" class="mode-btn" data-i18n="mode-image">🖼️ 图片</button>
             <button id="recipe-mode-video" class="mode-btn active" data-i18n="mode-video">🎬 视频</button>
           </div>
+          <div class="ctx-row" id="recipe-ctx">
+            <span class="ctx-label" data-i18n="ctx-model">目标模型</span>
+            <select id="recipe-ctx-model"></select>
+            <span class="ctx-label" data-i18n="ctx-scene">画面类型</span>
+            <select id="recipe-ctx-scene"></select>
+          </div>
           <div class="field">
             <label for="recipe-subject" data-i18n="f-subject">主体 Subject</label>
             <input id="recipe-subject" data-i18n-ph="f-subject-ph">
@@ -77,9 +89,11 @@
           </div>
           <div id="slot-pickers"></div>
           <div class="btn-row">
+            <button id="recipe-evidence" class="btn" data-i18n="btn-evidence">🎯 实测推荐</button>
             <button id="recipe-random" class="btn" data-i18n="btn-random">🎲 随机配方</button>
             <button id="recipe-reset" class="btn ghost" data-i18n="btn-reset">重置</button>
             <button id="recipe-share" class="btn ghost" data-i18n="btn-share-card">📤 分享配方</button>
+            <button id="recipe-share-card" class="btn ghost" data-i18n="btn-share-card-img">🖼️ 生成分享卡</button>
           </div>
         </div>
         <div class="panel">
@@ -130,6 +144,7 @@
         <div class="sb-row">
           <label class="field"><span>总时长（秒）</span><input id="sb-total" type="number" value="30" min="5" max="600" step="1"></label>
           <label class="field"><span>每段时长（秒）</span><input id="sb-seg" type="number" value="15" min="5" max="60" step="1"></label>
+          <label class="field" id="sb-model-field"><span>目标模型（智能推荐用）</span><select id="sb-model"></select></label>
           <button id="sb-generate" class="btn primary">⚙️ 生成分镜</button>
           <button id="sb-example" class="btn ghost">🧪 试一试示例</button>
           <button id="sb-rewrite" class="btn ghost">🪄 小说→画面 改写指令</button>
@@ -160,6 +175,10 @@
   </footer>
 
   <script src="core-data.js"></script>
+  <script src="rec-data.js"></script>
+  <script src="analytics.js"></script>
+  <script src="qr-lib.js"></script>
+  <script src="share-card.js"></script>
   <script src="core-lib.js"></script>
   <script src="storyboard-app.js"></script>
   <script src="app.js"></script>
