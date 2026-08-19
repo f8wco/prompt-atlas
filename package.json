@@ -5,6 +5,7 @@
   "description": "Visual Prompt Atlas — a linter + benchmark for visual prompts (9-slot atom dictionary)",
   "scripts": {
     "build": "node scripts/build.js",
+    "build:rec": "node scripts/build-rec.js",
     "test": "node tests/run-tests.js",
     "validate:schema": "node scripts/validate-schema.js",
     "validate:core": "node scripts/validate-core.js",
