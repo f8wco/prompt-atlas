@@ -4,6 +4,8 @@
    UMD-lite: browser -> window.PromptAtlasLib, node -> module.exports
    v3: modalities consumed · Control Profile (no single fake score)
        · relations drive the analyzer (hardConflict/softTension/redundant/implies)
+   v4: evidence-aware recommendation — recommendAtoms ranks slot candidates by
+       measured tiers (rec-data.js: byModel / byScene / anomaly flags), not score.value
    ============================================================ */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) { module.exports = factory(); }
@@ -361,6 +363,124 @@
     return { en: en, atoms: atoms, profile: r };
   }
 
+  /* ---------------- Evidence-aware Recommendation ----------------
+     Ranks slot candidates by MEASURED data (web/rec-data.js, built from raw
+     benchmark judgments) instead of score.value alone. Tiers, not fake precision:
+       tier 2 — measured boost in this context (scene lift >= 30)
+       tier 1 — neutral / no data for this word (heuristic fallback)
+       tier 0 — measured dead: model mismatch (byModel < 40), dead scene
+                (byScene lift <= 10) or whiteout atom (A1 redundant)
+     Sort: tier desc (dead sinks), base desc, original library order (stable). */
+  var MODEL_DEAD_SCORE = 40;
+  var SCENE_DEAD_LIFT = 10;
+  var SCENE_BOOST_LIFT = 30;
+
+  function readRec(rec, atomId) {
+    return (rec && rec.atoms && rec.atoms[atomId]) || null;
+  }
+
+  function evaluateAtomRec(rec, atom, model, scene) {
+    var entry = readRec(rec, atom.id);
+    var base = readScore(atom);
+    var reasons = [];
+    var tier = 1;
+    if (!entry) {
+      reasons.push({ type: 'heuristic-fallback' });
+      return { base: base, tier: tier, reasons: reasons, rec: null };
+    }
+    if (model && entry.byModel && entry.byModel[model] !== undefined) {
+      var ms = entry.byModel[model];
+      base = ms; // measured score for THIS model replaces the family aggregate
+      if (ms < MODEL_DEAD_SCORE) { tier = 0; reasons.push({ type: 'model-mismatch', model: model, value: ms }); }
+      else reasons.push({ type: 'model-fit', model: model, value: ms });
+    }
+    if (scene && entry.byScene && entry.byScene[scene]) {
+      var lift = entry.byScene[scene].lift;
+      if (lift <= SCENE_DEAD_LIFT) { tier = 0; reasons.push({ type: 'scene-dead', scene: scene, lift: lift }); }
+      else if (lift >= SCENE_BOOST_LIFT) {
+        if (tier > 0) tier = 2; // a dead model verdict still dominates a good scene
+        reasons.push({ type: 'scene-fit', scene: scene, lift: lift });
+      }
+    }
+    if (entry.flags) {
+      if (entry.flags.whiteout) { tier = 0; reasons.push({ type: 'whiteout' }); }
+      if (entry.flags.strongSwitch) reasons.push({ type: 'strong-switch' });
+      if (entry.flags.familySplit) reasons.push({ type: 'family-split', spread: entry.flags.familySplit });
+    }
+    return { base: base, tier: tier, reasons: reasons, rec: entry };
+  }
+
+  function recommendAtoms(data, rec, opts) {
+    opts = opts || {};
+    var mode = opts.mode || 'video';
+    var model = opts.model || null;
+    var scene = opts.scene || null;
+    var picks = opts.picks || {};
+    var pickedAtoms = [];
+    Object.keys(picks).forEach(function (sid) {
+      var a = atomById(data, picks[sid]);
+      if (a) pickedAtoms.push(a);
+    });
+    var bySlot = data.bySlot || {};
+    var out = [];
+    applicableSlots(data, mode).forEach(function (s) {
+      var candidates = (bySlot[s.id] || [])
+        .filter(function (a) { return a.type !== 'macro' && atomAppliesToMode(a, mode); })
+        .map(function (a, idx) {
+          var ev = evaluateAtomRec(rec, a, model, scene);
+          var conflict = false;
+          for (var i = 0; i < pickedAtoms.length; i++) {
+            if (relationHardConflict(a, pickedAtoms[i])) { conflict = true; break; }
+          }
+          return { atom: a, order: idx, base: ev.base, tier: ev.tier, reasons: ev.reasons, conflict: conflict };
+        });
+      candidates.sort(function (x, y) { return y.tier - x.tier || y.base - x.base || x.order - y.order; });
+      out.push({ slot: s, candidates: candidates });
+    });
+    return { mode: mode, model: model, scene: scene, slots: out };
+  }
+
+  /* ---------------- Evidence type model (P0-001) ----------------
+     Level (how strong the evidence is) and lifecycle freshness are SEPARATE:
+     a model update flips freshness to "stale" but never erases the level. */
+  function evidenceInfo(atom) {
+    var s = atom.score || {};
+    var status = s.status || 'heuristic';
+    var level = 'heuristic';
+    if (status === 'quickscan') level = 'quickscan';
+    else if (status === 'benchmarked') level = (s.confidence === 'A') ? 'verified' : 'benchmarked';
+    return {
+      level: level, // heuristic | quickscan | benchmarked | verified
+      freshness: {
+        status: (s.stale === true) ? 'stale' : 'fresh',
+        testedAt: s.updatedAt || null,
+        modelVersion: s.modelVersion || null
+      }
+    };
+  }
+
+  /* Measured-dead words found in a prompt (P0-005 engine side).
+     With a model/scene context: tier 0 from evaluateAtomRec.
+     Without context: whiteout flags + benchmarked words scoring under 60. */
+  function invalidWords(rec, found, model, scene) {
+    var out = [];
+    found.forEach(function (a) {
+      if (a.type === 'macro') return;
+      var reasons = [];
+      if (model || scene) {
+        var ev = evaluateAtomRec(rec, a, model, scene);
+        if (ev.tier === 0) reasons = ev.reasons;
+      }
+      if (!reasons.length && !model && !scene) {
+        var entry = readRec(rec, a.id);
+        if (entry && entry.flags && entry.flags.whiteout) reasons.push({ type: 'whiteout' });
+        else if (a.score && a.score.status === 'benchmarked' && readScore(a) < 60) reasons.push({ type: 'low-score', value: readScore(a) });
+      }
+      if (reasons.length) out.push({ atom: a, reasons: reasons });
+    });
+    return out;
+  }
+
   return {
     SUGGESTION_MIN_SCORE: SUGGESTION_MIN_SCORE,
     HARD_PENALTY: HARD_PENALTY,
@@ -375,6 +495,14 @@
     hasFreeTextConflict: hasFreeTextConflict,
     pairConflict: pairConflict,
     readScore: readScore,
-    atomById: atomById
+    atomById: atomById,
+    MODEL_DEAD_SCORE: MODEL_DEAD_SCORE,
+    SCENE_DEAD_LIFT: SCENE_DEAD_LIFT,
+    SCENE_BOOST_LIFT: SCENE_BOOST_LIFT,
+    readRec: readRec,
+    evaluateAtomRec: evaluateAtomRec,
+    recommendAtoms: recommendAtoms,
+    evidenceInfo: evidenceInfo,
+    invalidWords: invalidWords
   };
 }));
