@@ -11,6 +11,13 @@
   var ATOMS = ATLAS.atoms;
   var BY_SLOT = ATLAS.bySlot || {};
   var LIB = window.PromptAtlasLib || null;
+  var REC = window.PROMPT_ATLAS_REC || null;
+  var AN = window.AtlasAnalytics || null;
+
+  /* consent-gated analytics wrapper: never throws, never sends before opt-in */
+  function trk(name, payload) {
+    if (AN && AN.enabled()) { try { AN.track(name, payload); } catch (e) { /* ignore */ } }
+  }
 
   /* ---------------- i18n ---------------- */
   var I18N = {
@@ -131,6 +138,34 @@
       'lib-search-ph': '搜索词条（中/英文）',
       'lib-all': '全部',
       'lib-no-result': '没有匹配的词条',
+      'ctx-model': '目标模型',
+      'ctx-model-any': '不指定（通用）',
+      'ctx-scene': '画面类型',
+      'ctx-scene-any': '不指定',
+      'ctx-note': '建议与词片已按实测数据排序（20 词 · 3 模型 · 6 类画面，未实测词标注「无实测」）',
+      'btn-evidence': '🎯 实测推荐',
+      'rec-toast': '已按实测填充 {n} 个空槽 ✓',
+      'rec-none': '没有可推荐的空槽（槽位已满或候选全冲突）',
+      'rec-whiteout': '实测白写',
+      'rec-scene-dead': '此画面无效',
+      'rec-scene-fit': '+{l}',
+      'rec-strong': '强开关',
+      'rec-split': '分差 {d}',
+      'rec-heuristic': '无实测',
+      'rec-conflict': '冲突',
+      'consent-title': 'Atlas 会收集匿名化程度有限的产品使用统计，帮助我们改进体检，不包含你的提示词内容。',
+      'consent-allow': '允许匿名使用统计',
+      'consent-local': '仅本地使用',
+      'consent-note': '随时可在页脚或隐私说明中更改',
+      'footer-stats': '📊 使用统计',
+      'footer-privacy': '🔒 隐私说明',
+      'invalid-title': '⚠ 实测无效词',
+      'invalid-why-model': '该模型实测低分',
+      'invalid-why-scene': '此画面类型实测无效果',
+      'invalid-why-whiteout': '实测白写',
+      'invalid-why-low': '实测低分',
+      'btn-share-card': '🖼️ 生成分享卡',
+      'btn-share-card-img': '🖼️ 生成分享卡',
       footer: '视觉提示词图库 · Visual Prompt Atlas · 本地原型 · 数据源 core.json（修改后运行 build.ps1 同步）· 图片/视频生成 API 接口已预留'
     },
     en: {
@@ -250,6 +285,34 @@
       'lib-search-ph': 'Search terms (EN/中文)',
       'lib-all': 'All',
       'lib-no-result': 'No matching terms',
+      'ctx-model': 'Target model',
+      'ctx-model-any': 'Any (generic)',
+      'ctx-scene': 'Scene type',
+      'ctx-scene-any': 'Any',
+      'ctx-note': 'Suggestions & chips re-ranked by measured data (20 atoms · 3 models · 6 scene types; unmeasured atoms marked "no benchmark")',
+      'btn-evidence': '🎯 Measured picks',
+      'rec-toast': 'Filled {n} empty slot(s) from measured data ✓',
+      'rec-none': 'No fillable empty slots (full or all conflicting)',
+      'rec-whiteout': 'measured no-op',
+      'rec-scene-dead': 'dead in this scene',
+      'rec-scene-fit': '+{l}',
+      'rec-strong': 'strong switch',
+      'rec-split': 'split {d}',
+      'rec-heuristic': 'no benchmark',
+      'rec-conflict': 'conflict',
+      'consent-title': 'Atlas collects limited, pseudonymized usage stats to improve CHECK — never your prompt text.',
+      'consent-allow': 'Allow anonymous stats',
+      'consent-local': 'Local only',
+      'consent-note': 'Change anytime via the footer or the privacy page',
+      'footer-stats': '📊 Stats',
+      'footer-privacy': '🔒 Privacy',
+      'invalid-title': '⚠ Measured no-effect words',
+      'invalid-why-model': 'low measured score on this model',
+      'invalid-why-scene': 'no measured effect in this scene type',
+      'invalid-why-whiteout': 'measured no-op',
+      'invalid-why-low': 'measured low score',
+      'btn-share-card': '🖼️ Share card',
+      'btn-share-card-img': '🖼️ Share card image',
       footer: 'Visual Prompt Atlas · local prototype · data source core.json (edit then run build.ps1 to sync) · image/video API hooks reserved'
     }
   };
@@ -287,6 +350,39 @@
   function scoreBadgeHtml(x) {
     var s = (typeof x === 'object' && x !== null) ? readScore(x) : x;
     return '<span class="score ' + scoreClass(s) + '">' + s + '</span>';
+  }
+
+  /* ---------------- evidence-aware recommendation (rec-data.js) ---------------- */
+  function modelShort(id) {
+    if (REC && REC.models) {
+      for (var i = 0; i < REC.models.length; i++) if (REC.models[i].id === id) return REC.models[i].short;
+    }
+    return id;
+  }
+  function sceneLabel(sc) {
+    if (!REC || !REC.scenes) return sc;
+    for (var i = 0; i < REC.scenes.length; i++) if (REC.scenes[i].id === sc) return lang === 'zh' ? REC.scenes[i].zh + ' ' + REC.scenes[i].en : REC.scenes[i].en;
+    return sc;
+  }
+  /* compact reason badges for one recommendation candidate (max 2, danger first) */
+  function recBadgeHtml(cand) {
+    var rs = cand.reasons || [];
+    var byType = {};
+    rs.forEach(function (r) { byType[r.type] = r; });
+    var out = '', shown = 0;
+    function span(cls, text, title) {
+      return '<span class="rec-b ' + cls + '"' + (title ? ' title="' + escapeHtml(title) + '"' : '') + '>' + escapeHtml(text) + '</span>';
+    }
+    if (byType['model-mismatch']) { out += span('bad', modelShort(byType['model-mismatch'].model) + ' ' + byType['model-mismatch'].value + ' ⚠'); shown++; }
+    if (byType['scene-dead'] && shown < 2) { out += span('bad', t('rec-scene-dead'), 'lift ' + byType['scene-dead'].lift + 'pp'); shown++; }
+    if (byType.whiteout && shown < 2) { out += span('bad', t('rec-whiteout')); shown++; }
+    if (cand.conflict && shown < 2) { out += span('bad', t('rec-conflict')); shown++; }
+    if (byType['model-fit'] && shown < 2) { out += span('good', modelShort(byType['model-fit'].model) + ' ' + byType['model-fit'].value); shown++; }
+    if (byType['scene-fit'] && shown < 2) { out += span('good', t('rec-scene-fit').replace('{l}', byType['scene-fit'].lift), 'lift +' + byType['scene-fit'].lift + 'pp'); shown++; }
+    if (byType['strong-switch'] && shown < 2) { out += span('ok', t('rec-strong')); shown++; }
+    if (byType['family-split'] && shown < 2 && !byType['model-fit'] && !byType['model-mismatch']) { out += span('warn', t('rec-split').replace('{d}', byType['family-split'].spread)); shown++; }
+    if (byType['heuristic-fallback'] && shown < 2) { out += span('none', t('rec-heuristic')); shown++; }
+    return out;
   }
 
   var toastTimer = null;
@@ -348,6 +444,8 @@
   /* ================= Prompt Checker / 体检仪 ================= */
   var lastAnalysis = null;
   var checkMode = 'video';
+  var checkCtx = { model: '', scene: '' }; // evidence-aware context (rec-data.js)
+  var lastReportData = null; // {r, invalidList} for the share card
   var EXAMPLES = {
     good: 'a young woman walking in the rain, golden hour, tracking shot, close-up, symmetrical composition, teal and orange, anime style, serene, rainy night, shallow depth of field, slow motion',
     bad: 'a girl in a city, cinematic'
@@ -378,7 +476,23 @@
   function renderReport(r) {
     var box = $('checker-report');
     var pct = Math.round(r.coverage * 100);
+    // measured-dead words found in this prompt (P0-005)
+    var invalidList = (REC && LIB && LIB.invalidWords) ? LIB.invalidWords(REC, r.found, checkCtx.model || null, checkCtx.scene || null) : [];
     var html = '';
+    if (invalidList.length) {
+      html += '<div class="invalid-alert"><div class="invalid-title">' + t('invalid-title') + ' ' + invalidList.length + '</div>';
+      invalidList.forEach(function (x) {
+        var why = x.reasons.map(function (rr) {
+          if (rr.type === 'model-mismatch') return t('invalid-why-model') + ' ' + rr.value;
+          if (rr.type === 'scene-dead') return t('invalid-why-scene');
+          if (rr.type === 'whiteout') return t('invalid-why-whiteout');
+          if (rr.type === 'low-score') return t('invalid-why-low') + ' ' + rr.value;
+          return null;
+        }).filter(Boolean).join(' · ');
+        html += '<div class="invalid-item"><b>' + atomName(x.atom) + '</b> <span class="chip-en">' + x.atom.en + '</span> <span class="score low">' + readScore(x.atom) + '</span> <span class="invalid-why">' + why + '</span></div>';
+      });
+      html += '</div>';
+    }
     html += '<div class="rep-head">';
     html += '<div class="rep-score" style="--p:' + (r.reliability === null ? 0 : r.reliability) + '"><span class="score-num">' + (r.reliability === null ? '—' : r.reliability) + '</span><span class="score-max">/100</span></div>';
     html += '<div class="rep-meta">';
@@ -400,6 +514,16 @@
     }
     if (r.notApplicable.length > 0) {
       html += '<div class="rep-na-note">' + t('na-note').replace('{n}', r.applicable.length) + (r.timeIrrelevant ? ' · ' + t('time-irrelevant-note') : '') + '</div>';
+    }
+    // evidence-aware context: re-rank missing-slot suggestions by measured data
+    var recMap = null;
+    if (REC && LIB && LIB.recommendAtoms && (checkCtx.model || checkCtx.scene)) {
+      var picksFound = {};
+      r.found.forEach(function (a) { if (a.type !== 'macro') picksFound[a.slot] = a.id; });
+      var recs = LIB.recommendAtoms(ATLAS, REC, { mode: checkMode, model: checkCtx.model || null, scene: checkCtx.scene || null, picks: picksFound });
+      recMap = {};
+      recs.slots.forEach(function (s) { recMap[s.slot.id] = s.candidates; });
+      html += '<div class="rep-ev rec-active">🎯 ' + t('ctx-note') + '</div>';
     }
     html += '</div></div>';
 
@@ -442,7 +566,7 @@
       if (atoms.length) {
         html += '<div class="rep-slot ok"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
         atoms.forEach(function (a) {
-          html += '<span class="chip found"><b>' + atomName(a) + '</b><span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + (a.type === 'macro' ? '<span class="macro-mini">M</span>' : '') + '</span>';
+          html += '<span class="chip found" data-evidence-atom="' + a.id + '"><b>' + atomName(a) + '</b><span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + (a.type === 'macro' ? '<span class="macro-mini">M</span>' : '') + '</span>';
         });
         var implied = r.impliedBySlot[s.id] || [];
         implied.forEach(function (a) {
@@ -462,15 +586,20 @@
         html += '<div class="rep-slot ' + (isMaybe ? 'maybe' : 'miss') + '"><div class="rep-slot-name">' + slotName(s) + '</div><div class="rep-slot-body">';
         html += '<span class="miss-tag">' + (isMaybe ? t('suggest-maybe') : t('missing-label')) + '</span>';
         if (detail) {
-          detail.suggs.forEach(function (x) {
+          var suggList = detail.suggs;
+          if (recMap && recMap[s.id]) {
+            suggList = recMap[s.id].filter(function (c) { return !c.conflict; }).slice(0, 3)
+              .map(function (c) { return { atom: c.atom, conflict: false, badge: recBadgeHtml(c), dead: c.tier === 0 }; });
+          }
+          suggList.forEach(function (x) {
             var a = x.atom;
             if (x.conflict) {
               html += '<span class="chip conflict-chip" title="' + t('conflict-tip') + '">' + atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + '<span class="conflict-badge">' + t('suggest-conflict') + '</span></span>';
             } else {
-              html += '<span class="chip sugg" data-add="' + escapeHtml(a.en) + '">+ ' + atomName(a) + ' <span class="chip-en">' + a.en + '</span></span>';
+              html += '<span class="chip sugg' + (x.dead ? ' rec-dead' : '') + '" data-add="' + escapeHtml(a.en) + '" data-evidence-atom="' + a.id + '">+ ' + atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + (x.badge || '') + '</span>';
             }
           });
-          if (!detail.suggs.length) {
+          if (!suggList.length) {
             html += '<span class="miss-tag">' + t('opt-none') + '</span>';
           }
         }
@@ -485,19 +614,68 @@
       });
       html += '</div>';
     }
-    html += '<div class="btn-row"><button id="share-report" class="btn primary">' + t('share-btn') + '</button><button id="opt-report" class="btn">' + t('opt-btn') + '</button></div>';
+    html += '<div class="btn-row"><button id="share-report" class="btn primary">' + t('share-btn') + '</button><button id="opt-report" class="btn">' + t('opt-btn') + '</button><button id="share-card-btn" class="btn ghost">' + t('btn-share-card') + '</button></div>';
     box.innerHTML = html;
+    lastReportData = { r: r, invalidList: invalidList };
+
+    trk('check_completed', {
+      foundAtoms: r.found.filter(function (a) { return a.type !== 'macro'; }).map(function (a) { return a.id; }),
+      controlLevel: r.controlLevel,
+      coverage: r.coverage,
+      invalidCount: invalidList.length
+    });
+
+    // evidence_viewed: first time an evidence badge scrolls into view (consent-gated)
+    if (AN && AN.enabled() && typeof IntersectionObserver === 'function') {
+      var seenEv = {};
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          var id = en.target.getAttribute('data-evidence-atom');
+          if (id && !seenEv[id]) { seenEv[id] = true; trk('evidence_viewed', { atomId: id, kind: 'badge' }); }
+          io.unobserve(en.target);
+        });
+      }, { root: box });
+      var evBadges = box.querySelectorAll('[data-evidence-atom]');
+      for (var ei = 0; ei < evBadges.length; ei++) io.observe(evBadges[ei]);
+    }
 
     var suggs = box.querySelectorAll('.chip.sugg');
     for (var i = 0; i < suggs.length; i++) {
       suggs[i].addEventListener('click', function () {
         var add = this.getAttribute('data-add');
+        trk('recommendation_applied', { atomId: this.getAttribute('data-evidence-atom') || undefined, source: 'sugg' });
         var ta = $('checker-input');
         ta.value = (ta.value.trim() ? ta.value.replace(/\s*$/, '') + ', ' : '') + add;
         runCheck();
       });
     }
-    $('share-report').addEventListener('click', function () { copyText(shareText(r)); });
+    $('share-report').addEventListener('click', function () { copyText(shareText(r)); trk('share_created', { kind: 'check_report' }); });
+    $('share-card-btn').addEventListener('click', function () {
+      if (!window.AtlasShareCard || !lastReportData) return;
+      var rr = lastReportData.r;
+      var badges = [];
+      rr.found.forEach(function (a) {
+        if (a.type === 'macro' || !REC || !LIB || !LIB.evaluateAtomRec) return;
+        var ev = LIB.evaluateAtomRec(REC, a, checkCtx.model || null, checkCtx.scene || null);
+        if (!ev.rec) return;
+        var bad = ev.tier === 0;
+        if (!bad && ev.base < 70) return;
+        badges.push({ name: a.zh, score: ev.base, kind: bad ? 'bad' : 'ok' });
+      });
+      var canvas = AtlasShareCard.reportCard({
+        reliability: rr.reliability,
+        covered: rr.covered.length,
+        total: rr.applicable.length,
+        consistency: rr.consistency,
+        freedom: rr.freedom,
+        badges: badges.slice(0, 10),
+        invalidCount: lastReportData.invalidList.length
+      });
+      AtlasShareCard.download(canvas, 'atlas-check-report.png').then(function (ok) {
+        if (ok) trk('share_created', { kind: 'check_report', score: rr.reliability == null ? undefined : rr.reliability });
+      });
+    });
     $('opt-report').addEventListener('click', function () {
       var existing = box.querySelector('.opt-block');
       if (existing) { existing.parentNode.removeChild(existing); return; }
@@ -508,7 +686,10 @@
       btnRow.parentNode.insertBefore(div, btnRow);
       if (div.scrollIntoView) div.scrollIntoView({ behavior: 'smooth', block: 'center' });
       var copyBtn = div.querySelector('[data-optcopy]');
-      if (copyBtn) copyBtn.addEventListener('click', function () { copyText(optCopyText(opt, r)); });
+      if (copyBtn) copyBtn.addEventListener('click', function () {
+        copyText(optCopyText(opt, r));
+        trk('export_clicked', { kind: 'optimized_prompt', atomsCount: opt.added.length });
+      });
     });
   }
 
@@ -573,6 +754,7 @@
   function runCheck() {
     var text = $('checker-input').value.trim();
     if (!text) { toast(t('input-empty'), true); return; }
+    trk('check_started', { mode: checkMode, model: checkCtx.model || undefined, scene: checkCtx.scene || undefined, promptLength: text.length });
     lastAnalysis = LIB.analyze(ATLAS, text, checkMode);
     renderReport(lastAnalysis);
   }
@@ -580,6 +762,7 @@
   /* ================= Recipe Card / 配方卡 ================= */
   var recipe = { subject: '', action: '', scene: '', picks: {} };
   var recipeMode = 'video';
+  var recipeCtx = { model: '', scene: '' }; // evidence-aware context (rec-data.js)
   var SAMPLES = {
     zh: {
       subjects: ['一位年轻女子', '一只白猫', '一位老者', '一名宇航员', '一个旧机器人'],
@@ -593,18 +776,43 @@
     }
   };
 
+  /* slot -> evidence-ranked candidates when a target model / scene type is set */
+  function recipeRecMap() {
+    if (!REC || !LIB || !LIB.recommendAtoms) return null;
+    if (!recipeCtx.model && !recipeCtx.scene) return null;
+    var recs = LIB.recommendAtoms(ATLAS, REC, { mode: recipeMode, model: recipeCtx.model || null, scene: recipeCtx.scene || null, picks: recipe.picks });
+    var map = {};
+    recs.slots.forEach(function (s) { map[s.slot.id] = s.candidates; });
+    return map;
+  }
+
   function renderPickers() {
     var box = $('slot-pickers');
     box.innerHTML = '';
+    var recMap = recipeRecMap();
     SLOTS.forEach(function (s) {
       var wrap = el('div', 'picker');
       var head = el('div', 'picker-head');
       head.innerHTML = '<span class="picker-name">' + slotName(s) + '</span><span class="picker-desc">' + slotDesc(s) + '</span>';
       var chips = el('div', 'picker-chips');
-      (BY_SLOT[s.id] || []).filter(function (a) { return LIB ? LIB.atomAppliesToMode(a, recipeMode) : true; }).forEach(function (a) {
-        var c = el('button', 'chip' + (recipe.picks[s.id] === a.id ? ' sel' : ''));
+      var list = (BY_SLOT[s.id] || []).filter(function (a) { return LIB ? LIB.atomAppliesToMode(a, recipeMode) : true; })
+        .map(function (a) { return { atom: a, cand: null }; });
+      if (recMap && recMap[s.id]) {
+        // re-rank chips by measured tier (dead last); macros keep library order at the end
+        var byId = {};
+        list.forEach(function (it) { byId[it.atom.id] = it; });
+        var ordered = [];
+        recMap[s.id].forEach(function (c) {
+          if (byId[c.atom.id]) { ordered.push({ atom: c.atom, cand: c }); byId[c.atom.id] = null; }
+        });
+        list.forEach(function (it) { if (byId[it.atom.id]) ordered.push(it); });
+        list = ordered;
+      }
+      list.forEach(function (item) {
+        var a = item.atom;
+        var c = el('button', 'chip' + (recipe.picks[s.id] === a.id ? ' sel' : '') + (item.cand && item.cand.tier === 0 ? ' rec-dead' : ''));
         c.setAttribute('data-atom', a.id);
-        c.innerHTML = atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a);
+        c.innerHTML = atomName(a) + ' <span class="chip-en">' + a.en + '</span>' + scoreBadgeHtml(a) + (item.cand ? recBadgeHtml(item.cand) : '');
         c.addEventListener('click', function () {
           recipe.picks[s.id] = (recipe.picks[s.id] === a.id) ? null : a.id;
           renderPickers();
@@ -616,6 +824,32 @@
       wrap.appendChild(chips);
       box.appendChild(wrap);
     });
+  }
+
+  /* fill empty slots with the best measured, non-conflicting candidate per slot */
+  function evidencePick() {
+    if (!REC || !LIB || !LIB.recommendAtoms) { toast(t('rec-none'), true); return; }
+    var recs = LIB.recommendAtoms(ATLAS, REC, { mode: recipeMode, model: recipeCtx.model || null, scene: recipeCtx.scene || null, picks: recipe.picks });
+    var picked = Object.keys(recipe.picks).map(function (sid) { return atomById(recipe.picks[sid]); }).filter(Boolean);
+    var n = 0;
+    recs.slots.forEach(function (s) {
+      if (recipe.picks[s.slot.id]) return;
+      var cands = s.candidates;
+      for (var i = 0; i < cands.length; i++) {
+        var c = cands[i];
+        if (c.tier < 1) continue;
+        var bad = c.conflict || picked.some(function (p) { return LIB.pairConflict(c.atom, p) || LIB.pairConflict(p, c.atom); });
+        if (bad) continue;
+        recipe.picks[s.slot.id] = c.atom.id;
+        picked.push(c.atom);
+        n++;
+        break;
+      }
+    });
+    if (!n) { toast(t('rec-none'), true); return; }
+    renderPickers();
+    renderPreview();
+    toast(t('rec-toast').replace('{n}', n));
   }
 
   function atomById(id) {
@@ -723,7 +957,7 @@
     });
     $('recipe-subject').value = recipe.subject;
     $('recipe-action').value = recipe.action;
-    $('recipe-scene').value = recipe.scene;
+    $('recipe-ctx-scene').value = recipe.scene;
     renderPickers();
     renderPreview();
   }
@@ -731,7 +965,7 @@
     recipe = { subject: '', action: '', scene: '', picks: {} };
     $('recipe-subject').value = '';
     $('recipe-action').value = '';
-    $('recipe-scene').value = '';
+    $('recipe-ctx-scene').value = '';
     renderPickers();
     renderPreview();
   }
@@ -760,7 +994,7 @@
       if (payload.m === 'image' || payload.m === 'video') recipeMode = payload.m;
       $('recipe-subject').value = recipe.subject;
       $('recipe-action').value = recipe.action;
-      $('recipe-scene').value = recipe.scene;
+      $('recipe-ctx-scene').value = recipe.scene;
       return true;
     } catch (e) { return false; }
   }
@@ -839,7 +1073,7 @@
           '</div>';
       }
       card.innerHTML =
-        '<div class="atom-head"><span class="atom-zh">' + a.zh + meta + '</span>' + scoreBadgeHtml(a) + '</div>' +
+        '<div class="atom-head"><span class="atom-zh"><a class="atom-page-link" href="atoms/' + encodeURIComponent(a.id) + '/">' + a.zh + '</a>' + meta + '</span>' + scoreBadgeHtml(a) + '</div>' +
         '<div class="atom-en">' + a.en + '</div>' +
         '<div class="atom-desc">' + term({ zh: a.desc, en: a.descEn }) + '</div>' +
         expandHtml +
@@ -851,13 +1085,74 @@
     });
   }
 
+  /* ================= consent UI (P0-003) ================= */
+  function renderConsentUI() {
+    if (!AN) return;
+    var state = AN.consentState();
+    var banner = document.getElementById('consent-banner');
+    if (!state) {
+      if (!banner) {
+        var b = el('div', 'consent-banner');
+        b.id = 'consent-banner';
+        b.innerHTML =
+          '<div class="consent-text">' + t('consent-title') + ' <a href="privacy.html">' + t('footer-privacy') + '</a></div>' +
+          '<div class="consent-btns"><button id="consent-yes" class="btn primary">' + t('consent-allow') + '</button>' +
+          '<button id="consent-no" class="btn ghost">' + t('consent-local') + '</button></div>' +
+          '<div class="consent-note">' + t('consent-note') + '</div>';
+        document.body.appendChild(b);
+        $('consent-yes').addEventListener('click', function () {
+          AN.setConsent('granted');
+          try { AN.pageView(location.pathname, document.referrer, lang); } catch (e) { /* ignore */ }
+          renderConsentUI();
+        });
+        $('consent-no').addEventListener('click', function () { AN.setConsent('local'); renderConsentUI(); });
+      }
+    } else if (banner) { banner.parentNode.removeChild(banner); }
+    var footer = document.querySelector('footer');
+    if (footer && !document.getElementById('footer-stats-btn')) {
+      var wrap = el('div', 'footer-controls');
+      wrap.innerHTML = '<button class="footer-link" id="footer-stats-btn"></button> · <a class="footer-link" href="privacy.html">' + t('footer-privacy') + '</a>';
+      footer.appendChild(wrap);
+      $('footer-stats-btn').addEventListener('click', function () {
+        AN.setConsent(AN.consentState() === 'granted' ? 'local' : 'granted');
+        renderConsentUI();
+        toast(t(AN.consentState() === 'granted' ? 'consent-allow' : 'consent-local') + ' ✓');
+      });
+    }
+    var statsBtn = $('footer-stats-btn');
+    if (statsBtn) statsBtn.textContent = t('footer-stats') + '：' + (state === 'granted' ? 'ON' : 'OFF');
+  }
+
   /* ================= global render & events ================= */
+  function renderCtx() {
+    if (!REC) return;
+    function modelItems() {
+      return REC.models.map(function (m) { return { value: m.id, label: m.short }; });
+    }
+    function sceneItems() {
+      return REC.scenes.map(function (sc) { return { value: sc.id, label: lang === 'zh' ? sc.zh + ' ' + sc.en : sc.en }; });
+    }
+    function fill(sel, anyLabel, items, value) {
+      if (!sel) return;
+      var html = '<option value="">' + escapeHtml(anyLabel) + '</option>';
+      items.forEach(function (it) { html += '<option value="' + escapeHtml(it.value) + '">' + escapeHtml(it.label) + '</option>'; });
+      sel.innerHTML = html;
+      sel.value = value || '';
+    }
+    fill($('check-ctx-model'), t('ctx-model-any'), modelItems(), checkCtx.model);
+    fill($('check-ctx-scene'), t('ctx-scene-any'), sceneItems(), checkCtx.scene);
+    fill($('recipe-ctx-model'), t('ctx-model-any'), modelItems(), recipeCtx.model);
+    fill($('recipe-ctx-scene'), t('ctx-scene-any'), sceneItems(), recipeCtx.scene);
+  }
+
   function renderAll() {
     applyStatic();
+    renderCtx();
     if (lastAnalysis) renderReport(lastAnalysis);
     renderPickers();
     renderPreview();
     renderLibrary();
+    renderConsentUI();
   }
 
   function wire() {
@@ -892,6 +1187,21 @@
     $('recipe-share').addEventListener('click', function () {
       history.replaceState(null, '', buildShareUrl());
       copyText(buildShareUrl());
+      trk('share_created', { kind: 'recipe_card' });
+    });
+    var recipeCardBtn = $('recipe-share-card');
+    if (recipeCardBtn) recipeCardBtn.addEventListener('click', function () {
+      if (!window.AtlasShareCard) return;
+      var a = assemble();
+      var slots = a.atoms.map(function (x) { return { zh: x.zh, score: readScore(x) }; });
+      var canvas = AtlasShareCard.recipeCard({
+        title: recipe.subject ? String(recipe.subject).slice(0, 24) : '视觉配方卡',
+        slots: slots,
+        reliability: a.profile.reliability
+      });
+      AtlasShareCard.download(canvas, 'atlas-recipe-card.png').then(function (ok) {
+        if (ok) trk('share_created', { kind: 'recipe_card', score: a.profile.reliability == null ? undefined : a.profile.reliability });
+      });
     });
     var rModeImage = $('recipe-mode-image');
     var rModeVideo = $('recipe-mode-video');
@@ -915,15 +1225,45 @@
     var copyBtns = document.querySelectorAll('[data-copy]');
     for (var j = 0; j < copyBtns.length; j++) {
       copyBtns[j].addEventListener('click', function () {
-        copyText($(this.getAttribute('data-copy')).textContent);
+        var target = this.getAttribute('data-copy');
+        copyText($(target).textContent);
+        if (target === 'prompt-en' || target === 'prompt-zh' || target === 'prompt-card') trk('export_clicked', { kind: 'recipe' });
       });
     }
     $('lib-search').addEventListener('input', function () { libState.q = this.value; renderLibrary(); });
+
+    /* evidence-aware context selects + measured-pick button */
+    if (REC) {
+      var cm = $('check-ctx-model'), cs = $('check-ctx-scene');
+      if (cm) cm.addEventListener('change', function () { checkCtx.model = cm.value; if (lastAnalysis) runCheck(); });
+      if (cs) cs.addEventListener('change', function () { checkCtx.scene = cs.value; if (lastAnalysis) runCheck(); });
+      var rm = $('recipe-ctx-model'), rs2 = $('recipe-ctx-scene');
+      if (rm) rm.addEventListener('change', function () { recipeCtx.model = rm.value; renderPickers(); });
+      if (rs2) rs2.addEventListener('change', function () { recipeCtx.scene = rs2.value; renderPickers(); });
+      var evBtn = $('recipe-evidence');
+      if (evBtn) evBtn.addEventListener('click', evidencePick);
+    } else {
+      ['check-ctx', 'recipe-ctx', 'recipe-evidence'].forEach(function (id) {
+        var n = $(id);
+        if (n) n.style.display = 'none';
+      });
+    }
   }
 
   renderAll();
   wire();
+  renderConsentUI();
+  if (AN && AN.enabled()) { try { AN.pageView(location.pathname, document.referrer, lang); } catch (e) { /* ignore */ } }
   var sharedLoaded = loadFromHash();
+  // #c= prefill: land on the checker with a term to verify (used by atom pages / articles)
+  if (location.hash.indexOf('#c=') === 0) {
+    var prefill = decodeURIComponent(location.hash.slice(3)).slice(0, 500);
+    if (prefill) {
+      $('checker-input').value = prefill;
+      switchTab('checker');
+      runCheck();
+    }
+  }
   if (sharedLoaded) {
     renderPickers();
     renderPreview();
