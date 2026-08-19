@@ -97,7 +97,28 @@ v3 起，引擎**零硬编码规则**，所有自由文本规则都在 core.json
 
 词条间关系仍走 `relations`（见第 3 节）；`freeTextConflicts` 只负责「词条 vs 原文自由文本」。
 
-## 6. 校验清单（CI 强制执行）/ Validation Checklist
+## 6. 推荐数据层 rec-data.js（派生，v4）/ Evidence-aware Data Layer
+
+`web/rec-data.js` 是**构建产物**（`node scripts/build-rec.js`），不是手写数据。输入为仓库内原始评测（`benchmark/results/evaluations-*.jsonl` + `anomalies-*.json` + manifests），聚合为实测推荐矩阵：
+
+```
+PROMPT_ATLAS_REC = {
+  models: [{ id, short, family }],          // 3 个实测模型（短名即 UI 展示名）
+  scenes: [{ id, zh, en }],                 // 6 个基准画面类型（与自由文本 Scene 是两个概念）
+  atoms: {
+    <coreId>: {
+      byModel:     { <modelId>: 0-100 },    // 与 core.json score.byModel 强一致（构建时校验，漂移即 fail）
+      byScene:     { <sceneId>: { lift, n } },// 跨模型聚合 lift（百分点）+ 判定数
+      byModelScene:{ <modelId>: { <sceneId>: { a, b, lift, n } } }, // 单元格 n=6，低样本，仅供注脚
+      flags:       { whiteout?, strongSwitch?, familySplit? }       // 来自 anomalies 六类分析
+    }
+  }
+}
+```
+
+消费方：`web/core-lib.js` 的 `recommendAtoms(data, rec, {mode, model, scene, picks})`——分层排序（tier 2 实测增强 / tier 1 中性或无数据 / tier 0 实测失效：模型 <40、场景 lift ≤10、白写词），tier 内按 base（选模型用 byModel，否则 score.value）降序，同分保持词库原序（确定性）。40 个 heuristic 词正常参与排序但带 `heuristic-fallback` 标注。
+
+## 7. 校验清单（CI 强制执行）/ Validation Checklist
 
 1. JSON Schema：字段缺失、类型不符、enum 越界、score.value 非 0-100 → fail
 2. ID 唯一性：atom/macro id 重复 → fail
@@ -105,5 +126,5 @@ v3 起，引擎**零硬编码规则**，所有自由文本规则都在 core.json
 4. Alias 冲突：同语言 alias 映射多个 id → fail
 5. 关系引用：引用不存在 id / 自引用 / hardConflict 不对称 → fail
 6. Macro 规则：无 expandsTo/implies 的 macro → fail
-7. 生成同步：core.json 与 web/core-data.js 不一致 → fail
+7. 生成同步：core.json 与 web/core-data.js 不一致 → fail；rec-data.js 与 benchmark 原始数据不一致（或 byModel 与 core.json 漂移）→ fail
 8. 行为回归：Matcher/Optimizer fixtures 失败 → fail
