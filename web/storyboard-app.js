@@ -9,6 +9,9 @@
 (function (root) {
   var ATLAS = typeof window !== 'undefined' ? window.PROMPT_ATLAS : null;
   var LIB = typeof window !== 'undefined' ? window.PromptAtlasLib : null;
+  var REC = typeof window !== 'undefined' ? (window.PROMPT_ATLAS_REC || null) : null;
+  var AN = typeof window !== 'undefined' ? (window.AtlasAnalytics || null) : null;
+  function trk(n, p) { if (AN && AN.enabled()) { try { AN.track(n, p); } catch (e) { /* ignore */ } } }
 
   var BEATS_15 = [[0, 2], [2, 4], [4, 7], [7, 9], [9, 11], [11, 13], [13, 15]];
   var BEAT_ROLES = ['建立', '发展', '关键动作', '反应', '递进', '高潮', '收尾'];
@@ -123,10 +126,33 @@
     return n;
   }
 
-  /* Fill empty slots with top-scoring, conflict-checked atoms (optimizer logic). */
-  function smartRecommend(seg) {
+  /* Fill empty slots: evidence-aware ranking (rec-data.js) when available,
+     legacy top-score fill otherwise. Slots likely described in free text stay free. */
+  function smartRecommend(seg, model) {
     if (!LIB || !ATLAS) return 0;
     var text = seg.beats.map(function (b) { return b.text || ''; }).join(' ');
+    if (REC && LIB.recommendAtoms) {
+      var r = LIB.analyze(ATLAS, text, 'video');
+      var maybeSlots = {};
+      r.missingDetail.forEach(function (d) { if (d.maybe) maybeSlots[d.slot.id] = true; });
+      var recs = LIB.recommendAtoms(ATLAS, REC, { mode: 'video', model: model || null, scene: null, picks: seg.picks });
+      var added = 0;
+      recs.slots.forEach(function (s) {
+        if (seg.picks[s.slot.id] || maybeSlots[s.slot.id]) return;
+        var picked = Object.keys(seg.picks).map(function (k) { return LIB.atomById(ATLAS, seg.picks[k]); }).filter(Boolean);
+        var cands = s.candidates;
+        for (var i = 0; i < cands.length; i++) {
+          var c = cands[i];
+          if (c.tier < 1) continue; // measured dead on this context
+          var bad = c.conflict || picked.some(function (p) { return LIB.pairConflict(c.atom, p) || LIB.pairConflict(p, c.atom); });
+          if (bad) continue;
+          seg.picks[s.slot.id] = c.atom.id;
+          added++;
+          break;
+        }
+      });
+      return added;
+    }
     var r = LIB.analyze(ATLAS, text, 'video');
     var opt = LIB.buildOptimized(ATLAS, r);
     var added = 0;
@@ -237,7 +263,8 @@
     });
     box.querySelectorAll('button[data-rec]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        smartRecommend(state.segments[+btn.getAttribute('data-rec')]);
+        var mSel = $('sb-model');
+        smartRecommend(state.segments[+btn.getAttribute('data-rec')], mSel ? mSel.value : '');
         render(); renderOutput();
       });
     });
@@ -352,6 +379,18 @@
     '3. 直接输出改写结果，不要解释\n\n剧本：\n';
 
   document.addEventListener('DOMContentLoaded', function () {
+    // evidence-aware model selector (hidden when rec data is absent)
+    var mSel = $('sb-model');
+    if (mSel) {
+      if (REC && REC.models && REC.models.length) {
+        var opts = '<option value="">不指定（通用）</option>';
+        REC.models.forEach(function (m) { opts += '<option value="' + esc(m.id) + '">' + esc(m.short) + '</option>'; });
+        mSel.innerHTML = opts;
+      } else {
+        var field = $('sb-model-field');
+        if (field) field.style.display = 'none';
+      }
+    }
     $('sb-generate').addEventListener('click', function () {
       var script = $('sb-script').value.trim();
       var total = Math.max(5, Math.min(600, +$('sb-total').value || 30));
@@ -376,14 +415,16 @@
       copy(REWRITE_PROMPT + s, '改写指令已复制——粘贴给任意 AI 聊天助手，改写后再贴回来');
     });
     $('sb-style').addEventListener('input', renderOutput);
-    $('sb-copy-video').addEventListener('click', function () { copy(fullVideo(), '视频提示词已复制 ✓'); });
-    $('sb-copy-zh').addEventListener('click', function () { copy(fullZh(), '分镜稿已复制 ✓'); });
-    $('sb-copy-timeline').addEventListener('click', function () { copy(fullTimeline(), '时间轴大纲已复制 ✓'); });
+    $('sb-copy-video').addEventListener('click', function () { copy(fullVideo(), '视频提示词已复制 ✓'); trk('export_clicked', { kind: 'storyboard' }); });
+    $('sb-copy-zh').addEventListener('click', function () { copy(fullZh(), '分镜稿已复制 ✓'); trk('export_clicked', { kind: 'storyboard' }); });
+    $('sb-copy-timeline').addEventListener('click', function () { copy(fullTimeline(), '时间轴大纲已复制 ✓'); trk('export_clicked', { kind: 'storyboard' }); });
     $('sb-share').addEventListener('click', function () {
       var url = buildShareUrl();
       history.replaceState(null, '', url);
       copy(url, '分享链接已复制 ✓');
+      trk('share_created', { kind: 'storyboard_card' });
     });
+    if (AN && AN.enabled()) { try { AN.pageView('/storyboard.html', document.referrer, 'zh'); } catch (e) { /* ignore */ } }
     if (loadFromHash()) render();
   });
 }(typeof self !== 'undefined' ? self : this));
