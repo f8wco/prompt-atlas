@@ -42,6 +42,7 @@ Other prompt libraries are collections. This project is a **methodology + dictio
 |---|---|
 | 🔍 **Prompt Checker** | Paste a prompt → slot-by-slot scan → four-state report (specified / likely-described / unspecified / N/A) + separate conflict detection + four-dimension Control Profile + image/video mode + **one-click optimized version** + shareable report |
 | 🧪 **Visual Recipe Card** | Pick terms across 9 slots → live card preview → one-click copy of EN/中文 prompts |
+| 🎯 **Evidence-aware recommendation (new)** | Pick a target model × scene type and every picking surface re-ranks by **measured data**: strong switches rise, whiteouts and model-dead terms sink (ink wash measures 33 on CogView ⚠; golden hour is a no-op on portraits), and the 40 unmeasured terms are marked "no benchmark". The data layer `web/rec-data.js` is built from the raw 2160 A/B judgments; `recommendAtoms` ranks by tiers with reason badges, and CI enforces byModel consistency with core.json |
 | 📚 **Atom Dictionary** | 60 terms × 9 slots, bilingual (zh/en), with scores, effect notes and examples |
 
 ## 🚀 Quick Start / 快速开始
@@ -76,6 +77,7 @@ prompt-atlas/
 ├── README.md / .en.md    # Overview (中文 / English)
 ├── core.json             # Dictionary source of truth (bilingual fields)
 ├── scripts/build.js      # Cross-platform build: core.json → web/core-data.js (build.ps1 kept as a wrapper)
+├── scripts/build-rec.js  # Recommendation data layer: raw benchmark judgments → web/rec-data.js (byModel-consistency enforced)
 ├── schema/core.schema.json  # JSON Schema contract (enforced by ajv in CI)
 ├── scripts/                 # validate-schema / validate-core / check.js CLI / migrations
 ├── tests/                   # Matcher & Optimizer regression fixtures
@@ -122,6 +124,7 @@ Three lessons: **with small samples, even a "measurement" can be luck** (close-u
 - [x] v0.3b (image) benchmark: **3 model families** × 6 scenes × 3 seeds = **2160 A/B images, 20 terms at Confidence B** (`benchmark/results/summary-*.json`; Dataset Release 0.2)
 - [ ] v0.3b (video) 4-term smoke: protocol ready, awaiting video API resources
 - [x] v0.4 (partial) Show, Don't Tell: per-term Before/After evidence pairs (16 measured images in-repo) + Recipe Card share link (URL hash, no backend)
+- [x] Evidence-aware recommendation: byModel × byScene × anomaly flags (whiteout / family split) drive all three picking surfaces — checker suggestions, recipe chips + one-click measured picks, storyboard smart-recommend; `web/rec-data.js` data layer + CI sync check
 - [ ] v0.4 remaining: Recipe Card visual redesign + 10–20 curated recipes + Benchmark gallery + 30-second homepage
 - [ ] v0.5 Prompt Compiler: script→storybook polish + Content/Visual/Temporal layered IR + temporal conflict checks
 - [ ] v0.6 Model Adapter: targeted Atom×Model benchmarking (priority = usage × uncertainty × model variance; Confidence A needs 72 pairs/term) + model-specific prompt translation
