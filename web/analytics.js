@@ -103,11 +103,14 @@
     if (!network) return true; // test mode
     try {
       var body = JSON.stringify(envelope);
+      // NOTE: send the body as a plain string (Content-Type: text/plain) — a
+      // CORS-safelisted type that skips preflight entirely. A JSON Blob would
+      // trigger an OPTIONS preflight that beacons cannot complete reliably.
       if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-        return navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'application/json' }));
+        if (navigator.sendBeacon(ENDPOINT, body)) return true;
       }
       if (typeof fetch === 'function') {
-        fetch(ENDPOINT, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: body }).catch(function () { /* fire and forget */ });
+        fetch(ENDPOINT, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: body }).catch(function () { /* fire and forget */ });
         return true;
       }
     } catch (e) { /* never break the page for analytics */ }
