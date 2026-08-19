@@ -42,6 +42,7 @@
 |---|---|
 | 🔍 **提示词体检仪（Linter）** | 贴入提示词 → 逐槽扫描 → 四态报告（已指定/疑似已描述/未指定/不适用）+ 独立冲突检测 + 四维 Control Profile + 图片/视频模式 + 一键生成优化版 |
 | 🧪 **视觉配方卡** | 9 槽位选词拼装 → 实时预览卡片 → 中/英文提示词一键复制 + **分享链接** |
+| 🎯 **Evidence-aware 推荐（新）** | 选「目标模型 × 画面类型」→ 体检建议 / 配方卡词片 / 分镜智能推荐全部按**实测数据**重排：强开关置顶、白写与模型失效词拦截沉底（如 CogView 上 ink wash 仅 33 ⚠、portrait 场景 golden hour 白写）、40 个未实测词标注「无实测」。数据层 `web/rec-data.js` 由 2160 张 A/B 原始判定构建，`recommendAtoms` 分层排序（tier）+ 原因徽章，CI 强制与 core.json 的 byModel 一致 |
 | 🎞️ **剧本→分镜（新）** | 贴入剧本 → 按时长自动拆段拆拍、内容自动分配 → 每段选词 + 冲突检查 + Control Profile → [storyboard.html](https://atlas.f8w.com/storyboard.html)，可嵌入任何网站 |
 | 📚 **原子词库** | 60 个词条 × 9 槽位（含 3 个复合词 Macro），双语（zh/en）+ 别名 + 关系图 + 分数状态标注 |
 | 🧪 **回归测试与 CI** | Matcher/Optimizer 纯函数 + 84 项 fixtures；schema/引用/别名/关系/同步全量自动校验 |
@@ -78,6 +79,7 @@ prompt-atlas/
 ├── README.md / .en.md    # 项目说明（中/英）
 ├── core.json             # 词库源数据（唯一权威，Atom/Macro + 关系图 + score 对象）
 ├── scripts/build.js      # 跨平台构建：core.json → web/core-data.js（build.ps1 为兼容入口）
+├── scripts/build-rec.js  # 构建推荐数据层：benchmark 原始判定 → web/rec-data.js（byModel 强一致校验）
 ├── schema/
 │   └── core.schema.json  # JSON Schema 契约
 ├── scripts/
@@ -105,8 +107,9 @@ prompt-atlas/
 │   ├── index.html
 │   ├── style.css
 │   ├── app.js            # UI 层
-│   ├── core-lib.js       # 纯函数规则引擎（浏览器/测试共用）
-│   └── core-data.js      # 由 build.ps1 生成，勿手改
+│   ├── core-lib.js       # 纯函数规则引擎（浏览器/测试共用，v4：recommendAtoms 实测推荐）
+│   ├── core-data.js      # 由 build.js 生成，勿手改
+│   └── rec-data.js       # 由 build-rec.js 生成（20 词 × 3 模型 × 6 场景实测矩阵），勿手改
 └── .github/workflows/    # CI：数据校验 + 回归测试 + 同步检查 + 自动部署
 ```
 
@@ -139,9 +142,10 @@ prompt-atlas/
 - [x] v0.3b（图像）Benchmark 实测：**3 个模型家族** × 6 场景 × 3 seeds = **2160 张 A/B，20 词条 Confidence B**（`benchmark/results/summary-*.json`；Dataset Release 0.2）
 - [x] v0.3b（视频）Smoke 001：4 运镜词 × 2 模型 × 2 场景 = 30 条 5s，帧序列评测协议验证通过（dolly zoom 双条件可区分，见 `docs/BENCHMARK.md`）
 - [x] v0.4（部分）Show, Don't Tell：词条证据对照（Before/After 实测图对，16 张入库）+ 配方卡分享链接（URL hash，免后端）
+- [x] Evidence-aware 推荐：byModel × byScene × anomalies（白写/家族分裂）驱动三处选词界面——体检建议、配方卡词片与一键实测推荐、分镜智能推荐；`web/rec-data.js` 数据层 + CI 同步校验
 - [ ] v0.4 剩余：Recipe Card 视觉重设计 + 10–20 个精选配方 + Benchmark 画廊页 + 首页 30 秒理解
 - [ ] v0.5 Prompt Compiler：剧本→分镜完善 + Content/Visual/Temporal 分层 IR + 时序冲突检查
-- [ ] v0.6 Model Adapter：Atom×Model 定向实测（优先级 = 使用频率 × 不确定性 × 模型方差；升 A 需 72 对/词）+ 模型专属提示词转换
+- [ ] v0.6 Model Adapter：Atom×Model 定向实测（优先级 = 使用频率 × 不确定性 × 模型方差；升 A 需 72 对/词）+ 模型专属提示词转换（Atom×Model 矩阵已就绪：`rec-data.js` 的 byModelScene）
 - [ ] 图库扩充与积分悬赏（见 `docs/LAUNCH.md`、`docs/ECONOMY.md`）
 
 ## 📄 许可证 / License
