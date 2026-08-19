@@ -30,6 +30,7 @@
       <div class="sb-row">
         <label class="field"><span>总时长（秒）</span><input id="sb-total" type="number" value="30" min="5" max="600" step="1"></label>
         <label class="field"><span>每段时长（秒）</span><input id="sb-seg" type="number" value="15" min="5" max="60" step="1"></label>
+        <label class="field" id="sb-model-field"><span>目标模型（智能推荐用）</span><select id="sb-model"></select></label>
         <button id="sb-generate" class="btn primary">⚙️ 生成分镜</button>
         <button id="sb-example" class="btn ghost">🧪 试一试示例</button>
         <button id="sb-rewrite" class="btn ghost">🪄 小说→画面 改写指令</button>
@@ -62,6 +63,8 @@
   </footer>
 
   <script src="core-data.js"></script>
+  <script src="rec-data.js"></script>
+  <script src="analytics.js"></script>
   <script src="core-lib.js"></script>
   <script src="storyboard-app.js"></script>
 </body>
