@@ -1,0 +1,13 @@
+[Unit]
+Description=Atlas Analytics receiver (POST /api/atlas/evt)
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/atlas
+ExecStart=/usr/bin/python3 /opt/atlas/atlas-evt-receiver.py
+Environment=PORT=8901
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
