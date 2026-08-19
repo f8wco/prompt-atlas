@@ -9,17 +9,28 @@
 const fs = require('fs');
 const path = require('path');
 
+function copyDir(from, to) {
+  fs.mkdirSync(to, { recursive: true });
+  fs.readdirSync(from, { withFileTypes: true }).forEach(e => {
+    if (e.isDirectory()) copyDir(path.join(from, e.name), path.join(to, e.name));
+    else fs.copyFileSync(path.join(from, e.name), path.join(to, e.name));
+  });
+}
+function copyFile(from, to) { fs.mkdirSync(path.dirname(to), { recursive: true }); fs.copyFileSync(from, to); }
+
 const root = path.join(__dirname, '..');
 const web = path.join(root, 'web');
 const out = path.join(root, 'site-package');
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'assets', 'evidence'), { recursive: true });
 
-const files = ['index.html', 'storyboard.html', 'style.css', 'app.js', 'storyboard-app.js', 'core-lib.js', 'core-data.js'];
+const files = ['index.html', 'storyboard.html', 'privacy.html', 'style.css', 'app.js', 'storyboard-app.js', 'analytics.js', 'qr-lib.js', 'share-card.js', 'core-lib.js', 'core-data.js', 'rec-data.js'];
 files.forEach(f => fs.copyFileSync(path.join(web, f), path.join(out, f)));
 const evDir = path.join(web, 'assets', 'evidence');
 fs.readdirSync(evDir).filter(f => f.endsWith('.jpg')).forEach(f =>
   fs.copyFileSync(path.join(evDir, f), path.join(out, 'assets', 'evidence', f)));
+copyDir(path.join(web, 'atoms'), path.join(out, 'atoms'));
+copyFile(path.join(web, 'sitemap.xml'), path.join(out, 'sitemap.xml'));
 
 function inline(htmlPath, replacements) {
   let html = fs.readFileSync(path.join(web, htmlPath), 'utf8');
@@ -28,6 +39,8 @@ function inline(htmlPath, replacements) {
 }
 const css = fs.readFileSync(path.join(web, 'style.css'), 'utf8');
 const dataJs = fs.readFileSync(path.join(web, 'core-data.js'), 'utf8');
+const recJs = fs.readFileSync(path.join(web, 'rec-data.js'), 'utf8');
+const anJs = fs.readFileSync(path.join(web, 'analytics.js'), 'utf8');
 const libJs = fs.readFileSync(path.join(web, 'core-lib.js'), 'utf8');
 const sbJs = fs.readFileSync(path.join(web, 'storyboard-app.js'), 'utf8');
 
@@ -35,6 +48,8 @@ const sbJs = fs.readFileSync(path.join(web, 'storyboard-app.js'), 'utf8');
 const sbSingle = inline('storyboard.html', [
   [/<link rel="stylesheet" href="style.css">/, '<style>\n' + css + '\n</style>'],
   [/<script src="core-data.js"><\/script>/, '<script>\n' + dataJs + '\n</script>'],
+  [/<script src="rec-data.js"><\/script>/, '<script>\n' + recJs + '\n</script>'],
+  [/<script src="analytics.js"><\/script>/, '<script>\n' + anJs + '\n</script>'],
   [/<script src="core-lib.js"><\/script>/, '<script>\n' + libJs + '\n</script>'],
   [/<script src="storyboard-app.js"><\/script>/, '<script>\n' + sbJs + '\n</script>']
 ]);
@@ -63,6 +78,10 @@ const appJs = fs.readFileSync(path.join(web, 'app.js'), 'utf8');
 const atlasSingle = inline('index.html', [
   [/<link rel="stylesheet" href="style.css">/, '<style>\n' + css + '\n</style>'],
   [/<script src="core-data.js"><\/script>/, '<script>\n' + dataJsInlined + '\n</script>'],
+  [/<script src="rec-data.js"><\/script>/, '<script>\n' + recJs + '\n</script>'],
+  [/<script src="analytics.js"><\/script>/, '<script>\n' + anJs + '\n</script>'],
+  [/<script src="qr-lib.js"><\/script>/, '<script>\n' + fs.readFileSync(path.join(web, 'qr-lib.js'), 'utf8') + '\n</script>'],
+  [/<script src="share-card.js"><\/script>/, '<script>\n' + fs.readFileSync(path.join(web, 'share-card.js'), 'utf8') + '\n</script>'],
   [/<script src="core-lib.js"><\/script>/, '<script>\n' + libJs + '\n</script>'],
   [/<script src="storyboard-app.js"><\/script>/, '<script>\n' + sbJs + '\n</script>'],
   [/<script src="app.js"><\/script>/, '<script>\n' + appJs + '\n</script>']
