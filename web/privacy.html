@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>隐私说明 · Atlas Studio</title>
+  <meta name="description" content="Atlas Studio 隐私说明：提示词仅本地处理；同意后才收集最小化产品使用统计；随机分析 ID 保存 90 天；可随时关闭与删除。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .privacy-wrap { max-width: 760px; margin: 0 auto; padding: 24px 20px 60px; }
+    .privacy-wrap h1 { font-size: 1.6rem; margin: 18px 0 6px; }
+    .privacy-wrap h2 { font-size: 1.08rem; margin: 26px 0 8px; }
+    .privacy-wrap p, .privacy-wrap li { color: var(--txt2); line-height: 1.8; font-size: 0.95rem; }
+    .privacy-wrap ul { padding-left: 1.3em; }
+    .privacy-wrap code { background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; font-size: 0.85em; }
+    .privacy-updated { color: var(--txt3); font-size: 0.85rem; }
+    .privacy-actions { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="logo-badge">🎬</span><span>视觉提示词图库</span> <span class="tag">Visual Prompt Atlas</span></div>
+    <div class="header-right"><a class="lang-btn" href="index.html">← 返回工具</a></div>
+  </header>
+
+  <main class="privacy-wrap">
+    <h1>🔒 Atlas Studio 隐私说明</h1>
+    <p class="privacy-updated">更新时间：2026-08-19 · 本页为中文完整版，如有疑问可通过下方联系方式联系我们。</p>
+
+    <h2>1. 谁在运营</h2>
+    <p>本工具由 F8W（www.f8w.com）运营。联系方式：<a href="mailto:560674@qq.com">560674@qq.com</a>。涉及个人信息处理的事宜，均可通过该邮箱联系。</p>
+
+    <h2>2. 你的提示词（Prompt）</h2>
+    <p>你粘贴进体检仪 / 配方卡 / 分镜工具的所有内容，<strong>仅在浏览器本地分析，不上传服务器，不用于任何模型训练</strong>。分享链接由你主动生成时，配方内容才以 URL 参数形式存在于链接中（不上传我们的数据库）。</p>
+
+    <h2>3. 产品使用统计（经你同意后收集）</h2>
+    <p>在你明确选择「允许匿名使用统计」后，我们收集以下最小化事件，用于改进产品：</p>
+    <ul>
+      <li><code>page_view</code> 页面访问</li>
+      <li><code>check_started</code> / <code>check_completed</code> 开始/完成一次体检（只含统计值，如命中词条数、覆盖率）</li>
+      <li><code>evidence_viewed</code> 查看了某个词条的证据</li>
+      <li><code>recommendation_applied</code> 采纳了某条建议</li>
+      <li><code>export_clicked</code> 复制了提示词/优化版/配方/分镜</li>
+      <li><code>share_created</code> 生成了分享卡/分享链接</li>
+      <li><code>feedback_vote</code> 词条页「一致/不一致」反馈</li>
+    </ul>
+    <p><strong>我们不收集提示词正文。</strong>事件在发送前经过严格白名单过滤：任何超长字段都会导致整条事件被丢弃——这是代码级保证，不是承诺。</p>
+
+    <h2>4. 随机分析 ID</h2>
+    <p>同意统计后，浏览器会生成一个随机分析标识（假名化 ID，形如 UUID），用于计算「多少人在用、是否下周还来」这类产品指标。它：<strong>不包含任何个人信息、不与账号绑定（本期无账号系统）、不跨站共享</strong>；按 <strong>90 天滚动有效期</strong>保存（超期或长期不活跃自动失效）。</p>
+
+    <h2>5. 如何关闭</h2>
+    <p>页脚「📊 使用统计」开关可随时切换为「仅本地使用」：关闭后<strong>立即停止发送一切事件</strong>，本地的随机分析 ID 同时被删除，工具全部功能不受影响。</p>
+
+    <h2>6. 如何删除</h2>
+    <div class="privacy-actions">
+      <button class="btn" id="privacy-clear-local">🧹 清除本地分析 ID</button>
+    </div>
+    <p style="margin-top:10px">点击上方按钮可立即清除本地的随机分析 ID。如需删除服务端已记录的、与该 ID 关联的历史统计数据，请发邮件（<a href="mailto:560674@qq.com">560674@qq.com</a>）附上页脚显示的 ID（可在删除前复制），我们会进行处理。</p>
+    <p class="privacy-updated">本说明为产品隐私实践描述，不构成正式法律意见。</p>
+  </main>
+
+  <script src="analytics.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.getElementById('privacy-clear-local');
+      if (btn && window.AtlasAnalytics) {
+        btn.addEventListener('click', function () {
+          try { window.AtlasAnalytics.clearLocalId(); } catch (e) { /* ignore */ }
+          btn.textContent = '✓ 已清除（服务端删除请邮件联系）';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
